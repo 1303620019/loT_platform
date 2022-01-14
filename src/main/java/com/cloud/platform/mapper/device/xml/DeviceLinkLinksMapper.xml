@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.DeviceLinkLinksMapper">
+
+
+    <insert id="insertArrayLinks">
+        insert into t_device_link_links (dll_id,dll_dli_id,dll_type,dllin_id,dll_name,dll_mac,dll_createTime)
+        VALUES
+        <foreach collection="linkLinks" item="item" index="index" separator=",">
+            ('${@com.baomidou.mybatisplus.core.toolkit.IdWorker@getId()}',#{item.dllDliId},#{item.dllType},
+            #{item.dllinId},#{item.dllName},#{item.dllMac},now() )
+        </foreach>
+    </insert>
+</mapper>

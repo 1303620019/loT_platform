@@ -1,0 +1,61 @@
+swagger:
+  title: 智能配电后台管理系统
+  description: 台区智能融合终端（以下简称“终端”）与云平台之间的交互协议（以下简称“平台”），包含平台对终端的设备管理、容器管理、应用管理等内容。
+  exclude-path: /error # 剔除请求
+
+server:
+  port: 8991
+spring:
+  application:
+    name: lot-cloud-platform # 应用名
+  profiles:
+    active: dev
+  resources:
+    static-locations: classpath:/templates/
+  thymeleaf:
+    prefix:
+      classpath: /templates # 访问template下的html文件需要配置模板，映射
+    cache: false # 开发时关闭缓存,不然没法看到实时页面
+  # 数据源配置
+  datasource:
+    username: db_root
+    password: 123Edsaq
+    url: jdbc:mysql://114.116.203.108:3333/lot_cloud_platform?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    #mysql8版本以上驱动包指定新的驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #   数据源其他配置, 在 DruidConfig配置类中手动绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+  redis:
+    host: 39.105.255.12
+    port: 6379
+    password: 512@qhts
+    lettuce:
+      pool:
+        max-active: 100
+        max-idle: 10
+        max-wait: 100000
+    timeout: 1000
+    cache:
+      redis:
+        time-to-live: "60M"
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+mybatis-plus:
+  type-aliases-package: com.cloud.platform.entity
+  # xxxMapper.xml 路径
+  mapper-locations: classpath*:com/cloud/platform/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    call-setters-on-nulls: true
+
+

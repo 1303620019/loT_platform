@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.DeviceLinkInfoMapper">
+
+
+    <insert id="saveLinkInfo" parameterType="DeviceLinkInfo">
+        insert into t_device_link_info(dil_id,dil_mid,dil_deviceId,dil_timestamp,dil_type,dil_code,dil_msg,dil_createTime)
+        values('${@com.baomidou.mybatisplus.core.toolkit.IdWorker@getId()}',
+        #{dilMid},#{dilDeviceid},#{dilTimestamp},#{dilType},#{dilCode},#{dilMsg},#{dilCreatetime}
+        )
+    </insert>
+</mapper>

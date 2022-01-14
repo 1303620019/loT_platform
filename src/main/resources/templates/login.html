@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>登录页面</title>
+<!--<link rel="icon" href="favicon.ico" type="/static/image/ico">-->
+<!--<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">-->
+<!--<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">-->
+<meta name="author" content="yinqi">
+<link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+<link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="/static/css/style.min.css" rel="stylesheet">
+<style>
+.lyear-wrapper {
+    position: relative;
+}
+.lyear-login {
+    display: flex !important;
+    min-height: 100vh;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.login-center {
+    background: #fff;
+    min-width: 38.25rem;
+    padding: 2.14286em 3.57143em;
+    border-radius: 5px;
+    margin: 2.85714em 0;
+}
+#canvas {
+  float: right;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.login-header {
+    margin-bottom: 1.5rem !important;
+}
+.login-center .has-feedback.feedback-left .form-control {
+    padding-left: 38px;
+    padding-right: 12px;
+}
+.login-center .has-feedback.feedback-left .form-control-feedback {
+    left: 0;
+    right: auto;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    z-index: 4;
+    color: #dcdcdc;
+}
+.login-center .has-feedback.feedback-left.row .form-control-feedback {
+    left: 15px;
+}
+</style>
+</head>
+  
+<body>
+<div class="row lyear-wrapper">
+  <div class="lyear-login">
+    <div class="login-center">
+      <div class="login-header text-center">
+        <a href="index.html"> <img alt="light year admin" src="/static/images/logo-sidebar.png"> </a>
+      </div>
+      <form action="#!" method="post">
+        <input type="hidden" name="captchaVal" id="captchaVal">
+        <div class="form-group has-feedback feedback-left">
+          <input type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username" />
+          <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+        </div>
+        <div class="form-group has-feedback feedback-left">
+          <input type="password" placeholder="请输入密码" class="form-control" id="password" name="password" />
+          <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
+        </div>
+        <div class="form-group has-feedback feedback-left row">
+          <div class="col-xs-7">
+            <input type="text" name="captcha" id="captcha" class="form-control" placeholder="验证码">
+            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+          </div>
+          <div class="col-xs-5">
+            <canvas id="canvas" width="100" height="43" title="点击刷新" alt="captcha"></canvas>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-block btn-primary" type="button" onclick="loginSign()"  >立即登录</button>
+        </div>
+      </form>
+      <hr>
+      <footer class="col-sm-12 text-center">
+        <p class="m-b-0">Copyright © 2019 <a href="http://lyear.itshubao.com">IT书包</a>. All right reserved</p>
+      </footer>
+    </div>
+  </div>
+</div>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/js/bootstrap-3.3.4.js"></script>
+<script src="/static/js/layer/layer.js"></script>
+<script type="text/javascript">
+  let show_num = [];
+  $(function(){
+    draw(show_num);
+    $("#canvas").on('click',function(){
+      draw(show_num);
+    })
+  });
+  //登录
+  function loginSign() {
+    let captcha = $('#captcha').val();
+    let username = $('#username').val();
+    let password = $('#password').val();
+    let captchaVal = $('#captchaVal').val();
+    if (!username){
+      layer.msg("请输入登录用户名称！");
+      return false;
+    }else if (!password){
+      layer.msg("请输入登录用户密码！");
+      return false;
+    } else if (!captcha){
+      layer.msg("请输入验证码！");
+      return false;
+    }else if (captcha != captchaVal){
+      layer.msg("请输入正确的验证码！");
+      return false;
+    }
+      $.ajax({
+        url: "/loginSign",
+        type: "post",
+        dataType: "json",
+        data: {
+          username: username,
+          password:password
+        },
+        success: function (data) {
+         console.log(data);
+          if (data.code === 20000){
+            window.location.href='/index.html'
+          }else if (data.code === 999){
+            layer.msg(data.message);
+          }
+        }
+      });
+  }
+
+  function draw(show_num) {
+    var canvas_width=$('#canvas').width();
+    var canvas_height=$('#canvas').height();
+    var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+    var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+    canvas.width = canvas_width;
+    canvas.height = canvas_height;
+    var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0";
+    var aCode = sCode.split(",");
+    var aLength = aCode.length;//获取到数组的长度
+
+    for (var i = 0; i <= 3; i++) {
+      var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+      var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+      var txt = aCode[j];//得到随机的一个内容
+      show_num[i] = txt.toLowerCase();
+      var x = 10 + i * 20;//文字在canvas上的x坐标
+      var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+      context.font = "bold 23px 微软雅黑";
+
+      context.translate(x, y);
+      context.rotate(deg);
+
+      context.fillStyle = randomColor();
+      context.fillText(txt, 0, 0);
+
+      context.rotate(-deg);
+      context.translate(-x, -y);
+    }
+    $('#captchaVal').val(show_num.join(''));
+    for (var i = 0; i <= 20; i++) { //验证码上显示线条
+      context.strokeStyle = randomColor();
+      context.beginPath();
+      context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+      context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+      context.stroke();
+    }
+    for (var i = 0; i <= 100; i++) { //验证码上显示小点
+      context.strokeStyle = randomColor();
+      context.beginPath();
+      var x = Math.random() * canvas_width;
+      var y = Math.random() * canvas_height;
+      context.moveTo(x, y);
+      context.lineTo(x + 1, y + 1);
+      context.stroke();
+    }
+  }
+
+  function randomColor() {//得到随机的颜色值
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+</script>
+</body>
+</html>
