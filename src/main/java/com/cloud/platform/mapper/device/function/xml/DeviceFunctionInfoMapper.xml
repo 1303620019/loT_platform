@@ -2,4 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.platform.mapper.device.function.DeviceFunctionInfoMapper">
 
+    <resultMap id="infoMap" type="DeviceFunctionInfo">
+        <id column="dfi_id" property="dfiId"/>
+        <result column="dfi_deviceId" property="deviceId"/>
+        <result column="dfi_cpuRate" property="cpuRate"/>
+        <result column="dfm_phy" property="dfmId"/>
+        <result column="dfi_diskUsed" property="diskUsed"/>
+        <result column="dfi_longitude" property="longitude"/>
+        <result column="dfi_latitude" property="latitude"/>
+        <result column="dld_devType" property="devType"/>
+        <result column="dld_devStatus_num" property="linkState"/>
+        <result column="dfi_createTime" property="createTime"/>
+    </resultMap>
+
+
+    <select id="search" resultMap="infoMap">
+        select info.dfi_id, info.dfi_deviceId,info.dfi_longitude,info.dfi_latitude,dev.dld_devType,dev.dld_devStatus_num
+        from t_device_function_info info
+        left join t_device_link_dev dev on info.dfi_deviceId =dev.dld_device_id
+        where 1=1
+        <if test="req.onLineState!=null and req.onLineState!=''">
+          and   dev.dld_devStatus_num=#{req.onLineState}
+        </if>
+        GROUP BY info.dfi_deviceId ORDER BY dfi_createTime desc
+    </select>
+    <select id="cfgSearch" resultMap="infoMap">
+        select info.dfi_id, info.dfi_deviceId,info.dfi_cpuRate,dfm.dfm_phy,info.dfi_diskUsed,info.dfi_createTime
+        from t_device_function_info info left JOIN t_device_function_mem dfm on info.dfi_dfmId=dfm.dfm_id
+        where 1=1
+        <if test="req.deviceId!=null and req.deviceId!=''">
+            and   info.dfi_deviceId=#{req.deviceId}
+        </if>
+        ORDER BY dfi_createTime desc
+    </select>
+
 </mapper>

@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.cloud.platform.base.Result;
-import com.cloud.platform.entity.device.function.DeviceFunctionRepperiod;
+import com.cloud.platform.entity.device.upgrade.DeviceUpgradeResult;
 import com.cloud.platform.service.*;
 import com.cloud.platform.service.device.*;
 import com.cloud.platform.service.device.function.*;
+import com.cloud.platform.service.device.upgrade.IDeviceUpgradeResultService;
+import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
@@ -59,8 +61,17 @@ public class DeviceController {
   private IDeviceFunctionTemperatureService temperatureService;
 
   @Autowired
-  private IDeviceAlarmLogService     alarmLogService;
+  private IDeviceAlarmLogService alarmLogService;
 
+
+  @Autowired
+  private IDeviceLinkAiService linkAiService;
+  @Autowired
+  private IDeviceLinkFileService  linkFileService;
+  @Autowired
+  private IDeviceLinkFileSignService  signService;
+  @Autowired
+  private IDeviceUpgradeResultService upgradeResultService;
   /**
    * 功能描述: <br>
    * 官方文档〈https://docs.emqx.cn/broker/v4.3/rule/rule-engine.html#%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%BE%E4%BE%8B〉
@@ -106,8 +117,14 @@ public class DeviceController {
         param = JSON.parseObject(stringObjectMap.get("param").toString(), Map.class);
         String deviceId = param.get("deviceId").toString();
         upgradeService.updateUpgrade(deviceId,param);
-        //设备状态查询命令进行应答 不回应
-      }else if (stringObjectMap.get("type").equals("REP_SYS_STATUS")){
+     //设备升级命令应答
+     }else if(stringObjectMap.get("type").equals("CMD_SYS_UPGRADE")){
+        log.info("CMD_DATETIME_SYN-参数列表：{}",stringObjectMap.toString());
+      //设备升级结果上报 不回应
+    } else if (stringObjectMap.get("type").equals("REP_JOB_RESULT")) {
+     upgradeResultService.saveUpgradeResult(param);
+      //设备状态查询命令进行应答 不回应
+    }else if (stringObjectMap.get("type").equals("REP_SYS_STATUS")){
         String menId = functionMemService.saveFunctionMen(param);
         if (!StringUtils.isBlank(menId)){
           param.put("memUsed",menId);
@@ -132,12 +149,17 @@ public class DeviceController {
       }else if (stringObjectMap.get("type").equals("EVENT_SYS_ALARM")) {
         log.info("EVENT_SYS_ALARM-参数列表：{}",stringObjectMap.toString());
         Boolean aBoolean = alarmLogService.saveAlarmLog(param);
-        //设备控制命令应答 不保存
+        //设备日志召回应答
       }else if (stringObjectMap.get("type").equals("CMD_SYS_LOG")) {
-        log.info("CMD_DATETIME_SYN-参数列表：{}",stringObjectMap.toString());
+        log.info("CMD_SYS_LOG-参数列表：{}",param.toString());
+        String signId = signService.saveFileSign(param);
+        if (!StringUtils.isBlank(signId)){
+          param.put("signId",signId);
+        }
+        Boolean aBoolean = linkFileService.saveFile(param);
         //设备控制命令应答 不保存
       }else if (stringObjectMap.get("type").equals("CMD_CTRL")) {
-        log.info("CMD_DATETIME_SYN-参数列表：{}",stringObjectMap.toString());
+        log.info("CMD_CTRL-参数列表：{}",stringObjectMap.toString());
       }
 
     }
@@ -147,6 +169,7 @@ public class DeviceController {
   public Boolean link_up(Map<String, Object> param) throws Exception {
     String devId = devService.saveCreatLinkDev(param);
     param.put("dliId", devId);
+    Boolean saveAi = linkAiService.saveAi(param);
     Boolean cpu = cpuService.saveLinkCpu(param);
     Boolean links = linkLinksService.saveLinkLinks(param);
     Boolean disk = diskService.saveLinkDisk(param);
@@ -154,10 +177,10 @@ public class DeviceController {
     Boolean mem = memService.savelinkMem(param);
     Boolean repperiod = repperiodService.saveRepperiod(param);
     Boolean temperature = temperatureService.saveTemperature(param);
-    if (cpu && links && disk && StringUtils.isNotEmpty(devId) && os && mem) {
+    if (cpu && links && saveAi && disk && StringUtils.isNotEmpty(devId) && os && mem) {
       return true;
     }
-    if (cpu && links && disk && StringUtils.isNotEmpty(devId) && os && mem && repperiod && temperature ) {
+    if (cpu && links && saveAi && disk && StringUtils.isNotEmpty(devId) && os && mem && repperiod && temperature ) {
       return true;
     }
     return false;

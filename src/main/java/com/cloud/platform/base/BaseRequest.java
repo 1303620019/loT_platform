@@ -17,10 +17,10 @@ import java.io.Serializable;
 public class BaseRequest<T> implements Serializable {
 
     @ApiModelProperty(value = "页码", required = true)
-    private long current;
+    private long page;
 
     @ApiModelProperty(value = "每页显示多少条", required = true)
-    private long size;
+    private long limit;
 
     /**
      * 封装分页对象
@@ -28,7 +28,7 @@ public class BaseRequest<T> implements Serializable {
      */
     @ApiModelProperty(hidden = true) // 不在swagger接口文档中显示
     public IPage<T> getPage() {
-        return new Page<T>().setCurrent(this.current).setSize(this.size);
+        return new Page<T>().setCurrent(this.page).setSize(this.limit);
     }
 
 }

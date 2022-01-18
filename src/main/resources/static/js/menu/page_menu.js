@@ -1,18 +1,87 @@
 function initMenu() {
-    let menuList='   <li class="nav-item active"> ' +
-        '              <a href="index.html"><i class="mdi mdi-home"></i> 后台首页</a> ' +
-        '           </li>' +
-        '            <li class="nav-item nav-item-has-subnav">\n' +
-        '              <a href="javascript:void(0)"><i class="mdi mdi-palette"></i>设备管理 </a>   ' +
+    let num = localStorage.getItem("nav-item");
+    let subnav_li = localStorage.getItem("nav-subnav-li");
+    let menuList = new Array();
+    menuList.push('<li class="nav-item active" id="0"> ' +
+        '              <a href="/index.html"><i class="mdi mdi-access-point-network"></i> 后台首页</a> ' +
+        '             </li>')
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="1">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-bluetooth-connect"></i>接入管理 </a>   ' +
         '              <ul class="nav nav-subnav">\n' +
-        '                <li> <a href="lyear_ui_buttons.html">按钮</a> </li>' +
+        '                <li> <a href="/device/device_accAudit.html">接入审计</a> </li>' +
+        '                <li> <a>未知终端</a> </li>' +
+        '                <li> <a>指纹异动</a> </li>' +
+        '                <li> <a>黑名单管理</a> </li>' +
         '               </ul>' +
-        '            </li>';
-    $('#menu_dox').html(menuList);
+        '            </li>');
+
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="2">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-cctv"></i>设备管理 </a>   ' +
+        '              <ul class="nav nav-subnav">\n' +
+        '                <li> <a href="/device/device_archives.html">设备档案</a> </li>' +
+         '                <li> <a href="/device/device_control.html">设备控制</a> </li>' +
+        '                <li> <a href="/device/device_config.html">配置管理</a> </li>' +
+        '                <li> <a href="/device/device_upgrade.html">设备升级</a> </li>' +
+        // '                <li> <a>设备分组</a> </li>' +
+        // '                <li> <a>任务管理</a> </li>' +
+         '                <li> <a>签名控制</a> </li>' +
+        '               </ul>' +
+        '            </li>');
+
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="3">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-collage"></i>软件市场 </a>   ' +
+        '              <ul class="nav nav-subnav">\n' +
+        '                <li> <a href="/market/device_market.html">应用软件</a> </li>' +
+        '               </ul>' +
+        '            </li>');
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="4">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-comment-text"></i>运行管理 </a>   ' +
+        '              <ul class="nav nav-subnav">\n' +
+        '                <li> <a href="/running/device_fun_patrol.html">设备巡测</a> </li>' +
+        '                <li> <a>设备监测</a> </li>' +
+        '               </ul>' +
+        '            </li>');
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="5">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-microsoft"></i>应用管理 </a>   ' +
+        '              <ul class="nav nav-subnav">\n' +
+        '                <li> <a>设备容器</a> </li>' +
+        '                <li> <a>设备应用</a> </li>' +
+        '                <li> <a>容器模块</a> </li>' +
+        '               </ul>' +
+        '            </li>');
+    menuList.push('<li class="nav-item nav-item-has-subnav" id="6">\n' +
+        '              <a href="javascript:void(0)"><i class="mdi mdi-security-home"></i>安全监控 </a>   ' +
+        '              <ul class="nav nav-subnav">\n' +
+        '                <li> <a>告警分析</a> </li>' +
+        '               </ul>' +
+        '            </li>');
+    $('#menu_dox').html(menuList.join(''));
+    $('.nav-item').each(function () {
+        let menuId = $(this).attr("id").toString();
+        if (num === '0') {
+            return true;
+        }
+        if (num === menuId) {
+            $(this).toggleClass('active open');
+            var nav_subnavList = $(this).find("li");
+            for(var i=0;i<nav_subnavList.length;i++){
+                if(i=== subnav_li || i.toString() === subnav_li) {
+                    $(nav_subnavList[i]).toggleClass('active');
+                }else{
+                    $(nav_subnavList[i]).removeClass("active");
+                 }
+            }
+        return  false;
+        } else {
+            $('.nav-item').removeClass("active");
+            $('.nav-item').removeClass("open");
+        }
+    })
+
 }
 
 function initTheme() {
-    let theme= '  <span data-toggle="dropdown" class="icon-palette"><i class="mdi mdi-palette"></i></span>\n' +
+    let theme = '  <span data-toggle="dropdown" class="icon-palette"><i class="mdi mdi-palette"></i></span>\n' +
         '\t\t\t  <ul class="dropdown-menu dropdown-menu-right" data-stopPropagation="true">\n' +
         '                <li class="drop-title"><p>主题</p></li>\n' +
         '                <li class="drop-skin-li theme_box">\n' +
@@ -138,11 +207,16 @@ function initTheme() {
     $('.dropdown-skin').html(theme);
 }
 
-
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]);
+    return null; //返回参数值
+}
 /*            <li class="nav-item nav-item-has-subnav">
               <a href="javascript:void(0)"><i class="mdi mdi-palette"></i>设备管理 (UI 元素）</a>
               <ul class="nav nav-subnav">
-                <li> <a href="lyear_ui_buttons.html">按钮</a> </li>
+                <li> <a href="device_accAudit.html">按钮</a> </li>
                 <li> <a href="lyear_ui_cards.html">卡片</a> </li>
                 <li> <a href="lyear_ui_grid.html">格栅</a> </li>
                 <li> <a href="lyear_ui_icons.html">图标</a> </li>

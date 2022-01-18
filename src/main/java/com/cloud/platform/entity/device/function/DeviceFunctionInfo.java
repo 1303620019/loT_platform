@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class DeviceFunctionInfo implements Serializable {
 
     @TableId(value = "dfi_id", type = IdType.ASSIGN_ID)
     @JSONField(serialize=false)
-    private String id;
+    private String dfiId;
 
     @ApiModelProperty(value = "设备id")
     @TableField("dfi_deviceId")
@@ -70,19 +71,24 @@ public class DeviceFunctionInfo implements Serializable {
     @ApiModelProperty(value = "dfi_id")
     @TableField("dfi_linkState")
     @JSONField(serialize=false)
-    private String linkState;
+    private Integer linkState;
 
     @ApiModelProperty(value = "地理位置信息经度")
     @TableField("dfi_longitude")
     private String longitude;
 
-    @ApiModelProperty(value = "地理位置信息经度")
+    @ApiModelProperty(value = "地理位置信息纬度")
     @TableField("dfi_latitude")
     private String latitude;
+
     @ApiModelProperty(value = "创建时间")
     @TableField("dfi_createTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JSONField(serialize=false)
     private Date createTime;
 
-
+    @ApiModelProperty(value = "设备型号")
+    @JSONField(serialize=false)
+    @TableField(exist = false)
+    private  String devType;
 }

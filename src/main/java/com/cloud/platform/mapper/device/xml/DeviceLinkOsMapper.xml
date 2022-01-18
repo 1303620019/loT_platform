@@ -2,4 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.platform.mapper.device.DeviceLinkOsMapper">
 
+    <!-- 封装分类及分类中的标签信息-->
+    <resultMap id="upgradeMap" type="DeviceLinkOs">
+        <id column="dlo_id" property="dloId" />
+        <result property="dloDistro" column="dlo_distro"/>
+        <result property="dloVersion"  column="dlo_version"/>
+        <result property="dloKernel" column="dlo_kernel" />
+        <result property="dldMfginfo" column="dld_mfgInfo"/>
+        <result property="dldDevtype" column="dld_devType"/>
+        <result property="dloDeviceId" column="dld_device_id"/>
+        <result property="dldDevStatusNum" column="dld_devStatus_num"/>
+    </resultMap>
+    <select id="upgradeSearch" resultMap="upgradeMap">
+    select  os.dlo_id,dev.dld_device_id,dev.dld_mfgInfo,dev.dld_devType,
+    os.dlo_distro,os.dlo_version,os.dlo_kernel,dev.dld_devStatus_num
+    from (select * from  t_device_link_dev GROUP BY  dld_device_id   ORDER BY dld_createTime desc )   dev
+    left join   t_device_link_os os on dev.dld_id=os.dlo_dle_id
+    where 1=1
+        <if test="req.deviceId !=null and req.deviceId !='' ">
+         and dev.dld_device_id like "%"#{req.deviceId}"%"
+        </if>
+        <if test="req.dldDevtype !=null and req.dldDevtype !='' ">
+            and dev.dld_devType like "%"#{req.dldDevtype}"%"
+        </if>
+
+        <if test="req.dldMfginfo !=null and req.dldMfginfo !='' ">
+            and dev.dld_mfgInfo like "%"#{req.dldMfginfo}"%"
+        </if>
+        <if test="req.dloDistro !=null and req.dloDistro !='' ">
+            and os.dlo_distro like "%"#{req.dloDistro}"%"
+        </if>
+
+<!--        <if test="req.dloDistro !=null and req.dloDistro !='' ">-->
+<!--            and os.dlo_distro like %"#{req.dloDistro}"%"-->
+<!--        </if>-->
+    </select>
+
+
 </mapper>

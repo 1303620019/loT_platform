@@ -1,14 +1,14 @@
-package com.cloud.platform.service.device.impl;
+package com.cloud.platform.service.device.upgrade.impl;
 
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.entity.device.DeviceUpgrade;
+import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 
-import com.cloud.platform.mapper.device.DeviceUpgradeMapper;
-import com.cloud.platform.service.device.IDeviceUpgradeService;
+import com.cloud.platform.mapper.device.upgrade.DeviceUpgradeMapper;
+import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,5 +40,14 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
     }
     baseMapper.updateById(deviceUpgrade);
     return true;
+  }
+
+  @Override
+  public DeviceUpgrade selectByJobId(String jobId) {
+
+    QueryWrapper wrapper =new QueryWrapper();
+    wrapper.eq("du_jobId",jobId);
+    DeviceUpgrade deviceUpgrade = baseMapper.selectOne(wrapper);
+    return deviceUpgrade;
   }
 }

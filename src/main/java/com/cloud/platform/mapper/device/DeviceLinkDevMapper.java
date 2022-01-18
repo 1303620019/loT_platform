@@ -2,7 +2,10 @@ package com.cloud.platform.mapper.device;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.cloud.platform.base.ResultVo;
 import com.cloud.platform.entity.device.DeviceLinkDev;
+import com.cloud.platform.req.DeviceLinkDevREQ;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

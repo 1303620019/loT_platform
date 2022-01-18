@@ -159,9 +159,9 @@
 
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header"><h4>审计列表</h4></div>
+                    <div class="card-header"><h4>档案列表</h4></div>
                     <div class="card-body">
-                        <table id="audit_table" data-response-handler="responseHandler"></table>
+                        <table id="archives_table" data-response-handler="responseHandler"></table>
                     </div>
                 </div>
             </div>
@@ -215,41 +215,6 @@
             let val = $(this).parent().find('input').val();
             $('body').attr("data-sidebarbg", val);
         })
-
-    //     $('#audit_table').bootstrapTable({
-    //         url: '/dev/search',
-    //         method:'post',
-    //         contentType:'application/json',
-    //         // sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-    //         // pagination: true,                   // 开启分页功能
-    //         // pageNumber: 1,                      //第一页开始
-    //         // pageSize: 10,                     // 设置默认分页为 10
-    //         // queryParams: function (params) {
-    //         //     var temp = {
-    //         //         size: params.limit,                         //页面大小
-    //         //         current: (params.offset / params.limit) + 1,   //页码
-    //         //     };
-    //         //     return temp; //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-    //         // },
-    //         responseHandler:function(data){
-    //             return eval(data.data.recordsss)
-    //         },
-    //         columns: [
-    //             {
-    //                 checkbox: true, // 显示一个勾选框
-    //                 align: 'center' // 居中显示
-    //             },
-    //         {
-    //             field: 'dldId',
-    //             title: 'ID'
-    //         }, {
-    //             field: 'dldDeviceId',
-    //             title: '设备id'
-    //         }, {
-    //             field: 'dldMfginfo',
-    //             title: '厂商信息'
-    //         }, ]
-    //     });
    })
 </script>
 <script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
@@ -260,19 +225,14 @@
       断开连接
     {{#  } }}
 </script>
-<script type="text/html" id="authStatus">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    建立连接
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    断开连接
-    {{#  } }}
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="add">添加设备档案</button>
+    </div>
 </script>
-<script type="text/html" id="linkResult">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    成功
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    失败
-    {{#  } }}
+<script type="text/html" id="barBtn">
+    <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 </script>
 <script>
     layui.use('table', function () {
@@ -282,7 +242,7 @@
         laydate.render({ elem: '#endTime', type: 'datetime'  })
 
         table.render({
-            elem: '#audit_table'
+            elem: '#archives_table'
             , url: '/dev/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
@@ -290,13 +250,15 @@
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                 {title: '序号',width:'10%',toolbar: '#indexTpl'}
+                 {title: '序号',width:'4%',toolbar: '#indexTpl'}
                  ,{field: 'dldDeviceId',width:'20%', title: '设备编号'}
+                 ,{field: 'dldDevtype',width:'8%', title: '设备类型'}
+                 ,{field: 'dldHardversion',width:'8%', title: '设备型号(待定)'}
                 ,{field: 'dldMfginfo', width:'20%',title: '设备厂商'}
-                ,{field: 'dldDevStatusNum', width:'10%',title: '连接类型',toolbar: '#linkStatus'}
-                ,{field: 'dldDevStatusNum', width:'10%',title: '认证结果',toolbar: '#authStatus'}
-                ,{field: 'dldCreatetime', width:'15%',title: '发生时间'}
-                ,{field: 'dldDevStatusNum',width:'10%',title: '连接结果',toolbar: '#linkResult'}
+                ,{field: '', width:'8%',title: '通信地址'}
+                ,{field: '', width:'8%',title: '档案状态'}
+                ,{field: 'dldCreatetime', width:'10%',title: '建档时间'}
+                ,{fixed: 'right', width:'10%', align:'center', toolbar: '#barBtn'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%

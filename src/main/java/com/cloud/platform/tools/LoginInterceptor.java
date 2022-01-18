@@ -15,33 +15,37 @@ import javax.servlet.http.HttpSession;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private RedisUtils redisUtils;
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		HttpSession session = request.getSession();
-		// 获得cookie
-		Cookie[] cookies = request.getCookies();
+  @Autowired
+  private RedisUtils redisUtils;
 
-		Object user = session.getAttribute("users");
-		String tokenid = null;
-		// 获取cookie里面的一些用户信息
-		for (Cookie item : cookies) {
-			if ("tokenid".equals(item.getName())) {
-				tokenid = item.getValue();
-				break;
-			}
-		}
-		//通过redis获取用户
-		if (user == null ) {
-			user =redisUtils.get("lot_"+tokenid);
-			if (!ObjectUtils.isEmpty(user)){
-				session.setAttribute("users",user);
-			}else{
-				response.sendRedirect("/login");
-				return false;
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    HttpSession session = request.getSession();
+    // 获得cookie
+    Cookie[] cookies = request.getCookies();
+
+    Object user = session.getAttribute("users");
+    String tokenid = null;
+    // 获取cookie里面的一些用户信息
+    if (!ObjectUtils.isEmpty(cookies)) {
+      for (Cookie item : cookies) {
+        if ("tokenid".equals(item.getName())) {
+          tokenid = item.getValue();
+          break;
+        }
+      }
+    }
+
+    //通过redis获取用户
+    if (user == null) {
+      user = redisUtils.get("lot_" + tokenid);
+      if (!ObjectUtils.isEmpty(user)) {
+        session.setAttribute("users", user);
+      } else {
+        response.sendRedirect("/login");
+        return false;
+      }
+    }
+    return true;
+  }
 }

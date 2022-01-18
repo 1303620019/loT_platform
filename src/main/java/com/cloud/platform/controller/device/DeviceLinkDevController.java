@@ -1,9 +1,20 @@
 package com.cloud.platform.controller.device;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.alibaba.fastjson.JSONObject;
+import com.cloud.platform.base.Result;
+import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.entity.device.DeviceLinkDev;
+import com.cloud.platform.req.DeviceLinkDevREQ;
+import com.cloud.platform.service.device.IDeviceLinkDevService;
+import com.cloud.platform.service.device.IDeviceLinkOsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -13,8 +24,27 @@ import org.springframework.web.bind.annotation.RestController;
  * @author byl
  * @since 2022-01-10
  */
+@Slf4j
+@Api(tags = "设备硬件信息")
 @RestController
-@RequestMapping("//device-link-dev")
+@RequestMapping("/dev")
 public class DeviceLinkDevController {
+  @Autowired
+  private IDeviceLinkDevService devService;
+  @Autowired
+  private IDeviceLinkOsService osService;
+  @ApiOperation("获取列表")
+  @PostMapping("/search")
+  public ResultVo search(@RequestBody DeviceLinkDevREQ req){
+    return devService.search(req);
+  }
+
+
+  @ApiOperation("升级列表")
+  @PostMapping("/upgrade/search")
+  public ResultVo upgradeSearch(@RequestBody DeviceLinkDevREQ req){
+    return osService.upgradeSearch(req);
+  }
+
 
 }

@@ -1,10 +1,11 @@
-package com.cloud.platform.entity.device;
+package com.cloud.platform.entity.device.upgrade;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.cloud.platform.entity.device.DeviceLinkFile;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -72,7 +73,7 @@ public class DeviceUpgrade implements Serializable {
     private String msg;
     @ApiModelProperty(value = "升级文件")
     @TableField(exist = false)
-    private DeviceLinkFile  file;
+    private DeviceLinkFile file;
 
 
     @ApiModelProperty(value = "创建时间")

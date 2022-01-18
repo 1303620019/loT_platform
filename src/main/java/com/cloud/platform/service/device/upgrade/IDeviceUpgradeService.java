@@ -1,9 +1,8 @@
-package com.cloud.platform.service.device;
+package com.cloud.platform.service.device.upgrade;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.entity.device.DeviceLinkInfo;
-import com.cloud.platform.entity.device.DeviceUpgrade;
+import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 
 import java.util.Map;
 
@@ -18,5 +17,6 @@ import java.util.Map;
 public interface IDeviceUpgradeService extends IService<DeviceUpgrade> {
 
 
-  public Boolean updateUpgrade(String deviceId,Map map);
+   Boolean updateUpgrade(String deviceId,Map map);
+   DeviceUpgrade  selectByJobId(String jobId);
 }
