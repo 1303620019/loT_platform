@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>设备巡测</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label { width: 195px;    }
+    </style>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <aside class="lyear-layout-sidebar">
+
+            <!-- logo -->
+            <div id="logo" class="sidebar-header">
+                <a href="../index.html"><img src="/static/images/logo-sidebar.png" title="LightYear"
+                                             alt="LightYear"/></a>
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer" id="menu_dox"></ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <p class="copyright">Copyright &copy; 2022. All rights reserved. More Templates </p>
+                </div>
+            </div>
+
+        </aside>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+                        <span class="navbar-page-title">运行管理-设备巡测</span>
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a href="javascript:void(0)" data-toggle="dropdown">
+                                <img class="img-avatar img-avatar-48 m-r-10" src="/static/images/users/avatar.jpg"
+                                     alt="后台系统"/>
+                                <span>后台系统 <span class="caret"></span></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="../pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                                <li><a href="../pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a></li>
+                                <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/loginOut"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>
+                            </ul>
+                        </li>
+                        <!--切换主题配色-->
+                        <li class="dropdown dropdown-skin"></li>
+                        <!--切换主题配色-->
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+<main class="lyear-layout-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <fieldset class="layui-elem-field layui-field-title"
+                                  style="margin-top: 20px">
+                            <legend>查询条件</legend>
+                            <form class="layui-form">
+                                <div class="layui-form-item" style="margin-left: 8%;">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">在线状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="LinkStatusNum" id="LinkStatusNum" lay-verify="">
+                                                <option value="">请选择</option>
+                                                <option value="0">连接正常</option>
+                                                <option value="1">连接失败</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-line">
+                                        <div class="layui-input-inline" style="width:230px;">
+                                            <button type="button" class="layui-btn layui-btn-normal layui-btn-lg layui-icon layui-icon-search"
+                                                    id="doSearch">查询</button>
+                                            <button type="reset" class="layui-btn layui-btn-warm  layui-btn-lg layui-icon layui-icon-refresh "
+                                            >重置</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </fieldset>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>巡测列表</h4></div>
+                    <div class="card-body">
+                        <table id="table_patrol" data-response-handler="responseHandler"lay-filter="patrol_filter"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/js/bootstrap-3.3.4.js"></script>
+<script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script src="/static/js/bootstrap-table.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initMenu();
+        initTheme();
+        //切换菜单
+        $('.nav-item').on('click', function () {
+            $('.nav-item').removeClass("active");
+            $(this).toggleClass( 'active open' );
+            localStorage.setItem("nav-item",$(this).index());
+        })
+        $('.nav-subnav').find('li').on('click', function () {
+            $('.nav-subnav').find('li').toggleClass("active");
+            localStorage.setItem("nav-subnav-li",$(this).index());
+            $(this).toggleClass( 'active' );
+        })
+        $('.theme_box').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-theme", val);
+        })
+        $('.logo_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-logobg", val);
+        })
+
+        $('.header_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-headerbg", val);
+        })
+
+        $('.sidebar_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-sidebarbg", val);
+        })
+   })
+</script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.linkState =='0' ){ }}
+      连接正常
+    {{#  } else if(d.linkState =='1' ) { }}
+      断开连接
+    {{#  } }}
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="more">召回<i class="layui-icon layui-icon-down"></i></a>
+</script>
+<script>
+    layui.use('table', function () {
+        var table = layui.table,
+            dropdown = layui.dropdown,
+            laydate = layui.laydate;
+        laydate.render({ elem: '#startTime', type: 'datetime'  })
+        laydate.render({ elem: '#endTime', type: 'datetime'  })
+
+      let cfgTable= table.render({
+            elem: '#table_patrol'
+            , url: '/function/search'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,page: true
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            , cols: [[
+              {field: 'dfiId',width:'5%',type:'checkbox'}
+              , {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                ,{field: 'longitude', width:'20%',title: '经度'}
+                ,{field: 'latitude', width:'10%',title: '纬度'}
+                ,{field: 'devType', width:'10%',title: '设备型号'}
+                ,{field: 'linkState', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+               , {fixed: 'right', width: 150, title: '操作', align: 'center', toolbar: '#barDemo'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        $("#doSearch").click(function () {
+            var LinkStatusNum = $("#LinkStatusNum").val();
+            table.reload('testReload', {
+                url:  '/function/search'
+                   , where: {
+                    onLineState: LinkStatusNum
+                } //设定异步数据接口的额外参数
+            });
+        })
+        //监听行 "工具箱" 事件
+        table.on('tool(patrol_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+            , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'more') {
+                //下拉菜单
+                dropdown.render({
+                    elem: this //触发事件的 DOM 对象
+                    , show: true //外部事件触发即显示
+                    , data: [{title: '设备基础信息', id: 'devBase'}
+                            , {title: '设备配置信息', id: 'devCfg'}
+                            , {title: '设备状态信息', id: 'devState'}
+                            , {title: '容器配置信息', id: 'ctainerCfg'}
+                            , {title: '容器状态信息', id: 'ctainerState'}
+                            , {title: '应用状态信息', id: 'appState'}
+                            ]
+                    , click: function (menudata) {
+                        if (menudata.id === 'devBase') {
+
+                        } else if (menudata.id === 'devCfg') {
+                            let num = localStorage.setItem("nav-item","2");
+                            let subnav_li = localStorage.setItem("nav-subnav-li","0");
+                            if (data.deviceId){
+                                window.location.href='/device/device_config.html?deviceId='+data.deviceId;
+                            }else{
+                                layer.msg("此设备没有设备id,无法配置")
+                            }
+                        } else if (menudata.id === 'devState') {
+
+                        } else if (menudata.id === 'ctainerCfg') {
+                            layer.msg("正在开发容器配置信息模块")
+                        }else if (menudata.id === 'ctainerState') {
+                            layer.msg("正在开发容器状态信息模块")
+                        }else if (menudata.id === 'appState') {
+                            layer.msg("正在开发应用状态信息模块")
+                        }
+                    }
+                    , align: 'right' //右对齐弹出（v2.6.8 新增）
+                    , style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
+                })
+            }
+        });
+
+    })
+</script>
+</body>
+</html>

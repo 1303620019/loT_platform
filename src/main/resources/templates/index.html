@@ -63,7 +63,7 @@
               </ul>
             </li>
             <!--切换主题配色-->
-            <li class="dropdown dropdown-skin"> <!--切换主题配色--></li>
+            <li class="dropdown dropdown-skin"> </li><!--切换主题配色-->
           </ul>
           
         </div>
@@ -288,8 +288,8 @@
 <script src="/static/js/jquery-1.10.2.min.js"></script>
 <script src="static/js/bootstrap-3.3.4.js"></script>
 <script type="text/javascript" src="/static/js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
 <script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
 <!--图表插件-->
 <script type="text/javascript" src="/static/js/Chart.min.js"></script>
 <script type="text/javascript">
@@ -298,17 +298,6 @@ $(document).ready(function(e) {
     initTheme();
     var $dashChartBarsCnt  = jQuery( '.js-chartjs-bars' )[0].getContext( '2d' ),
         $dashChartLinesCnt = jQuery( '.js-chartjs-lines' )[0].getContext( '2d' );
-    //切换菜单
-    $('.nav-item-has-subnav').on('click',function () {
-      let  val= $(this).attr("class");
-      if(val.indexOf("open") >= 0) {
-        $(this).removeClass("open");
-      }else{
-        $('.nav-item').removeClass("active");
-        $('.nav-item').removeClass("open");
-        $(this).addClass("active open");
-      }
-    })
     var $dashChartBarsData = {
 		labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
 		datasets: [
@@ -348,27 +337,37 @@ $(document).ready(function(e) {
         data: $dashChartLinesData,
     });
 
-  $('.theme_box').find('label').on('click',function () {
-    let  val= $(this).parent().find('input').val();
-    $('body').attr("data-theme",val);
+  //切换菜单
+  $('.nav-item').on('click', function () {
+    $('.nav-item').removeClass("active");
+    $(this).toggleClass( 'active open' );
+    localStorage.setItem("nav-item",$(this).index());
   })
-  $('.logo_bg').find('label').on('click',function () {
-    let  val= $(this).parent().find('input').val();
-    $('body').attr("data-logobg",val);
+  $('.nav-subnav').find('li').on('click', function () {
+    $('.nav-subnav').find('li').toggleClass("active");
+    localStorage.setItem("nav-subnav-li",$(this).index());
+    $(this).toggleClass( 'active' );
+  })
+  $('.theme_box').find('label').on('click', function () {
+    let val = $(this).parent().find('input').val();
+    $('body').attr("data-theme", val);
+  })
+  $('.logo_bg').find('label').on('click', function () {
+    let val = $(this).parent().find('input').val();
+    $('body').attr("data-logobg", val);
   })
 
-  $('.header_bg').find('label').on('click',function () {
-    let  val= $(this).parent().find('input').val();
-    $('body').attr("data-headerbg",val);
+  $('.header_bg').find('label').on('click', function () {
+    let val = $(this).parent().find('input').val();
+    $('body').attr("data-headerbg", val);
   })
 
-  $('.sidebar_bg').find('label').on('click',function () {
-    let  val= $(this).parent().find('input').val();
-    $('body').attr("data-sidebarbg",val);
+  $('.sidebar_bg').find('label').on('click', function () {
+    let val = $(this).parent().find('input').val();
+    $('body').attr("data-sidebarbg", val);
   })
+
 });
-
-
 </script>
 </body>
 </html>
