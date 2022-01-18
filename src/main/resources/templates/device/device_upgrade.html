@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>设备档案</title>
+    <title>设备升级</title>
     <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link href="/static/css/bootstrap-table.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                             <span class="lyear-toggler-bar"></span>
                             <span class="lyear-toggler-bar"></span>
                         </div>
-                        <span class="navbar-page-title">设备管理-设备档案</span>
+                        <span class="navbar-page-title">设备管理-设备升级</span>
                     </div>
 
                     <ul class="topbar-right">
@@ -96,31 +96,50 @@
                                         </div>
                                     </div>
                                     <div class="layui-line">
-                                        <label class="layui-form-label">设备类型</label>
+                                        <label class="layui-form-label">终端类型</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="dldDevtype" id="dldDevtype" placeholder="请输入设备类型"autocomplete="off" class="layui-input">
-
+                                            <input type="text" name="dldDevtype" id="dldDevtype" placeholder="请输入终端类型"autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-line">
-                                        <label class="layui-form-label">设备型号(未查)</label>
+                                        <label class="layui-form-label">设备厂商</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="" id="" placeholder="请输入设备型号"autocomplete="off" class="layui-input">
+                                            <input type="text" name="dldMfginfo" id="dldMfginfo" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
+
                                         </div>
                                     </div>
                                     <div class="layui-form-item" style="text-align: center;">
                                             <div class="layui-line">
-                                                <label class="layui-form-label">设备厂商</label>
+                                                <label class="layui-form-label">系统名称</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="dldMfginfo" id="dldMfginfo" placeholder="请输入设备厂商"autocomplete="off" class="layui-input">
+                                                    <input type="text" name="dloDistro" id="dloDistro" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
+
                                                 </div>
                                             </div>
                                             <div class="layui-line">
-                                                <label class="layui-form-label">通信地址(未查)</label>
+                                                <label class="layui-form-label">升级类型</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="" id="" placeholder="请输入通信地址"autocomplete="off" class="layui-input">
+                                                    <select name="upgradeType" id="upgradeType" lay-verify="">
+                                                        <option value="">请选择(未查)</option>
+                                                        <option value="0">补丁升级</option>
+                                                        <option value="1">文件系统升级</option>
+                                                        <option value="2">内核升级</option>
+                                                        <option value="3">全量升级</option>
+                                                    </select>
                                                 </div>
                                             </div>
+
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">是否升级</label>
+                                        <div class="layui-input-inline">
+                                            <select name="LinkStatusNum" id="LinkStatusNum" lay-verify="">
+                                                <option value="">请选择(未查)</option>
+                                                <option value="0">已升级</option>
+                                                <option value="1">未升级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     </div>
                                 </div>
                                 <div class="layui-form-item" style="text-align: center;">
@@ -138,9 +157,9 @@
 
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header"><h4>档案列表</h4></div>
+                    <div class="card-header"><h4>升级列表</h4></div>
                     <div class="card-body">
-                        <table id="archives_table" data-response-handler="responseHandler" lay-filter="archivesFilter"></table>
+                        <table id="audit_table" data-response-handler="responseHandler" lay-filter="upgradeFilter"></table>
                     </div>
                 </div>
             </div>
@@ -204,14 +223,24 @@
       断开连接
     {{#  } }}
 </script>
+<script type="text/html" id="authStatus">
+    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    建立连接
+    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    断开连接
+    {{#  } }}
+</script>
+<script type="text/html" id="linkResult">
+    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    正常
+    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    失败
+    {{#  } }}
+</script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn" lay-event="add">添加设备档案</button>
+        <button class="layui-btn layui-btn-warm" lay-event="getCheckData">升级检验</button>
     </div>
-</script>
-<script type="text/html" id="barBtn">
-    <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
     layui.use('table', function () {
@@ -221,23 +250,24 @@
         laydate.render({ elem: '#endTime', type: 'datetime'  })
 
         table.render({
-            elem: '#archives_table'
-            , url: '/dev/search'
+            elem: '#audit_table'
+            , url: '/dev/upgrade/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
             ,page: true
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                 {title: '序号',width:'4%',toolbar: '#indexTpl'}
-                 ,{field: 'dldDeviceId',width:'20%', title: '设备编号'}
-                 ,{field: 'dldDevtype',width:'7%', title: '设备类型'}
-                 ,{field: 'dldHardversion',width:'8%', title: '设备型号(待定)'}
+                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'dloId',width:'5%',type:'checkbox'}
+                 ,{field: 'dloDeviceId',width:'20%', title: '设备编号'}
                 ,{field: 'dldMfginfo', width:'20%',title: '设备厂商'}
-                ,{field: '', width:'8%',title: '通信地址'}
-                ,{field: '', width:'8%',title: '档案状态'}
-                ,{field: 'dldCreatetime', width:'15%',title: '建档时间'}
-                ,{fixed: 'right', width:'10%', align:'center', toolbar: '#barBtn'}
+                ,{field: 'dldDevtype', width:'10%',title: '设备类型'}
+                ,{field: 'dloDistro', width:'10%',title: '系统名称'}
+                ,{field: 'dloVersion', width:'10%',title: '系统版本'}
+                // ,{field: 'version', width:'15%',title: '升级后版本'}
+                ,{field: 'dldDevStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+                ,{field: 'dldDevStatusNum',width:'10%',title: '可否升级',toolbar: '#linkResult'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
@@ -245,69 +275,39 @@
         });
         $("#doSearch").click(function () {
             var deviceId = $("#deviceId").val();
-            var devStatusNum = $("#devStatusNum").val();
-            var authNum = $("#authNum").val();
-            var startTime = $("#startTime").val();
-            var endTime = $("#endTime").val();
+            var dldDevtype = $("#dldDevtype").val();
+            var dldMfginfo = $("#dldMfginfo").val();
+            var dloDistro = $("#dloDistro").val();
+            var upgradeType = $("#upgradeType").val();
             var LinkStatusNum = $("#LinkStatusNum").val();
             table.reload('testReload', {
-                url:  '/dev/search'
+                url:  '/dev/upgrade/search'
                    , where: {
                     deviceId: deviceId,
-                    devStatusNum: devStatusNum,
-                    authNum: authNum,
-                    startTime: startTime,
-                    endTime: endTime,
+                    dldDevtype: dldDevtype,
+                    dldMfginfo: dldMfginfo,
+                    dloDistro: dloDistro,
+                    upgradeType: upgradeType,
                     LinkStatusNum: LinkStatusNum
                 } //设定异步数据接口的额外参数
             });
         })
-
-
-        //头工具栏事件
-        table.on('toolbar(archivesFilter)', function(obj) {
+        //触发事件
+        table.on('toolbar(upgradeFilter)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'add':
-                 var index = layui.layer.open({
-                        skin:'',
-                        type : 2,
-                        maxmin: true,
-                       // title:'添加设备',
-                        area: ['95%', '95%'],//弹出区域大小
-                        content : "/device/device_archives_add.html",//跳转url
-                        success : function(layero, index){//
-                        },
-                        end:function(){//关闭或者结束弹框回调
-                            //通常刷新列表
-                        }
-                    });
+            switch(obj.event){
+                case 'getCheckData':
+                    var checkStatus = table.checkStatus('testReload');
+                    if(checkStatus.data.length>0){
+                        console.log(checkStatus.data);
+                        layer.msg('获取选中行的数据'+checkStatus.data);
+                    }else{
+                        layer.msg('请先选中数据后再操作');
+                    }
 
                     break;
-            }
+            };
         });
-        //监听行工具事件
-        table.on('tool(archivesFilter)', function(obj){
-            var data = obj.data;
-            //console.log(obj)
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    obj.del();
-                    layer.close(index);
-                });
-            } else if(obj.event === 'edit'){
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
-                    });
-                    layer.close(index);
-                });
-            }
-        });
-
     })
 </script>
 </body>

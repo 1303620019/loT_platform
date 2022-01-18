@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>配置信息</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label {
+            width: 195px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <aside class="lyear-layout-sidebar">
+
+            <!-- logo -->
+            <div id="logo" class="sidebar-header">
+                <a href="../index.html"><img src="/static/images/logo-sidebar.png" title="LightYear"
+                                             alt="LightYear"/></a>
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer" id="menu_dox"></ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <p class="copyright">Copyright &copy; 2022. All rights reserved. More Templates </p>
+                </div>
+            </div>
+
+        </aside>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+                        <span class="navbar-page-title">签名控制-控制列表</span>
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a href="javascript:void(0)" data-toggle="dropdown">
+                                <img class="img-avatar img-avatar-48 m-r-10" src="/static/images/users/avatar.jpg"
+                                     alt="后台系统"/>
+                                <span>后台系统 <span class="caret"></span></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="../pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                                <li><a href="../pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a></li>
+                                <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/loginOut"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>
+                            </ul>
+                        </li>
+                        <!--切换主题配色-->
+                        <li class="dropdown dropdown-skin"></li>
+                        <!--切换主题配色-->
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <fieldset class="layui-elem-field layui-field-title"
+                                          style="margin-top: 20px">
+                                    <legend>设备配置信息</legend>
+                                    <form class="layui-form" id="cfg_form">
+                                        <div class="layui-form-item" style="margin-left: 8%;">
+                                            <div class="layui-line">
+                                                <label class="layui-form-label">设备名称</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="devName" id="devName" placeholder="请输入设备编号"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-line">
+                                                <label class="layui-form-label">系统cpu使用率上限阀值</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="cpuLmt" id="cpuLmt" placeholder="请输入系统cpu使用率上限阀值"  lay-verify="number"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-line">
+                                                <label class="layui-form-label">系统内存使用率上限阀值</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="memLmt" id="memLmt" placeholder="请输入系统内存使用率上限阀值" lay-verify="number"
+                                                           autocomplete="off" class="layui-input">
+
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item" style="text-align: center;">
+                                                <div class="layui-line">
+                                                    <label class="layui-form-label">系统储存占用率上限阀值</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="diskLmt" id="diskLmt"
+                                                               placeholder="请输入系统储存占用率上限阀值" autocomplete="off" lay-verify="number"
+                                                               class="layui-input">
+
+                                                    </div>
+                                                </div>
+                                                <div class="layui-line">
+                                                    <label class="layui-form-label">主板温度监控低温阀值</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="temLow" id="temLow"
+                                                               placeholder="请输入主板温度监控低温阀值" autocomplete="off" lay-verify="number"
+                                                               class="layui-input">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-line">
+                                                    <label class="layui-form-label">主板温度监控高温阀值</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="temHigh" id="temHigh"
+                                                               placeholder="请输入主板温度监控高温阀值" autocomplete="off" lay-verify="number"
+                                                               class="layui-input">
+
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item" style="text-align: center;">
+
+                                                    <div class="layui-line">
+                                                        <label class="layui-form-label">同步设备当前时间</label>
+                                                        <div class="layui-input-inline">
+                                                            <input type="text" name="synDateTime" id="synDateTime   "
+                                                                   placeholder="请输入同步设备当前时间" autocomplete="off"
+                                                                   class="layui-input">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item" style="text-align: center;">
+                                            <button type="button"
+                                                    class="layui-btn  layui-btn-lg layui-icon layui-icon-triangle-r"
+                                                    id="recallBtn">召回(未完成)
+                                            </button>
+                                            <input type="hidden" name="type" id="type"  class="layui-input">
+                                            <input type="hidden" name="deviceId" id="deviceId"  class="layui-input">
+                                            <button type="button"lay-submit
+                                                    class="layui-btn   layui-btn-lg layui-icon layui-icon-add-circle "lay-filter="saveBtn"
+                                                    id="saveBtn">保存
+                                            </button>
+                                            <button type="button" lay-submit
+                                                    class="layui-btn    layui-btn-lg layui-icon layui-icon-triangle-d" lay-filter="downBtn" id="downBtn">下发
+                                            </button>
+                                            <button type="button"
+                                                    class="layui-btn layui-btn-warm  layui-btn-lg layui-icon layui-icon-return ">
+                                                返回
+                                            </button>
+                                        </div>
+                                    </form>
+                                </fieldset>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header"><h4>配置文件列表(设备状态上报信息)</h4></div>
+                            <div class="card-body">
+                                <table id="cfg_table" data-response-handler="responseHandler" lay-data="{id: 'idcfg'}"
+                                       lay-filter="cfgFilter"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/js/bootstrap-3.3.4.js"></script>
+<script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script src="/static/js/bootstrap-table.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initMenu();
+        initTheme();
+        //切换菜单
+        $('.nav-item').on('click', function () {
+            $('.nav-item').removeClass("active");
+            $(this).toggleClass('active open');
+            localStorage.setItem("nav-item", $(this).index());
+        })
+        $('.nav-subnav').find('li').on('click', function () {
+            $('.nav-subnav').find('li').toggleClass("active");
+            localStorage.setItem("nav-subnav-li", $(this).index());
+            $(this).toggleClass('active');
+        })
+        $('.theme_box').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-theme", val);
+        })
+        $('.logo_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-logobg", val);
+        })
+
+        $('.header_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-headerbg", val);
+        })
+
+        $('.sidebar_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-sidebarbg", val);
+        })
+    })
+</script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    建立连接
+    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    断开连接
+    {{#  } }}
+</script>
+<script type="text/html" id="authStatus">
+    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    建立连接
+    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    断开连接
+    {{#  } }}
+</script>
+<script type="text/html" id="linkResult">
+    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    正常
+    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    失败
+    {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-warm" lay-event="refreshPage">刷新</button>
+    </div>
+</script>
+<script type="text/html" id="deleteBar">
+    <a class="layui-btn" lay-event="delete" style="line-height:24px">删除</a>
+</script>
+<script>
+    layui.use('table', function () {
+        var table = layui.table,
+             form = layui.form,
+            laydate = layui.laydate;
+        laydate.render({elem: '#startTime', type: 'datetime'})
+        laydate.render({elem: '#endTime', type: 'datetime'})
+        let deviceId = getUrlParam("deviceId");
+        if (deviceId){
+            $('#deviceId').val(deviceId);
+        }
+        let cfgTable = table.render({
+            elem: '#cfg_table'
+            , url: '/function/cfg/search'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , method: 'post'
+            , page: true
+            , id: 'testReload'
+            , contentType: 'application/json'
+            , where: {
+                deviceId: deviceId //必须传值，否则无数据
+            }
+            , parseData: function (res) {
+                if (res.code === 999){
+                    layer.alert("请从设备巡测点击过来？",{icon:5});
+                    res.code=0;
+                    return res;
+                }
+            }
+            , cols: [[
+                {title: '序号', width: '5%', toolbar: '#indexTpl'}
+                , {field: 'deviceId', width: '20%', title: '设备编号'}
+                , {field: 'cpuRate', width: '10%', title: '系统cpu阀值'}
+                , {field: 'dfmId', width: '10%', title: '系统内存阀值'}
+                , {field: 'diskUsed', width: '10%', title: '系统存储阀值'}
+                , {field: 'createTime', width: '20%', title: '更新时间'}
+                , {fixed: 'right', width: 150, title: '操作', align: 'center', toolbar: '#deleteBar'}
+            ]]
+            , done: function (res, curr, count) {
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        $("#doSearch").click(function () {
+            var deviceId = $("#deviceId").val();
+            var dldDevtype = $("#dldDevtype").val();
+            var dldMfginfo = $("#dldMfginfo").val();
+            var dloDistro = $("#dloDistro").val();
+            var upgradeType = $("#upgradeType").val();
+            var LinkStatusNum = $("#LinkStatusNum").val();
+            table.reload('cfg_table', {
+                url: '/dev/upgrade/search'
+                , where: {
+                    deviceId: deviceId,
+                    dldDevtype: dldDevtype,
+                    dldMfginfo: dldMfginfo,
+                    dloDistro: dloDistro,
+                    upgradeType: upgradeType,
+                    LinkStatusNum: LinkStatusNum
+                } //设定异步数据接口的额外参数
+            });
+        })
+
+        //触发事件
+        table.on('toolbar(cfgFilter)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'refreshPage':
+                    //刷新操作
+                    cfgTable.reload({elem: '#cfg_table'})
+                    break;
+            };
+        });
+        //触发事件
+        table.on('tool(cfgFilter)', function (obj) {
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            switch (layEvent) {
+                case 'delete':
+                    layer.msg("选择删除操作");
+                    break;
+            };
+        });
+        form.on('submit(saveBtn)', function (data) {
+            let dataObject = data.field;
+            dataObject.type = 0;
+            $.ajax({
+                method: "POST",
+                url: "/function/cfg/event",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify(dataObject),
+                success: function (data) {
+                    if (data.code === 20000){
+                        layer.alert("保存成功",{icon:1})
+                        $('#cfg_form')[0].reset();
+                    }
+                }
+            });
+        });
+
+    //下发命令
+    form.on('submit(downBtn)', function (data) {
+        let dataObject = data.field;
+        dataObject.type = 1;
+        $.ajax({
+            method: "POST",
+            url: "/mqtt/configure/update",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(dataObject),
+            success: function (data) {
+                if (data.code === 20000){
+                    layer.alert("下发成功",{icon:1})
+                    $('#cfg_form')[0].reset();
+                }
+            }
+        });
+    });
+    })
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+</html>
