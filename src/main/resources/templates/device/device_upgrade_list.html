@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>升级列表</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        body{
+            font-size: 16px;
+        }
+        .lyear-layout-content {
+            padding-top: 20px;
+            padding-left: unset;
+        }
+    </style>
+</head>
+<body>
+<!--页面主要内容-->
+<main class="lyear-layout-content">
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><h4>升级列表</h4></div>
+            <div class="card-body">
+                <table id="upgradeList_table" data-response-handler="responseHandler" lay-filter="upgradeList_filter"></table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.linkState == 0){ }}
+    正常
+    {{#  } else if(d.linkState == 1) { }}
+    离线
+    {{#  } }}
+</script>
+<script type="text/html" id="upgradeTypeBar">
+    {{#  if(d.upgradeType =='0' ){ }}
+    补丁升级
+    {{#  } else if(d.upgradeType =='1' ) { }}
+     补丁升级
+    {{#  } else if(d.upgradeType =='2' ) { }}
+    内核升级
+    {{#  } else if(d.upgradeType =='3' ) { }}
+    全量升级
+    {{#  } }}
+</script>
+<script type="text/html" id="upgradeStateBar">
+    {{#  if(d.state =='0' ){ }}
+    命令已发送
+    {{#  } else if(d.state =='1' ) { }}
+    下载中
+    {{#  } else if(d.state =='2' ) { }}
+    待安装
+    {{#  } else if(d.state =='3' ) { }}
+    待安装
+    {{#  } else if(d.state =='4' ) { }}
+    安装中
+    {{#  } else if(d.state =='5' ) { }}
+    安装完毕
+    {{#  } }}
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="query">状态查询</a>
+</script>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var table  = layui.table
+            , laydate = layui.laydate;
+        table.render({
+            elem: '#upgradeList_table'
+            , url: '/upgrade/taxkList'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,page: true
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            , cols: [[
+                {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'deviceId',width:'15%', title: '设备编号'}
+                ,{field: 'jobId', width:'5%',title: '工作任务'}
+                ,{field: 'policy', width:'5%',title: '间隔/秒'}
+                ,{field: 'version', width:'8%',title: '升级后版本'}
+                ,{field: 'upgradeType', width:'5%',title: '补丁类型',toolbar:'#upgradeTypeBar'}
+                ,{field: 'progress', width:'5%',title: '升级进度'}
+                ,{field: 'state', width:'8%',title: '升级状态',toolbar:'#upgradeStateBar'}
+                ,{field: 'name', width:'10%',title: '升级名称'}
+                ,{field: 'linkState', width:'8%',title: '在线状态',toolbar: '#linkStatus'}
+                ,{fixed: 'right', width: '15%', title: '操作', align: 'center', toolbar: '#barDemo'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        //监听行工具事件
+        table.on('tool(upgradeList_filter)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'query') {
+                $.ajax({
+                    method: "post",
+                    url: "/upgrade/status/query",
+                    dataType: "json",
+                    data: {jobId: data.jobId, deviceId: data.deviceId},
+                    success: function (data) {
+                        if (data.code === 20000) {
+                            table.reload('testReload');
+                        }
+                    }
+
+                });
+            }
+        });
+    });
+
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+</script>
+</body>
+</html>

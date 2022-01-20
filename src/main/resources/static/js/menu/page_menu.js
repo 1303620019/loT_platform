@@ -18,12 +18,13 @@ function initMenu() {
     menuList.push('<li class="nav-item nav-item-has-subnav" id="2">\n' +
         '              <a href="javascript:void(0)"><i class="mdi mdi-cctv"></i>设备管理 </a>   ' +
         '              <ul class="nav nav-subnav">\n' +
-        '                <li> <a href="/device/device_archives.html">设备档案</a> </li>' +
-         '                <li> <a href="/device/device_control.html">设备控制</a> </li>' +
-        '                <li> <a href="/device/device_config.html">配置管理</a> </li>' +
-        '                <li> <a href="/device/device_upgrade.html">设备升级</a> </li>' +
+        '              <li> <a href="/device/device_archives.html">设备档案</a> </li>' +
+        '             <li> <a href="/device/device_control.html">设备控制</a> </li>' +
+        '             <li> <a href="/device/device_config_list.html">配置管理</a> </li>' +
+        '             <li> <a href="/device/device_upgrade.html">设备升级（开发中）</a> </li>' +
+        '             <li> <a href="/device/device_task_upgrade.html">设备升级版本1</a> </li>' +
         // '                <li> <a>设备分组</a> </li>' +
-        // '                <li> <a>任务管理</a> </li>' +
+        '                <li> <a href="/task/device_task_list.html">任务管理</a> </li>' +
          '                <li> <a>签名控制</a> </li>' +
         '               </ul>' +
         '            </li>');
@@ -31,7 +32,8 @@ function initMenu() {
     menuList.push('<li class="nav-item nav-item-has-subnav" id="3">\n' +
         '              <a href="javascript:void(0)"><i class="mdi mdi-collage"></i>软件市场 </a>   ' +
         '              <ul class="nav nav-subnav">\n' +
-        '                <li> <a href="/market/device_market.html">应用软件</a> </li>' +
+        '                <li> <a href="/market/device_market_sys.html">操作系统</a> </li>' +
+        '                <li> <a href="/market/device_market_info.html">应用软件</a> </li>' +
         '               </ul>' +
         '            </li>');
     menuList.push('<li class="nav-item nav-item-has-subnav" id="4">\n' +

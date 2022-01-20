@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>设备控制</title>
+    <title>任务管理</title>
     <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link href="/static/css/bootstrap-table.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                             <span class="lyear-toggler-bar"></span>
                             <span class="lyear-toggler-bar"></span>
                         </div>
-                        <span class="navbar-page-title">设备管理-设备控制</span>
+                        <span class="navbar-page-title">任务管理</span>
                     </div>
 
                     <ul class="topbar-right">
@@ -90,22 +90,62 @@
                             <form class="layui-form">
                                 <div class="layui-form-item" style="margin-left: 8%;">
                                     <div class="layui-line">
-                                        <label class="layui-form-label">设备编号</label>
+                                        <label class="layui-form-label">计划名称</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="deviceId" id="deviceId" placeholder="请输入设备编号"autocomplete="off" class="layui-input">
+                                            <input type="text" name="name" id="name" placeholder="请输入计划名称"autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-line">
-                                        <label class="layui-form-label">设备类型</label>
+                                        <label class="layui-form-label">计划编号</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="deviceType" id="deviceType" placeholder="请输入终端类型"autocomplete="off" class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-line">
-                                        <label class="layui-form-label">设备厂商</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="deviceMfginfo" id="deviceMfginfo" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
+                                            <input type="text" name="num" id="num" placeholder="请输入设备类型"autocomplete="off" class="layui-input">
 
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">计划类型</label>
+                                        <div class="layui-input-inline">
+<!--                                          <select id="execType" name="execType">-->
+<!--                                              <option value="">请选择</option>-->
+<!--                                              <option value="0">立即执行</option>-->
+<!--                                              <option value="1">定时执行</option>-->
+<!--                                          </select>-->
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="text-align: center;">
+                                            <div class="layui-line">
+                                                <label class="layui-form-label">执行状态</label>
+                                                <div class="layui-input-inline">
+                                                   <select id="state" name="state">
+                                                        <option value="">请选择</option>
+                                                        <option value="3">已执行</option>
+                                                        <option value="0">未执行</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="layui-line">
+                                                <label class="layui-form-label">执行方式</label>
+                                                <div class="layui-input-inline">
+                                                    <select id="execType" name="execType">
+                                                        <option value="">请选择</option>
+                                                        <option value="0">立即执行</option>
+                                                        <option value="1">定时执行</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" style="margin-left: 8%">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">创建时间</label>
+                                        <div class="layui-input-inline" style="width: 70%">
+                                            <div class="layui-input-inline">
+                                                <input type="text" autocomplete="off" id="startTime" name="startTime" class="layui-input" placeholder="开始日期">
+                                            </div>
+
+                                            <div class="layui-input-inline">
+                                                <input type="text" autocomplete="off" id="endTime"  name="endTime" class="layui-input" placeholder="结束日期">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -124,9 +164,9 @@
 
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header"><h4>控制列表</h4></div>
+                    <div class="card-header"><h4>档案列表</h4></div>
                     <div class="card-body">
-                        <table id="audit_table" data-response-handler="responseHandler" lay-filter="control_filter"></table>
+                        <table id="task_table" data-response-handler="responseHandler" lay-filter="taskFilter"></table>
                     </div>
                 </div>
             </div>
@@ -139,17 +179,7 @@
         <!--End 页面主要内容-->
     </div>
 </div>
-<!--弹窗内容-->
-<div id="restart_prod" class="layui-form" hidden="hidden">
-    <label class="layui-form-label">重启类型</label>
-    <div class="layui-input-inline">
-        <select name="action" lay-verify="">
-            <option value="">请选择</option>
-            <option value="os-reboot">重启终端系统</option>
-            <option value="edge-reboot">重启终端组件</option>
-        </select>
-    </div>
-</div>
+
 <script src="/static/js/jquery-1.10.2.js"></script>
 <script src="/static/js/bootstrap-3.3.4.js"></script>
 <script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
@@ -200,49 +230,57 @@
       断开连接
     {{#  } }}
 </script>
-<script type="text/html" id="authStatus">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    建立连接
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    断开连接
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="add">新增</button>
+    </div>
+</script>
+<script type="text/html" id="typeDemo">
+    {{#  if(d.type =='0' ){ }}
+    设备
+    {{#  } else if(d.type =='1' ) { }}
+    设备
+    {{#  } else if(d.type =='2' ) { }}
+   系统
     {{#  } }}
 </script>
-
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="archives">档案信息</a>
-    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="restart">重启</a>
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="details">详情</a>
+<script type="text/html" id="moreDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="more">更多 <i class="layui-icon layui-icon-down"></i></a>
 </script>
-<script type="text/html" id="linkResult">
-    {{#  if(d.linkStatusNum == 0){ }}
-    正常
-    {{#  } else if(d.linkStatusNum == 1) { }}
-    离线
+<script type="text/html" id="barBtn">
+    {{#  if(d.state =='0' ){ }}
+    <a class="layui-btn  layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="exce">执行</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     {{#  } }}
 </script>
 <script>
     layui.use('table', function () {
         var table = layui.table,
+          dropdown= layui.dropdown,
             laydate = layui.laydate;
         laydate.render({ elem: '#startTime', type: 'datetime'  })
         laydate.render({ elem: '#endTime', type: 'datetime'  })
-
-        table.render({
-            elem: '#audit_table'
-            , url: '/archives/search'
+        let archivesTable=table.render({
+            elem: '#task_table'
+            , url: '/upgrade/task/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
             ,page: true
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                 { field: 'daId',title: '序号',width:'4%',toolbar: '#indexTpl'}
-                // ,{field: 'daId',width:'3%',type:'checkbox'}
-                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
-                ,{field: 'deviceType', width:'15%',title: '设备类型'}
-                ,{field: 'deviceMfginfo', width:'30%',title: '设备厂商'}
-                ,{field: 'linkStatusNum', width:'10%',title: '在线状态',toolbar: '#linkResult'}
-                , {fixed: 'right', width: '15%', title: '操作', align: 'center', toolbar: '#barDemo'}
+                 {field:'daId', title: '序号',width:'4%',toolbar: '#indexTpl'}
+                 ,{field: 'name',width:'10%', title: '计划名称'}
+                 ,{field: 'num',width:'10%', title: '计划编号'}
+                 ,{field: 'type',width:'8%', title: '计划类型' , toolbar: '#typeDemo'}
+                ,{field: 'exceState', width:'8%',title: '执行状态'}
+                ,{field: 'execType', width:'8%',title: '执行方式'}
+                ,{field: 'execTime', width:'10%',title: '执行时间'}
+                ,{field: 'creataTime', width:'10%',title: '创建时间'}
+                ,{field: 'stat', width:'8%',title: '已执行/总数'}
+                ,{field: 'createTime', width:'8%',title: '执行结果'}
+                ,{fixed: 'right', width:'6%', align:'center', toolbar: '#moreDemo'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
@@ -251,63 +289,96 @@
         $("#doSearch").click(function () {
             var deviceId = $("#deviceId").val();
             var deviceType = $("#deviceType").val();
+            var deviceVersion = $("#deviceVersion").val();
             var deviceMfginfo = $("#deviceMfginfo").val();
+            var cmtAddress = $("#cmtAddress").val();
             table.reload('testReload', {
                 url:  '/archives/search'
                    , where: {
                     deviceId: deviceId,
                     deviceType: deviceType,
-                    deviceMfginfo: deviceMfginfo
+                    deviceVersion: deviceVersion,
+                    deviceMfginfo: deviceMfginfo,
+                    cmtAddress: cmtAddress
                 } //设定异步数据接口的额外参数
             });
         })
-        //触发事件
-        table.on('tool(control_filter)', function(obj){
-            var data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'restart') {
-                layer.open({
-                    type: 1,
-                    btn: ['确定', '取消'],
-                    content: $("#restart_prod"),
-                    area: ['388px', '270px'],
-                    //当前层索引参数（index）、当前层的DOM对象（layero）
-                    yes: function (index, layero) {
-                        var action=$(layero).find("select").val();
-                        restartFun(action,data.deviceId,index);
-                    }
-                });
 
-            }else if (layEvent === 'archives'){
-                openBox("device_archives_view.html?daId="+data.daId);
-            }else if (layEvent === 'details'){
-                openBox("device_archives_restart.html?deviceId="+data.deviceId);
+
+        //头工具栏事件
+        table.on('toolbar(archivesFilter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'add':
+                    openBox("/device/device_archives_add.html");
+                    break;
             }
         });
 
-        //调用重启命令
-        function restartFun(action,dloDeviceId,index) {
-             let obj=new Object();
-             obj.action=action;
-             obj.deviceId=dloDeviceId;
-            $.ajax({
-                method: "POST",
-                url: "/mqtt/regulate",
-                contentType: 'application/json',
-                dataType: "json",
-                data: JSON.stringify(obj),
-                success: function (data) {
-                   if (data.code ===20000){
-                       layer.close(index);
-                       layer.alert("重启命令已发送");
-                   }
-                   if (data.code === 999){
-                       layer.close(index);
-                       layer.alert("消息服务器连接异常");
-                   }
-                }
-            });
-        }
+        //头工具栏事件
+        table.on('toolbar(taskFilter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'add':
+                    openBox('device_task_add.html');
+                    break;
+            }
+        });
+        //监听行工具事件
+        table.on('tool(taskFilter)', function(obj){
+            var data = obj.data
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            let objct=new Object();
+            objct.paId=data.id;
+            if(layEvent === 'more'){
+                //下拉菜单
+                dropdown.render({
+                    elem: this //触发事件的 DOM 对象
+                    ,show: true //外部事件触发即显示
+                    ,data: [
+                        {title: '修改' ,id: 'edit'}
+                        ,{title: '执行' ,id: 'exce'}
+                        ,{title: '删除' ,id: 'del' }
+                    ]
+                    ,click: function(menudata){
+                        if(menudata.id === 'del'){
+                            if (data.state === 1){
+                                layer.alert("此补丁已发布，无法删除",{icon:5})
+                                return false;
+                            }
+                            layer.confirm('真的删除行么', function(index){
+                                $.ajax({
+                                    url:"/patch",
+                                    type:"delete",
+                                    contentType:"application/json",
+                                    dataType:"json",
+                                    data:JSON.stringify(objct),
+                                    success:function(msg){
+                                        if (msg.code === 20000) {
+                                            layer.close(index);
+                                            //刷新操作
+                                            sysTable.reload({elem: '#sys_table'})
+                                        }
+                                    }
+                                });
+
+                            });
+                        } else if(menudata.id === 'edit'){
+                            openBox('device_market_edit.html?paId='+data.id);
+                        } else if(menudata.id === 'pub'){
+                            objct.paState=1;
+                            patchEditState(objct,1);
+                        }else if(menudata.id === 'out'){
+                            objct.paState=2;
+                            patchEditState(objct,2);
+                        }
+                    }
+                    ,align: 'right' //右对齐弹出（v2.6.8 新增）
+                    ,style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
+                })
+            }
+        });
+
 
         function openBox(url) {
             layui.layer.open({
@@ -325,9 +396,8 @@
             });
 
         }
+
     })
-
-
 </script>
 </body>
 </html>

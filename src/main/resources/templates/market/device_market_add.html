@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>操作系统</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        body{
+            font-size: 16px;
+        }
+        .layui-form-label.layui-required:after{
+            content:"*";
+            color:red;
+            position: absolute;
+            top:5px;
+            left:15px;
+        }
+        .layui-form-pane .layui-form-label {
+            width: 147px
+        }
+        .layui-form-item .layui-input-inline {
+            width:252px;
+        }
+        .layui-btn-fluid{
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>设备升级包管理新增</legend>
+</fieldset>
+<form class="layui-form layui-form-pane" action="">
+    <div class="layui-form-item">
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">系统名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sysName" autocomplete="off"
+                       placeholder="请输入系统名称"  class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">补丁名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required"
+                       placeholder="请输入系统名称" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">补丁类型</label>
+            <div class="layui-input-inline">
+              <select name="paType">
+                  <option value="">请选择</option>
+                  <option value="0">主控单元补丁</option>
+                  <option value="1">AI模块补丁</option>
+              </select>
+            </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">发布单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="putUnit" autocomplete="off"
+                       lay-verify="required" placeholder="请输入发布单位" class="layui-input">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">联系人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="contact" autocomplete="off"
+                       lay-verify="required" placeholder="请输入联系人" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone" autocomplete="off" lay-verify="required|phone"
+                       class="layui-input" placeholder="请输入联系电话">
+            </div>
+
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">检测时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="examTime" id="examTime" autocomplete="off"
+                       lay-verify="required" placeholder="请输入检测时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">系统类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sysType" lay-verify="required"
+                       autocomplete="off" placeholder="请输入系统类型" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">检测单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="examUnit" lay-verify="required"
+                       autocomplete="off"  placeholder="请输入检测单位"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">版本号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="versions" lay-verify="required"
+                       autocomplete="off"  placeholder="请输入检测单位"  class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">补丁或补丁包最大不能超过200mb</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="patchFileId" id="patchFileId" value="" class="layui-input">
+                <button type="button" class="layui-btn" id="upload1" >
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                </button>
+                </div>
+            </div>
+        <div class="layui-input-inline">
+            <div class="layui-upload-list"> <p id="demoText1"></p></div>
+            <div style="width: 95px;">
+                <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo1">
+                    <div class="layui-progress-bar" lay-percent=""></div>
+                </div>
+        </div>
+        </div>
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">检测报告</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="examFileId" id="examFileId" value=""  class="layui-input">
+                <input type="hidden" name="examFileName" id="examFileName" value="" class="layui-input">
+                <button type="button" class="layui-btn" id="upload2">
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                </button>
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-upload-list"> <p id="demoText2"></p></div>
+                <div style="width: 95px;">
+                    <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo2">
+                        <div class="layui-progress-bar" lay-percent=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">补丁包说明(可填写300字)</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="remark" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center">
+        <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="addBtn">提交</button>
+    </div>
+</form>
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , upload = layui.upload
+            ,element = layui.element
+            , laydate = layui.laydate;
+        //日期
+        laydate.render({ elem: '#examTime',type: 'datetime'});
+        //监听提交
+        form.on('submit(addBtn)', function(data){
+            $.ajax({
+                method: "PUT",
+                url: "/patch",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify(data.field),
+                success: function (data) {
+                    if (data.code === 20000){
+                        layer.open({ content: '保存成功',
+                            yes: function(index, layero){
+                                var index =parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                                parent.layui.table.reload('testReload');
+
+                            }
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+        var uploadInst = upload.render({
+            elem: '#upload1' //绑定元素
+            ,url: '/file/uploadFile' //上传接口
+            ,accept:'file'
+            ,data: { dlfType: 0}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demoText1').html(file.name);
+                    $("input[name='name']").val(file.name);
+                });
+
+                element.progress('demo1', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+                if (res.code === 0){
+                    let data = res.data;
+                    if (data){
+                        console.log(data)
+                        $('#patchFileId').val(data.fild);
+                    }
+                }
+            }
+            ,error: function(){
+                layer.alert("上传文件失败,请重新上传",{icon:1})
+            }
+            //进度条
+            ,progress: function(n, elem, e){
+                element.progress('demo1', n + '%'); //可配合 layui 进度条元素使用
+                if(n == 100){
+                    layer.msg('上传完毕', {icon: 1});
+                }
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#upload2' //绑定元素
+            ,url: '/file/uploadFile' //上传接口
+            ,accept:'file'
+            ,data: { dlfType: 1}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demoText2').html(file.name)
+                });
+
+                element.progress('demo2', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+                if (res.code === 0){
+                    let data = res.data;
+                    if (data){
+                        $('#examFileId').val(data.fild);
+                        $('#examFileName').val(data.filename);
+                    }
+                }
+            }
+            ,error: function(){
+                layer.alert("上传文件失败,请重新上传",{icon:1})
+            }
+            //进度条
+            ,progress: function(n, elem, e){
+                element.progress('demo2', n + '%'); //可配合 layui 进度条元素使用
+                if(n == 100){
+                    layer.msg('上传完毕', {icon: 1});
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

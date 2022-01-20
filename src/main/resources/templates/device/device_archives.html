@@ -98,27 +98,27 @@
                                     <div class="layui-line">
                                         <label class="layui-form-label">设备类型</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="dldDevtype" id="dldDevtype" placeholder="请输入设备类型"autocomplete="off" class="layui-input">
+                                            <input type="text" name="deviceType" id="deviceType" placeholder="请输入设备类型"autocomplete="off" class="layui-input">
 
                                         </div>
                                     </div>
                                     <div class="layui-line">
-                                        <label class="layui-form-label">设备型号(未查)</label>
+                                        <label class="layui-form-label">设备型号</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="" id="" placeholder="请输入设备型号"autocomplete="off" class="layui-input">
+                                            <input type="text" name="deviceVersion" id="deviceVersion" placeholder="请输入设备型号"autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item" style="text-align: center;">
                                             <div class="layui-line">
                                                 <label class="layui-form-label">设备厂商</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="dldMfginfo" id="dldMfginfo" placeholder="请输入设备厂商"autocomplete="off" class="layui-input">
+                                                    <input type="text" name="deviceMfginfo" id="deviceMfginfo" placeholder="请输入设备厂商"autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                             <div class="layui-line">
-                                                <label class="layui-form-label">通信地址(未查)</label>
+                                                <label class="layui-form-label">通信地址</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="" id="" placeholder="请输入通信地址"autocomplete="off" class="layui-input">
+                                                    <input type="text" name="cmtAddress" id="cmtAddress" placeholder="请输入通信地址"autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                     </div>
@@ -209,9 +209,18 @@
         <button class="layui-btn" lay-event="add">添加设备档案</button>
     </div>
 </script>
+<script type="text/html" id="aStatus">
+    {{#  if(d.state =='0' ){ }}
+    正常
+    {{#  } else if(d.state =='1' ) { }}
+    删除
+    {{#  } }}
+</script>
 <script type="text/html" id="barBtn">
-    <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
+    {{#  if(d.state =='0' ){ }}
+    <a class="layui-btn  layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  } }}
 </script>
 <script>
     layui.use('table', function () {
@@ -220,23 +229,23 @@
         laydate.render({ elem: '#startTime', type: 'datetime'  })
         laydate.render({ elem: '#endTime', type: 'datetime'  })
 
-        table.render({
+        let archivesTable=table.render({
             elem: '#archives_table'
-            , url: '/dev/search'
+            , url: '/archives/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
             ,page: true
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                 {title: '序号',width:'4%',toolbar: '#indexTpl'}
-                 ,{field: 'dldDeviceId',width:'20%', title: '设备编号'}
-                 ,{field: 'dldDevtype',width:'7%', title: '设备类型'}
-                 ,{field: 'dldHardversion',width:'8%', title: '设备型号(待定)'}
-                ,{field: 'dldMfginfo', width:'20%',title: '设备厂商'}
-                ,{field: '', width:'8%',title: '通信地址'}
-                ,{field: '', width:'8%',title: '档案状态'}
-                ,{field: 'dldCreatetime', width:'15%',title: '建档时间'}
+                 {field:'daId', title: '序号',width:'4%',toolbar: '#indexTpl'}
+                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                 ,{field: 'deviceType',width:'7%', title: '设备类型'}
+                 ,{field: 'deviceVersion',width:'8%', title: '设备型号'}
+                ,{field: 'deviceMfginfo', width:'20%',title: '设备厂商'}
+                ,{field: 'cmtAddress', width:'8%',title: '通信地址'}
+                ,{field: 'state', width:'8%',title: '档案状态',toolbar: '#aStatus'}
+                ,{field: 'createTime', width:'15%',title: '建档时间'}
                 ,{fixed: 'right', width:'10%', align:'center', toolbar: '#barBtn'}
             ]]
             ,done: function (res, curr, count){
@@ -245,20 +254,18 @@
         });
         $("#doSearch").click(function () {
             var deviceId = $("#deviceId").val();
-            var devStatusNum = $("#devStatusNum").val();
-            var authNum = $("#authNum").val();
-            var startTime = $("#startTime").val();
-            var endTime = $("#endTime").val();
-            var LinkStatusNum = $("#LinkStatusNum").val();
+            var deviceType = $("#deviceType").val();
+            var deviceVersion = $("#deviceVersion").val();
+            var deviceMfginfo = $("#deviceMfginfo").val();
+            var cmtAddress = $("#cmtAddress").val();
             table.reload('testReload', {
-                url:  '/dev/search'
+                url:  '/archives/search'
                    , where: {
                     deviceId: deviceId,
-                    devStatusNum: devStatusNum,
-                    authNum: authNum,
-                    startTime: startTime,
-                    endTime: endTime,
-                    LinkStatusNum: LinkStatusNum
+                    deviceType: deviceType,
+                    deviceVersion: deviceVersion,
+                    deviceMfginfo: deviceMfginfo,
+                    cmtAddress: cmtAddress
                 } //设定异步数据接口的额外参数
             });
         })
@@ -269,20 +276,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'add':
-                 var index = layui.layer.open({
-                        skin:'',
-                        type : 2,
-                        maxmin: true,
-                       // title:'添加设备',
-                        area: ['95%', '95%'],//弹出区域大小
-                        content : "/device/device_archives_add.html",//跳转url
-                        success : function(layero, index){//
-                        },
-                        end:function(){//关闭或者结束弹框回调
-                            //通常刷新列表
-                        }
-                    });
-
+                    openBox("/device/device_archives_add.html");
                     break;
             }
         });
@@ -292,21 +286,42 @@
             //console.log(obj)
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
-                    obj.del();
-                    layer.close(index);
+                    $.ajax({
+                        url:"/archives/"+data.daId,
+                        type:"delete",
+                        contentType:"application/json",
+                        dataType:"json",
+                        data:data,
+                        success:function(msg){
+                            if (msg.code === 20000) {
+                                layer.alert("已标记删除状态",{icon:1});
+                                //刷新操作
+                                archivesTable.reload({elem: '#archives_table'})
+                            }
+                        }
+                    });
                 });
             } else if(obj.event === 'edit'){
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
-                    });
-                    layer.close(index);
-                });
+                openBox("/device/device_archives_edit.html?daId="+data.daId);
             }
         });
+
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
+
+        }
 
     })
 </script>

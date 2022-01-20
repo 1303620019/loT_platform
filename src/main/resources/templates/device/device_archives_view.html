@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>新增档案</title>
+    <title>查看档案</title>
     <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link href="/static/css/style.min.css" rel="stylesheet">
@@ -24,11 +24,14 @@
         .layui-form-item .layui-input-inline {
             width:252px;
         }
+        .layui-btn-fluid{
+            width: 25%;
+        }
     </style>
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>添加设备</legend>
+    <legend>查看档案</legend>
 </fieldset>
 <form class="layui-form layui-form-pane" action="">
     <div class="layui-form-item">
@@ -36,13 +39,13 @@
             <label class="layui-form-label layui-required">设备编号</label>
             <div class="layui-input-inline">
                 <input type="text" name="deviceId" autocomplete="off"
-                       placeholder="请输入设备编号"  class="layui-input" lay-verify="required">
+                       placeholder="请输入设备编号" style="background:#CCCCCC" readonly="true"  class="layui-input" >
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">系统名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="sysName" lay-verify="required"
+                <input type="text" name="sysName"  style="background:#CCCCCC" readonly="true"
                        placeholder="请输入系统名称" autocomplete="off"
                        class="layui-input">
             </div>
@@ -51,14 +54,14 @@
             <label class="layui-form-label layui-required">系统类型</label>
             <div class="layui-input-inline">
                 <input type="text" name="sysType" autocomplete="off"
-                       lay-verify="required" placeholder="请输入系统类型" class="layui-input">
+                       style="background:#CCCCCC" readonly="true" placeholder="请输入系统类型" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">系统版本</label>
             <div class="layui-input-inline">
                 <input type="text" name="sysVersion" autocomplete="off"
-                       lay-verify="required" placeholder="请输入系统版本" class="layui-input">
+                       style="background:#CCCCCC" readonly="true" placeholder="请输入系统版本" class="layui-input">
             </div>
 
         </div>
@@ -70,13 +73,13 @@
             <label class="layui-form-label layui-required">产权单位</label>
             <div class="layui-input-inline">
                 <input type="text" name="unit" autocomplete="off"
-                       lay-verify="required" placeholder="请输入产权单位" class="layui-input">
+                       style="background:#CCCCCC" readonly="true" placeholder="请输入产权单位" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">所在区域</label>
             <div class="layui-input-inline">
-                <input type="text" name="address" autocomplete="off" lay-verify="required"
+                <input type="text" name="address" autocomplete="off" style="background:#CCCCCC" readonly="true"
                        class="layui-input" placeholder="请输入所在区域">
             </div>
 
@@ -85,13 +88,13 @@
             <label class="layui-form-label layui-required">设备类型</label>
             <div class="layui-input-inline">
                 <input type="text" name="deviceType" autocomplete="off"
-                       lay-verify="required" placeholder="请输入设备类型" class="layui-input">
+                       style="background:#CCCCCC" readonly="true" placeholder="请输入设备类型" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">经度</label>
             <div class="layui-input-inline">
-                <input type="text" name="deviceLongitude" lay-verify="required"
+                <input type="text" name="deviceLongitude" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入经度" class="layui-input">
             </div>
         </div>
@@ -100,28 +103,28 @@
         <div class="layui-line">
             <label class="layui-form-label layui-required">纬度</label>
             <div class="layui-input-inline">
-                <input type="text" name="deviceLatitude" lay-verify="required"
+                <input type="text" name="deviceLatitude" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入纬度" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">负责人</label>
             <div class="layui-input-inline">
-                <input type="text" name="principal" lay-verify="required"
+                <input type="text" name="principal" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入负责人" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">联系电话</label>
             <div class="layui-input-inline">
-                <input type="text" name="phone" lay-verify="required|phone"
-                       autocomplete="off"  placeholder="请输入联系电话"  class="layui-input">
+                <input type="text" name="phone" style="background:#CCCCCC" readonly="true"
+                       placeholder="请输入联系电话"  class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">设备型号</label>
             <div class="layui-input-inline">
-                <input type="text" name="deviceVersion" lay-verify="required"
+                <input type="text" name="deviceVersion" style="background:#CCCCCC" readonly="true"
                        autocomplete="off"  placeholder="请输入设备型号"  class="layui-input">
             </div>
         </div>
@@ -132,28 +135,28 @@
         <div class="layui-line">
             <label class="layui-form-label layui-required">设备厂商</label>
             <div class="layui-input-inline">
-                <input type="text" name="deviceMfginfo" lay-verify="required"
+                <input type="text" name="deviceMfginfo" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入设备厂商" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">通信类型</label>
             <div class="layui-input-inline">
-                <input type="text" name="cmtType" lay-verify="required"
+                <input type="text" name="cmtType" style="background:#CCCCCC" readonly="true"
                        autocomplete="off"  placeholder="请输入通信类型"  class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">通信规约</label>
             <div class="layui-input-inline">
-                <input type="text" name="cmtStatute" lay-verify="required"
+                <input type="text" name="cmtStatute" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入通信规约"  class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">通信协议</label>
             <div class="layui-input-inline">
-                <input type="text" name="cmtAgreed" lay-verify="required"
+                <input type="text" name="cmtAgreed" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入通信协议" class="layui-input">
             </div>
         </div>
@@ -163,14 +166,14 @@
         <div class="layui-line">
             <label class="layui-form-label layui-required">终端通信地址</label>
             <div class="layui-input-inline">
-                <input type="text" name="cmtAddress" lay-verify="required"
+                <input type="text" name="cmtAddress" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入终端通信地址" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">主站地址ip</label>
             <div class="layui-input-inline">
-                <input type="text" name="masterIp" lay-verify="required"
+                <input type="text" name="masterIp" style="background:#CCCCCC" readonly="true"
                        autocomplete="off"  placeholder="请输入主站ip" class="layui-input">
             </div>
 
@@ -178,14 +181,14 @@
         <div class="layui-line">
             <label class="layui-form-label layui-required">是否新标</label>
             <div class="layui-input-inline">
-                <input type="text" name="isNew" lay-verify="required"
+                <input type="text" name="isNew" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入是否新标" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">主站端口</label>
             <div class="layui-input-inline">
-                <input type="text" name="masterPort" lay-verify="required"
+                <input type="text" name="masterPort" style="background:#CCCCCC" readonly="true"
                        autocomplete="off"  placeholder="请输入主站端口"  class="layui-input">
             </div>
         </div>
@@ -195,21 +198,21 @@
         <div class="layui-line">
             <label class="layui-form-label layui-required">建档时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="createTime" id="createTime" lay-verify="required"
+                <input type="text" name="createTime" id="createTime" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入建档时间" class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">终端地址标识</label>
             <div class="layui-input-inline">
-                <input type="text" name="cmtAddLabel" lay-verify="required"
+                <input type="text" name="cmtAddLabel" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入终端地址标识"  class="layui-input">
             </div>
         </div>
         <div class="layui-line">
             <label class="layui-form-label layui-required">设备地址</label>
             <div class="layui-input-inline">
-                <input type="text" name="deviceAddress" lay-verify="required"
+                <input type="text" name="deviceAddress" style="background:#CCCCCC" readonly="true"
                        autocomplete="off" placeholder="请输入设备地址" class="layui-input">
             </div>
         </div>
@@ -217,11 +220,8 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" name="remark" class="layui-textarea"></textarea>
+            <textarea placeholder="请输入内容" name="remark" style="background:#CCCCCC" readonly="true" class="layui-textarea"></textarea>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <button class="layui-btn" lay-submit="" lay-filter="addBtn">提交</button>
     </div>
 </form>
 
@@ -235,28 +235,54 @@
             , laydate = layui.laydate;
         //日期
         laydate.render({ elem: '#createTime',type: 'datetime'});
-        //监听提交
-        form.on('submit(addBtn)', function(data){
-            $.ajax({
-                method: "PUT",
-                url: "/archives",
-                dataType: "json",
-                contentType: 'application/json',
-                data: JSON.stringify(data.field),
-                success: function (data) {
-                    if (data.code === 20000){
-                        layer.open({ content: '保存成功',
-                            yes: function(index, layero){
-                                var index =parent.layer.getFrameIndex(window.name);
-                                parent.layer.close(index);
-                            }
-                        });
-                    }
-                }
-            });
-            return false;
-        });
+        let daId = getUrlParam("daId");
+        $.get("/archives/"+daId, function (data) {
+          if (data.code === 20000){
+              let data1 = data.data;
+              initData(data1);
+          }else{
+              layer.alert("请选择正确的档案信息！",{icon:5})
+          }
+
+        })
+
+
+        function initData(obj) {
+            $("input[name='daId']").val(obj.daId);
+            $("input[name='deviceId']").val(obj.deviceId);
+            $("input[name='sysName']").val(obj.sysName);
+            $("input[name='sysType']").val(obj.sysType);
+            $("input[name='sysVersion']").val(obj.sysVersion);
+            $("input[name='unit']").val(obj.unit);
+            $("input[name='address']").val(obj.address);
+            $("input[name='deviceType']").val(obj.deviceType);
+            $("input[name='deviceLongitude']").val(obj.deviceLongitude);
+            $("input[name='deviceLatitude']").val(obj.deviceLatitude);
+            $("input[name='principal']").val(obj.principal);
+            $("input[name='phone']").val(obj.phone);
+            $("input[name='deviceVersion']").val(obj.deviceVersion);
+            $("input[name='deviceMfginfo']").val(obj.deviceMfginfo);
+            $("input[name='cmtType']").val(obj.cmtType);
+            $("input[name='cmtStatute']").val(obj.cmtStatute);
+            $("input[name='cmtAgreed']").val(obj.cmtAgreed);
+            $("input[name='cmtAddress']").val(obj.cmtAddress);
+            $("input[name='masterIp']").val(obj.masterIp);
+            $("input[name='isNew']").val(obj.isNew);
+            $("input[name='masterPort']").val(obj.masterPort);
+            $("input[name='createTime']").val(obj.createTime);
+            $("input[name='cmtAddLabel']").val(obj.cmtAddLabel);
+            $("input[name='deviceAddress']").val(obj.deviceAddress);
+            $("textarea[name='remark']").val(obj.remark);
+            form.render();//更新表单
+        }
     });
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
 </script>
 </body>
 </html>

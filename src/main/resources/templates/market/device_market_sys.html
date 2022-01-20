@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <title>操作系统</title>
+  <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+  <link rel="stylesheet" href="/static/layui/css/layui.css">
+  <link href="/static/css/bootstrap-table.css" rel="stylesheet">
+  <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="/static/css/style.min.css" rel="stylesheet">
+  <style>
+    .layui-form-label { width: 150px;    }
+  </style>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+
+      <!-- logo -->
+      <div id="logo" class="sidebar-header">
+        <a href="../index.html"><img src="/static/images/logo-sidebar.png" title="LightYear"
+                                     alt="LightYear"/></a>
+      </div>
+      <div class="lyear-layout-sidebar-scroll">
+        <nav class="sidebar-main">
+          <ul class="nav nav-drawer" id="menu_dox"></ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p class="copyright">Copyright &copy; 2022. All rights reserved. More Templates </p>
+        </div>
+      </div>
+
+    </aside>
+    <!--End 左侧导航-->
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">应用市场-操作系统</span>
+          </div>
+
+          <ul class="topbar-right">
+            <li class="dropdown dropdown-profile">
+              <a href="javascript:void(0)" data-toggle="dropdown">
+                <img class="img-avatar img-avatar-48 m-r-10" src="/static/images/users/avatar.jpg"
+                     alt="后台系统"/>
+                <span>后台系统 <span class="caret"></span></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="../pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                <li><a href="../pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a></li>
+                <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                <li class="divider"></li>
+                <li><a href="/loginOut"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>
+              </ul>
+            </li>
+            <!--切换主题配色-->
+            <li class="dropdown dropdown-skin"></li>
+            <!--切换主题配色-->
+          </ul>
+
+        </div>
+      </nav>
+
+    </header>
+    <!--End 头部信息-->
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <fieldset class="layui-elem-field layui-field-title"
+                          style="margin-top: 20px">
+                  <legend>查询条件</legend>
+                  <form class="layui-form">
+                    <div class="layui-form-item" >
+                      <div class="layui-line">
+                        <label class="layui-form-label">系统名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="sysName" id="sysName" placeholder="请输入系统名称"autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-line">
+                        <label class="layui-form-label">系统类型</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="sysType" id="sysType" placeholder="请输入系统类型"autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-line">
+                        <label class="layui-form-label">补丁名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="name" id="name" placeholder="请输入补丁名称"autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item" >
+                      <div class="layui-line">
+                        <label class="layui-form-label">补丁类型</label>
+                        <div class="layui-input-inline">
+                        <select name="type"id="type">
+                          <option value="">请选择</option>
+                          <option value="0">主控单元补丁</option>
+                          <option value="1">AI模块补丁</option>
+                        </select>
+                        </div>
+                      </div>
+
+                      <div class="layui-line">
+                        <label class="layui-form-label">版本号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="versions" id="versions" placeholder="请输入版本号"autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+
+                      <div class="layui-line">
+                        <label class="layui-form-label">发布单位</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="putUnit" id="putUnit" placeholder="请输入发布单位"autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item" style="text-align: center;">
+                      <button type="button" class="layui-btn layui-btn-normal layui-btn-lg layui-icon layui-icon-search"
+                              id="doSearch">查询</button>
+                      <button type="reset" class="layui-btn layui-btn-warm  layui-btn-lg layui-icon layui-icon-refresh "
+                      >重置</button>
+                    </div>
+                  </form>
+                </fieldset>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header"><h4>系统档案列表</h4></div>
+              <div class="card-body">
+                <table id="sys_table" data-response-handler="responseHandler" lay-filter="sys_filter"></table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/js/bootstrap-3.3.4.js"></script>
+<script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script src="/static/js/bootstrap-table.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    initMenu();
+    initTheme();
+    //切换菜单
+    $('.nav-item').on('click', function () {
+      $('.nav-item').removeClass("active");
+      $(this).toggleClass( 'active open' );
+      localStorage.setItem("nav-item",$(this).index());
+    })
+    $('.nav-subnav').find('li').on('click', function () {
+      $('.nav-subnav').find('li').toggleClass("active");
+      localStorage.setItem("nav-subnav-li",$(this).index());
+      $(this).toggleClass( 'active' );
+    })
+    $('.theme_box').find('label').on('click', function () {
+      let val = $(this).parent().find('input').val();
+      $('body').attr("data-theme", val);
+    })
+    $('.logo_bg').find('label').on('click', function () {
+      let val = $(this).parent().find('input').val();
+      $('body').attr("data-logobg", val);
+    })
+
+    $('.header_bg').find('label').on('click', function () {
+      let val = $(this).parent().find('input').val();
+      $('body').attr("data-headerbg", val);
+    })
+
+    $('.sidebar_bg').find('label').on('click', function () {
+      let val = $(this).parent().find('input').val();
+      $('body').attr("data-sidebarbg", val);
+    })
+  })
+</script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="typeBar">
+  {{#  if(d.paType =='0' ){ }}
+  主控单元补丁
+  {{#  } else if(d.paType =='1' ) { }}
+  AI模块补丁
+  {{#  } }}
+</script>
+
+<script type="text/html" id="stateBar">
+  {{#  if(d.state == '0'){ }}
+    保存
+  {{#  } else if(d.state == '1' ) { }}
+    发布
+  {{#  } else if(d.state == '2' ) { }}
+   下架
+  {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn" lay-event="add">新增</button>
+  </div>
+</script>
+<script type="text/html" id="moreDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="more">更多 <i class="layui-icon layui-icon-down"></i></a>
+</script>
+<script>
+  layui.use('table', function () {
+    var table = layui.table,
+     dropdown = layui.dropdown,
+            laydate = layui.laydate;
+    let sysTable = table.render({
+      elem: '#sys_table'
+      , url: '/patch/search'
+      , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+      , method: 'post'
+      , page: true
+      , id: 'testReload'
+      , contentType: 'application/json'
+      , cols: [[
+          {field:'id',title: '序号', width: '5%', toolbar: '#indexTpl'}
+        , {field: 'sysName', width: '10%', title: '系统名称'}
+        , {field: 'sysType', width: '8%', title: '系统类型'}
+        , {field: 'name', width: '10%', title: '补丁名称'}
+        , {field: 'paType', width: '10%', title: '补丁类型',toolbar: '#typeBar'}
+        , {field: 'versions', width: '5%', title: '版本号'}
+        , {field: 'putUnit', width: '10%', title: '发布单位'}
+        , {field: 'examUnit', width: '10%', title: '检测单位'}
+        , {field: 'state', width: '8%', title: '状态',toolbar: '#stateBar'}
+        , {field: '', width: '15%', title: '更新时间'}
+        , {fixed: 'right', width: 150, title: '操作', align: 'center', toolbar: '#moreDemo'}
+      ]]
+      , done: function (res, curr, count) {
+        $("table").css("width", "100%");//这里设置表格的宽度为100%
+      },
+    });
+
+    $("#doSearch").click(function () {
+      var sysName = $("#sysName").val();
+      var sysType = $("#sysType").val();
+      var name = $("#name").val();
+      var versions = $("#versions").val();
+      var putUnit = $("#putUnit").val();
+      var type = $("#type").val();
+      table.reload('testReload', {
+        url:  '/patch/search'
+        , where: {
+          sysName: sysName,
+          sysType: sysType,
+          name: name,
+          type: type,
+          versions: versions,
+          putUnit: putUnit
+        } //设定异步数据接口的额外参数
+      });
+    })
+
+    //头工具栏事件
+    table.on('toolbar(sys_filter)', function(obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch (obj.event) {
+        case 'add':
+          openBox('device_market_add.html');
+          break;
+      }
+    });
+
+    //监听行工具事件
+    table.on('tool(sys_filter)', function(obj){
+      var data = obj.data
+              ,layEvent = obj.event; //获得 lay-event 对应的值
+      let objct=new Object();
+      objct.paId=data.id;
+      if(layEvent === 'more'){
+        //下拉菜单
+        dropdown.render({
+          elem: this //触发事件的 DOM 对象
+          ,show: true //外部事件触发即显示
+          ,data: [
+                  {title: '修改' ,id: 'edit'}
+                  ,{title: '发布' ,id: 'pub'}
+                  ,{title: '下架' ,id: 'out'}
+                  ,{title: '删除' ,id: 'del' }
+                  ]
+          ,click: function(menudata){
+            if(menudata.id === 'del'){
+              if (data.state === 1){
+                layer.alert("此补丁已发布，无法删除",{icon:5})
+                return false;
+              }
+              layer.confirm('真的删除行么', function(index){
+                $.ajax({
+                  url:"/patch",
+                  type:"delete",
+                  contentType:"application/json",
+                  dataType:"json",
+                  data:JSON.stringify(objct),
+                  success:function(msg){
+                    if (msg.code === 20000) {
+                      layer.close(index);
+                      //刷新操作
+                      sysTable.reload({elem: '#sys_table'})
+                    }
+                  }
+                });
+
+              });
+            } else if(menudata.id === 'edit'){
+                openBox('device_market_edit.html?paId='+data.id);
+            } else if(menudata.id === 'pub'){
+              objct.paState=1;
+              patchEditState(objct,1);
+            }else if(menudata.id === 'out'){
+              objct.paState=2;
+              patchEditState(objct,2);
+            }
+          }
+          ,align: 'right' //右对齐弹出（v2.6.8 新增）
+          ,style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
+        })
+      }
+    });
+    function patchEditState(objct,n) {
+      $.ajax({
+        url:"/patch/edit/state",
+        type:"post",
+        contentType:"application/json",
+        dataType:"json",
+        data:JSON.stringify(objct),
+        success:function(msg){
+          if (msg.code === 20000) {
+            if (n === 1){
+              layer.alert("发布成功！",{icon:1})
+            }else if (n === 2){
+              layer.alert("下架成功！",{icon:1})
+            }
+            //刷新操作
+            sysTable.reload({elem: '#sys_table'})
+          }
+        }
+      });
+    }
+
+
+    function openBox(url) {
+      layui.layer.open({
+        skin:'',
+        type : 2,
+        maxmin: true,
+        // title:'添加设备',
+        area: ['95%', '95%'],//弹出区域大小
+        content :url ,//跳转url
+        success : function(layero, index){//
+        },
+        end:function(){//关闭或者结束弹框回调
+          //通常刷新列表
+        }
+      });
+
+    }
+  })
+
+
+</script>
+</body>
+</html>

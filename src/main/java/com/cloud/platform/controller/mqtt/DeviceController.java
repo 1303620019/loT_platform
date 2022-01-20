@@ -16,6 +16,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -63,6 +64,7 @@ public class DeviceController {
   @Autowired
   private IDeviceAlarmLogService alarmLogService;
 
+  @Autowired IDeviceRestartLogService logService;
 
   @Autowired
   private IDeviceLinkAiService linkAiService;
@@ -72,6 +74,8 @@ public class DeviceController {
   private IDeviceLinkFileSignService  signService;
   @Autowired
   private IDeviceUpgradeResultService upgradeResultService;
+  @Resource
+  private IDeviceFunctionAiappService aiappService;
   /**
    * 功能描述: <br>
    * 官方文档〈https://docs.emqx.cn/broker/v4.3/rule/rule-engine.html#%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%BE%E4%BE%8B〉
@@ -134,6 +138,10 @@ public class DeviceController {
           param.put("infoId",infoId);
           functionStateService.saveFunctionState(param);
         }
+        if (!StringUtils.isBlank(infoId)){
+          param.put("infoId",infoId);
+          aiappService.saveFunctionAiapp(param);
+        }
       //终端上报软硬件信息至平台 不回应
       }else if (stringObjectMap.get("type").equals("CMD_INFO_QUERY")&& MapUtils.isNotEmpty(param)) {
          linkInfoId = linkInfoService.saveLinkInfo(stringObjectMap);
@@ -160,6 +168,7 @@ public class DeviceController {
         //设备控制命令应答 不保存
       }else if (stringObjectMap.get("type").equals("CMD_CTRL")) {
         log.info("CMD_CTRL-参数列表：{}",stringObjectMap.toString());
+        logService.editLog(stringObjectMap.get("deviceId").toString(),"200");
       }
 
     }
@@ -185,4 +194,7 @@ public class DeviceController {
     }
     return false;
   }
+
+
+
 }

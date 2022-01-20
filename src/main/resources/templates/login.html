@@ -173,7 +173,7 @@
       context.translate(-x, -y);
     }
     $('#captchaVal').val(show_num.join(''));
-    for (var i = 0; i <= 20; i++) { //验证码上显示线条
+    for (var i = 0; i <= 10; i++) { //验证码上显示线条
       context.strokeStyle = randomColor();
       context.beginPath();
       context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);

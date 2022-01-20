@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>重启记录</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .lyear-layout-content{
+            padding-top:unset;
+            padding-left:50px;
+        }
+    </style>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>重启记录</legend>
+</fieldset>
+<!--页面主要内容-->
+<main class="lyear-layout-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card">
+                <div class="card-header"><h4>重启列表</h4></div>
+                <div class="card-body">
+                    <table id="restart_table" data-response-handler="responseHandler" lay-filter="restartFilter"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="resultBar">
+    {{#  if(d.resultState =='0' ){ }}
+    正常
+    {{#  } else if(d.resultState =='1' ) { }}
+    失败
+    {{#  } }}
+</script>
+
+<script type="text/html" id="resultBarAction">
+    {{#  if(d.action =='os-reboot' ){ }}
+    重启终端系统
+    {{#  } else if(d.action =='edge-reboot' ) { }}
+    重启终端组件
+    {{#  } }}
+</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var table = layui.table;
+        let deviceId = getUrlParam("deviceId");
+        table.render({
+            elem: '#restart_table'
+            , url: '/restart/log/search'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,where:{
+                deviceId:deviceId
+            }
+            ,page: true
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            , cols: [[
+                {title: '序号',width:'4%',toolbar: '#indexTpl'}
+                ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                ,{field: 'action', width:'15%',title: '重启类型' ,toolbar: '#resultBarAction'}
+                ,{field: 'createTime', width:'15%',title: '操作时间'}
+                ,{field: 'resultTime', width:'15%',title: '设备重启时间'}
+                ,{field: 'resultState', width:'10%',title: '重启结果',toolbar: '#resultBar'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+    });
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+</html>

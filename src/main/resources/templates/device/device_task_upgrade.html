@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>设备升级</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label.layui-required:after{
+            content:"*";
+            color:red;
+            position: absolute;
+            top:5px;
+            left:15px;
+        }
+        .layui-form-pane .layui-form-label {
+            width: 140px;
+        }
+        legend{
+            display:flex;justify-content:space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lyear-layout-web">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+
+        <!-- logo -->
+        <div id="logo" class="sidebar-header">
+            <a href="../index.html"><img src="/static/images/logo-sidebar.png" title="LightYear"
+                                         alt="LightYear"/></a>
+        </div>
+        <div class="lyear-layout-sidebar-scroll">
+            <nav class="sidebar-main">
+                <ul class="nav nav-drawer" id="menu_dox"></ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p class="copyright">Copyright &copy; 2022. All rights reserved. More Templates </p>
+            </div>
+        </div>
+
+    </aside>
+    <!--End 左侧导航-->
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+
+        <nav class="navbar navbar-default">
+            <div class="topbar">
+
+                <div class="topbar-left">
+                    <div class="lyear-aside-toggler">
+                        <span class="lyear-toggler-bar"></span>
+                        <span class="lyear-toggler-bar"></span>
+                        <span class="lyear-toggler-bar"></span>
+                    </div>
+                    <span class="navbar-page-title">设备管理-设备升级</span>
+                </div>
+
+                <ul class="topbar-right">
+                    <li class="dropdown dropdown-profile">
+                        <a href="javascript:void(0)" data-toggle="dropdown">
+                            <img class="img-avatar img-avatar-48 m-r-10" src="/static/images/users/avatar.jpg"
+                                 alt="后台系统"/>
+                            <span>后台系统 <span class="caret"></span></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="../pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                            <li><a href="../pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a></li>
+                            <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/loginOut"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>
+                        </ul>
+                    </li>
+                    <!--切换主题配色-->
+                    <li class="dropdown dropdown-skin"></li>
+                    <!--切换主题配色-->
+                </ul>
+
+            </div>
+        </nav>
+
+    </header>
+    <!--End 头部信息-->
+    <main class="lyear-layout-content">
+        <!--页面主要内容-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="layui-form layui-form-pane" action="">
+                        <fieldset class="layui-elem-field layui-field-title"
+                                  style="margin-top: 20px">
+                            <legend><span>设备管理 </span>
+                                <input type="hidden" name="duFileId" id="duFileId">
+                                <button class="layui-btn" lay-submit="" lay-filter="addBtn">确认升级</button></legend>
+                                <div class="layui-form-item">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">升级名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name" autocomplete="off"
+                                                   placeholder="请输入计划名称"  class="layui-input" lay-verify="required">
+                                        </div>
+                                    </div>
+                                     <div class="layui-line">
+                                            <label class="layui-form-label layui-required">工作任务编号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="jobId" id="jobId" style="background:#CCCCCC" readonly="true" class="layui-input" >
+                                            </div>
+                                      </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">升级时间间隔</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="policy" id="policy" lay-verify="required"
+                                                   autocomplete="off"placeholder="请输入升级时间间隔" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">升级后版本号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="version" id="version" lay-verify="required"
+                                                   autocomplete="off"placeholder="请选择升级后版本号" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">补丁名称</label>
+                                        <div class="layui-input-inline">
+                                            <input name="paName" style="background:#CCCCCC" placeholder="查询补丁名称" class="layui-input" id="paName" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">升级类型</label>
+                                        <div class="layui-input-inline">
+                                            <select id="upgradeType" name="upgradeType" lay-verify="required">
+                                                <option value="">请选择</option>
+                                                <option value="0">补丁升级</option>
+                                                <option value="1">文件系统升级</option>
+                                                <option value="2">内核升级</option>
+                                                <option value="3">全量升级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">备注</label>
+                                    <div class="layui-input-block">
+                                        <textarea placeholder="请输入内容" name="remark" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </fieldset>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>设备列表</h4></div>
+                    <div class="card-body">
+                        <table id="task_table" data-response-handler="responseHandler" lay-filter="taskFilter"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    </main>
+        <!--End 页面主要内容-->
+</div>
+
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/js/bootstrap-3.3.4.js"></script>
+<script type="text/javascript" src="/static/js/menu/page_menu.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script src="/static/js/bootstrap-table.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initMenu();
+        initTheme();
+        //切换菜单
+        $('.nav-item').on('click', function () {
+            $('.nav-item').removeClass("active");
+            $(this).toggleClass( 'active open' );
+            localStorage.setItem("nav-item",$(this).index());
+        })
+        $('.nav-subnav').find('li').on('click', function () {
+            $('.nav-subnav').find('li').toggleClass("active");
+            localStorage.setItem("nav-subnav-li",$(this).index());
+            $(this).toggleClass( 'active' );
+        })
+        $('.theme_box').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-theme", val);
+        })
+        $('.logo_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-logobg", val);
+        })
+
+        $('.header_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-headerbg", val);
+        })
+
+        $('.sidebar_bg').find('label').on('click', function () {
+            let val = $(this).parent().find('input').val();
+            $('body').attr("data-sidebarbg", val);
+        })
+    })
+</script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.linkStatusNum =='0' ){ }}
+      建立连接
+    {{#  } else if(d.linkStatusNum =='1' ) { }}
+      断开连接
+    {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="upgradeList">升级列表</button>
+    </div>
+</script>
+<script type="text/html" id="upgradeStatus">
+    {{#  if(d.linkStatusNum =='0' ){ }}
+    可升级
+    {{#  } else if(d.linkStatusNum =='1' ) { }}
+    <span style="color: red">不可升级</span>
+    {{#  } }}
+</script>
+<script>
+    layui.use('table', function () {
+        var    table = layui.table,
+          dropdown  = layui.dropdown,
+                   form= layui.form,
+            laydate = layui.laydate;
+        laydate.render({ elem: '#execTime', type: 'datetime'  })
+        $.get("/upgrade/getJobId",function (obj) {
+            if (obj.code === 20000){
+                let data = obj.data;
+                $("#jobId").val(data.num);
+                initDown(data.patchList);
+            }
+        })
+
+        form.on("select(execType)", function(data){
+            if (data.value === '0'){
+                $('#execTime').val("");
+                $('#execTime').attr("readonly","true");
+                $('#execTime').css("background","#CCCCCC");
+                $('#execTime').css("pointer-events","none");
+            }else{
+                $('#execTime').removeAttr("readonly");
+                $('#execTime').removeAttr("style");
+            }
+        });
+
+        function initDown(obj){         //初演示 - 绑定输入框
+            let down=new Array();
+            for (let i = 0; i <obj.length ; i++) {
+                let o=new Object();
+                o.title=obj[i].name;
+                o.id=obj[i].id;
+                o.versions=obj[i].versions;
+                down.push(o)
+            }
+            dropdown.render({
+                elem: '#paName'
+                ,data: down
+                ,click: function(obj){
+                    this.elem.val(obj.title);
+                    $('#versions').val(obj.versions);
+                    $('#duFileId').val(obj.id);
+                }
+                ,style: 'width: 235px;'
+            });
+
+        }
+        table.render({
+            elem: '#task_table'
+            ,url: '/archives/search'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            , cols: [[
+                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'daId',width:'5%',type:'checkbox'}
+                ,{field: 'deviceId',width:'15%', title: '设备编号'}
+                ,{field: 'deviceType', width:'8%',title: '设备类型'}
+                ,{field: 'deviceMfginfo', width:'15%',title: '设备厂商'}
+                ,{field: 'deviceVersion', width:'8%',title: '设备型号'}
+                ,{field: 'sysName', width:'10%',title: '系统名称'}
+                ,{field: 'sysType', width:'10%',title: '系统类型'}
+                ,{field: 'sysVersion', width:'8%',title: '系统版本号'}
+                ,{field: 'linkStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+                ,{field: 'linkStatusNum', width:'10%',title: '是否可升级',toolbar: '#upgradeStatus'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        //监听提交
+        form.on('submit(addBtn)', function(data){
+            var daId = table.checkStatus('testReload');
+            let obj=new Object();
+            let deviceIds=new Array();
+            let daIds = daId.data;
+            if (daIds.length <=0){
+                layer.alert("请选择升级的设备！")
+                return  false;
+            }
+            for (let i = 0; i < daIds.length; i++) {
+                deviceIds.push(daIds[i].deviceId);
+            }
+            obj.field=data.field;
+            obj.deviceIds=deviceIds;
+            $.ajax({
+                method: "post",
+                url: "/upgrade/exce",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    if (data.code === 20000){
+                        layer.open({ content: '保存计划成功',
+                            yes: function(index, layero){
+                                // var index =parent.layer.getFrameIndex(window.name);
+                                // parent.layer.close(index);
+                               // parent.layui.table.reload('testReload');
+                              layer.close(index);
+                            }
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+        //触发事件
+        table.on('toolbar(taskFilter)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'upgradeList':
+
+                    openBox('device_upgrade_list.html');
+                    break;
+            };
+        });
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
+
+        }
+
+    })
+</script>
+</body>
+</html>
