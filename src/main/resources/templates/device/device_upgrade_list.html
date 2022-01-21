@@ -70,7 +70,11 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="query">状态查询</a>
 </script>
-
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="refresh">刷新</button>
+    </div>
+</script>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function() {
         var table  = layui.table
@@ -85,16 +89,16 @@
             ,contentType:'application/json'
             , cols: [[
                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
-                ,{field: 'deviceId',width:'15%', title: '设备编号'}
-                ,{field: 'jobId', width:'5%',title: '工作任务'}
-                ,{field: 'policy', width:'5%',title: '间隔/秒'}
+                ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                ,{field: 'jobId', width:'8%',title: '工作任务'}
+                ,{field: 'policy', width:'8%',title: '间隔/秒'}
                 ,{field: 'version', width:'8%',title: '升级后版本'}
-                ,{field: 'upgradeType', width:'5%',title: '补丁类型',toolbar:'#upgradeTypeBar'}
-                ,{field: 'progress', width:'5%',title: '升级进度'}
+                ,{field: 'upgradeType', width:'8%',title: '补丁类型',toolbar:'#upgradeTypeBar'}
+                ,{field: 'progress', width:'8%',title: '升级进度'}
                 ,{field: 'state', width:'8%',title: '升级状态',toolbar:'#upgradeStateBar'}
                 ,{field: 'name', width:'10%',title: '升级名称'}
                 ,{field: 'linkState', width:'8%',title: '在线状态',toolbar: '#linkStatus'}
-                ,{fixed: 'right', width: '15%', title: '操作', align: 'center', toolbar: '#barDemo'}
+                ,{fixed: 'right', width: '8%', title: '操作', align: 'center', toolbar: '#barDemo'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
@@ -111,11 +115,22 @@
                     data: {jobId: data.jobId, deviceId: data.deviceId},
                     success: function (data) {
                         if (data.code === 20000) {
+                            layer.alert("状态查询命令发送成功！",{icon:1})
                             table.reload('testReload');
                         }
                     }
-
                 });
+            }
+        });
+
+
+        //头工具栏事件
+        table.on('toolbar(upgradeList_filter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'refresh':
+                    table.reload('testReload');
+                    break;
             }
         });
     });

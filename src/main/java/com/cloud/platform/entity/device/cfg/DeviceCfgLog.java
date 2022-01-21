@@ -71,6 +71,7 @@ public class DeviceCfgLog implements Serializable {
 
     @ApiModelProperty(value = "同步设备当前时间")
     @TableField("dc_synDateTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JSONField(serialize = false)
     private Date synDateTime;
 

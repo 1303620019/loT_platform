@@ -116,7 +116,7 @@ public class DeviceController {
         //心跳应答
       } else if (stringObjectMap.get("type").equals("EVENT_HEARTBEAT")) {
         mqttHttpPort.sendMsg(result.getData(),null,"response" );
-        //平台向终端下发升级
+        //平台向终端下发升级回应
       } else if (stringObjectMap.get("type").equals("CMD_STATUS_QUERY")) {
         param = JSON.parseObject(stringObjectMap.get("param").toString(), Map.class);
         String deviceId = param.get("deviceId").toString();

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>修改计划</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label { width: 150px;    }
+        main{
+            padding-top:unset;
+            margin-left: unset;
+        }
+        legend{
+            display:flex;justify-content:space-between;
+        }
+    </style>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+        <!--页面主要内容-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="layui-form layui-form-pane" action="">
+                        <fieldset class="layui-elem-field layui-field-title"
+                                  style="margin-top: 20px">
+                            <legend><span>计划修改 </span>
+                                <input type="hidden" name="paId" id="paId">
+                                <input type="hidden" name="id" id="id">
+                                <button class="layui-btn" lay-submit="" lay-filter="addBtn">修改计划</button></legend>
+                                <div class="layui-form-item">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">计划名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name" autocomplete="off"
+                                                   placeholder="请输入计划名称"  class="layui-input" lay-verify="required">
+                                        </div>
+                                    </div>
+                                     <div class="layui-line">
+                                            <label class="layui-form-label layui-required">计划编号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="num" id="num" style="background:#CCCCCC" readonly="true" class="layui-input" >
+                                            </div>
+                                      </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">执行方式</label>
+                                        <div class="layui-input-inline">
+                                        <select id="execType" name="execType" lay-filter="execType">
+                                            <option value="">请选择</option>
+                                            <option value="0">立即执行</option>
+                                            <option value="1">定时执行</option>
+                                        </select>
+                                       </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">执行时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="execTime" id="execTime" autocomplete="off"placeholder="" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">补丁名称</label>
+                                        <div class="layui-input-inline">
+                                            <input name="paName" style="background:#CCCCCC" placeholder="查询补丁名称" class="layui-input" id="paName" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">计划类型</label>
+                                        <div class="layui-input-inline">
+                                            <select id="type" name="type">
+                                                <option value="">请选择</option>
+                                                <option value="0">设备</option>
+                                                <option value="1">容器</option>
+                                                <option value="2">系统</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">补丁类型</label>
+                                        <div class="layui-input-inline">
+                                            <select id="paType" name="paType">
+                                                <option value="">请选择</option>
+                                                <option value="0">主控单元补丁</option>
+                                                <option value="1">AI模块补丁</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label layui-required">补丁版本</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="versions" readonly="true" id="versions"
+                                                   style="background:#CCCCCC"  class="layui-input" lay-verify="required">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </fieldset>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>设备列表</h4></div>
+                    <div class="card-body">
+                        <table id="task_table" data-response-handler="responseHandler" lay-filter="taskFilter"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+        <!--End 页面主要内容-->
+</div>
+<!--弹窗内容-->
+<div id="deviceProd" class="layui-form" hidden="hidden">
+    <label class="layui-form-label">选择升级的设备</label>
+    <table data-response-handler="responseHandler" id="deviceTable" lay-filter="deviceFilter"></table>
+</div>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.linkStatusNum =='0' ){ }}
+      建立连接
+    {{#  } else if(d.linkStatusNum =='1' ) { }}
+      断开连接
+    {{#  } }}
+</script>
+<script>
+    layui.use('table', function () {
+        var    table = layui.table,
+          dropdown  = layui.dropdown,
+                   form= layui.form,
+            laydate = layui.laydate;
+        laydate.render({ elem: '#execTime', type: 'datetime'  })
+        let taskId = getUrlParam("taskId");
+        $.get("/upgrade/task/"+taskId, function (data) {
+            if (data.code === 20000){
+                let data1 = data.data;
+                initData(data1);
+            }else{
+                layer.alert("请选择正确的补丁信息！",{icon:5})
+            }
+
+        })
+        $.get("/upgrade/task/getId",function (obj) {
+            if (obj.code === 20000){
+                let data = obj.data;
+                initDown(data.patchList);
+            }
+        })
+        function initData(obj) {
+            $("input[name='id']").val(obj.id);
+            $("input[name='paId']").val(obj.paId);
+            $("input[name='name']").val(obj.name);
+            if (obj.execType ===0){
+                $('#execTime').val("");
+                $('#execTime').attr("readonly","true");
+                $('#execTime').css("background","#CCCCCC");
+                $('#execTime').css("pointer-events","none");
+            }else{
+                $('#execTime').val(obj.execTime);
+            }
+            $("#type option[value='" + obj.type + "']").attr("selected", true)
+            $("#paType option[value='" + obj.paType + "']").attr("selected", true)
+            $("#execType option[value='" + obj.execType + "']").attr("selected", true)
+            $("input[name='num']").val(obj.num);
+            $("input[name='paName']").val(obj.paName);
+            $("input[name='versions']").val(obj.versions);
+            form.render();//更新表单
+        }
+        function initDown(obj){         //初演示 - 绑定输入框
+            let down=new Array();
+            for (let i = 0; i <obj.length ; i++) {
+                let o=new Object();
+                o.title=obj[i].name;
+                o.id=obj[i].id;
+                o.versions=obj[i].versions;
+                down.push(o)
+            }
+            dropdown.render({
+                elem: '#paName'
+                ,data: down
+                ,click: function(obj){
+                    this.elem.val(obj.title);
+                    $('#versions').val(obj.versions);
+                    $('#paId').val(obj.id);
+                }
+                ,style: 'width: 235px;'
+            });
+        }
+        form.on("select(execType)", function(data){
+            if (data.value === '0'){
+                $('#execTime').val("");
+                $('#execTime').attr("readonly","true");
+                $('#execTime').css("background","#CCCCCC");
+                $('#execTime').css("pointer-events","none");
+            }else{
+                $('#execTime').removeAttr("readonly");
+                $('#execTime').removeAttr("style");
+            }
+        });
+        form.on("select(execType)", function(data){
+            if (data.value === '0'){
+                $('#execTime').val("");
+                $('#execTime').attr("readonly","true");
+                $('#execTime').css("background","#CCCCCC");
+                $('#execTime').css("pointer-events","none");
+            }else{
+                $('#execTime').removeAttr("readonly");
+                $('#execTime').removeAttr("style");
+            }
+        });
+
+        function initDown(obj){         //初演示 - 绑定输入框
+            let down=new Array();
+            for (let i = 0; i <obj.length ; i++) {
+                let o=new Object();
+                o.title=obj[i].name;
+                o.id=obj[i].id;
+                o.versions=obj[i].versions;
+                down.push(o)
+            }
+            dropdown.render({
+                elem: '#paName'
+                ,data: down
+                ,click: function(obj){
+                    this.elem.val(obj.title);
+                    $('#versions').val(obj.versions);
+                    $('#paId').val(obj.id);
+                }
+                ,style: 'width: 235px;'
+            });
+
+        }
+        table.render({
+            elem: '#task_table'
+            ,url: '/archives/search'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,page:true
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            , cols: [[
+                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'daId',width:'5%',type:'checkbox'}
+                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                ,{field: 'deviceType', width:'10%',title: '设备类型'}
+                ,{field: 'deviceVersion', width:'10%',title: '设备型号'}
+                ,{field: 'deviceMfginfo', width:'10%',title: '设备厂商'}
+                ,{field: 'linkStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        //监听提交
+        form.on('submit(addBtn)', function(data){
+            var daId = table.checkStatus('testReload');
+            let obj=new Object();
+            let deviceIds=new Array();
+            let daIds = daId.data;
+            if (daIds.length <=0){
+                layer.alert("请重新选择升级的设备！")
+                return  false;
+            }
+            for (let i = 0; i < daIds.length; i++) {
+                deviceIds.push(daIds[i].daId);
+            }
+            obj.field=data.field;
+            obj.daIds=deviceIds;
+            $.ajax({
+                method: "post",
+                url: "/upgrade/task/edit",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    if (data.code === 20000){
+                        layer.open({ content: '修改计划成功',
+                            yes: function(index, layero){
+                                var index =parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                                parent.layui.table.reload('testReload');
+                            }
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+    })
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+</html>

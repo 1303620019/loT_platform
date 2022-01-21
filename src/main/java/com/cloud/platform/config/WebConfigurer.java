@@ -54,6 +54,7 @@ public class WebConfigurer implements WebMvcConfigurer {
                     "/static/webfonts/**",
                     "/loginSign",
                     "/mqtt/**",
+                    "/file/**",
                     "/event/**",
                     "/doc.html",
                     "/client/**"

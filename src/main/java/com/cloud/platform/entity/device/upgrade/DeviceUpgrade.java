@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.platform.entity.device.DeviceLinkFile;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -55,29 +56,50 @@ public class DeviceUpgrade implements Serializable {
     @JSONField(serialize=false)
     private String duFileId;
 
+    @ApiModelProperty(value = "设备编号")
+    @TableField("du_deviceId")
+    @JSONField(serialize=false)
+    private String deviceId;
+
     @ApiModelProperty(value = "设备升级进度")
     @TableField("du_progress")
     @JSONField(serialize=false)
     private Integer progress;
 
+    @ApiModelProperty(value = "在线状态")
+    @TableField(exist = false)
+    @JSONField(serialize=false)
+    private Integer linkState;
 
     @ApiModelProperty(value = "1：待下载  2：下载中 3：待安装 4：安装中 5：安装完毕")
     @TableField("du_state")
     @JSONField(serialize=false)
     private Integer state;
 
+    @ApiModelProperty(value = "升级备注")
+    @TableField("du_remark")
+    @JSONField(serialize=false)
+    private String remark;
 
     @ApiModelProperty(value = "升级结果描述")
     @TableField("du_msg")
     @JSONField(serialize=false)
     private String msg;
+
     @ApiModelProperty(value = "升级文件")
     @TableField(exist = false)
     private DeviceLinkFile file;
 
-
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @TableField("du_createTime")
     @JSONField(serialize=false)
     private Date createTime;
+
+    @ApiModelProperty(value = "升级计划名称")
+    @TableField("du_name")
+    @JSONField(serialize=false)
+    private String name;
+
+
 }

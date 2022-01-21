@@ -37,7 +37,7 @@ public class ImoocRSA {
             long randomNum = System.currentTimeMillis();
             int ran3 = (int) (randomNum % (max - min) + min);
             String src = ran3 + "";
-            File file = new File("D:\\loT_platform\\src\\main\\resources\\static\\testFile_sign.txt");
+            File file = new File("D:\\loT_platform\\src\\main\\resources\\static\\file_sign.txt");
             FileOutputStream fop= new FileOutputStream(file);
             //2.执行签名
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(rsaPrivateKey.getEncoded());

@@ -2,7 +2,9 @@ package com.cloud.platform.mapper.device.cfg;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DeviceCfgLogMapper extends BaseMapper<DeviceCfgLog> {
 
+  Integer del(@Param("dcid") String dcid);
 }

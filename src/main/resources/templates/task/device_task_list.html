@@ -241,7 +241,21 @@
     {{#  } else if(d.type =='1' ) { }}
     设备
     {{#  } else if(d.type =='2' ) { }}
-   系统
+    系统
+    {{#  } }}
+</script>
+<script type="text/html" id="execTypeDemo">
+    {{#  if(d.execType =='0' ){ }}
+    立即执行
+    {{#  } else if(d.execType =='1' ) { }}
+    定时执行
+    {{#  } }}
+</script>
+<script type="text/html" id="exceStateDemo">
+    {{#  if(d.exceState =='0' ){ }}
+    未执行
+    {{#  } else if(d.exceState =='1' ) { }}
+    已执行
     {{#  } }}
 </script>
 <script type="text/html" id="moreDemo">
@@ -261,7 +275,7 @@
             laydate = layui.laydate;
         laydate.render({ elem: '#startTime', type: 'datetime'  })
         laydate.render({ elem: '#endTime', type: 'datetime'  })
-        let archivesTable=table.render({
+        let taskTable=table.render({
             elem: '#task_table'
             , url: '/upgrade/task/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
@@ -271,11 +285,11 @@
             ,contentType:'application/json'
             , cols: [[
                  {field:'daId', title: '序号',width:'4%',toolbar: '#indexTpl'}
-                 ,{field: 'name',width:'10%', title: '计划名称'}
-                 ,{field: 'num',width:'10%', title: '计划编号'}
-                 ,{field: 'type',width:'8%', title: '计划类型' , toolbar: '#typeDemo'}
-                ,{field: 'exceState', width:'8%',title: '执行状态'}
-                ,{field: 'execType', width:'8%',title: '执行方式'}
+                ,{field: 'name',width:'10%', title: '计划名称'}
+                ,{field: 'num',width:'10%', title: '计划编号'}
+                ,{field: 'type',width:'8%', title: '计划类型' , toolbar: '#typeDemo'}
+                ,{field: 'exceState', width:'8%',title: '执行状态', toolbar: '#exceStateDemo'}
+                ,{field: 'execType', width:'8%',title: '执行方式' , toolbar: '#execTypeDemo'}
                 ,{field: 'execTime', width:'10%',title: '执行时间'}
                 ,{field: 'creataTime', width:'10%',title: '创建时间'}
                 ,{field: 'stat', width:'8%',title: '已执行/总数'}
@@ -328,49 +342,49 @@
         table.on('tool(taskFilter)', function(obj){
             var data = obj.data
                 ,layEvent = obj.event; //获得 lay-event 对应的值
-            let objct=new Object();
-            objct.paId=data.id;
+            let downData=new Array();
+            if (data.exceState ===0){
+                let objct3=new Object();     objct3.title='执行';objct3.id='exce';   downData.push(objct3);
+                let objct1=new Object();     objct1.title='修改';objct1.id='edit';     downData.push(objct1);
+                let objct2=new Object();     objct2.title='删除';objct2.id='del'; downData.push(objct2);
+            }
             if(layEvent === 'more'){
                 //下拉菜单
                 dropdown.render({
                     elem: this //触发事件的 DOM 对象
                     ,show: true //外部事件触发即显示
-                    ,data: [
-                        {title: '修改' ,id: 'edit'}
-                        ,{title: '执行' ,id: 'exce'}
-                        ,{title: '删除' ,id: 'del' }
-                    ]
+                    ,data:downData
                     ,click: function(menudata){
                         if(menudata.id === 'del'){
-                            if (data.state === 1){
-                                layer.alert("此补丁已发布，无法删除",{icon:5})
+                            if (data.exceState ===1){
+                                layer.alert("计划已执行，无法删除");
                                 return false;
                             }
                             layer.confirm('真的删除行么', function(index){
                                 $.ajax({
-                                    url:"/patch",
+                                    url:"/upgrade/task",
                                     type:"delete",
-                                    contentType:"application/json",
                                     dataType:"json",
-                                    data:JSON.stringify(objct),
+                                    data:{id:data.id},
                                     success:function(msg){
                                         if (msg.code === 20000) {
                                             layer.close(index);
                                             //刷新操作
-                                            sysTable.reload({elem: '#sys_table'})
+                                            taskTable.reload({elem: '#task_table'})
                                         }
                                     }
                                 });
 
                             });
                         } else if(menudata.id === 'edit'){
-                            openBox('device_market_edit.html?paId='+data.id);
-                        } else if(menudata.id === 'pub'){
-                            objct.paState=1;
-                            patchEditState(objct,1);
-                        }else if(menudata.id === 'out'){
-                            objct.paState=2;
-                            patchEditState(objct,2);
+                            openBox('device_task_edit.html?taskId='+data.id);
+                        } else if(menudata.id === 'exce'){
+                            $.get("/upgrade/task/state/"+data.id,function (obj) {
+                                if (obj.code === 20000){
+                                    layer.alert("已修改为已执行",{icon:1});
+                                    taskTable.reload({elem: '#task_table'})
+                                }
+                            })
                         }
                     }
                     ,align: 'right' //右对齐弹出（v2.6.8 新增）

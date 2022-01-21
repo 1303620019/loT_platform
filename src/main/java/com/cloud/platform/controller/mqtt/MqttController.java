@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cloud.platform.base.Result;
 import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.entity.device.DeviceLinkFileSign;
+import com.cloud.platform.entity.device.DeviceRestartLog;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 import com.cloud.platform.req.DeviceConfigureREQ;
@@ -13,6 +14,8 @@ import com.cloud.platform.req.PageREQ;
 import com.cloud.platform.service.IMqttHttpPort;
 import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
+import com.cloud.platform.service.device.IDeviceRestartLogService;
+import com.cloud.platform.service.device.cfg.IDeviceCfgLogService;
 import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +51,12 @@ public class MqttController {
   private IDeviceLinkFileService fileService;
   @Autowired
   private IDeviceUpgradeService upgradeService;
+  @Autowired
+  private IDeviceRestartLogService    restartLogService;
+
+  @Autowired
+  private IDeviceCfgLogService LogService;
+
   @ApiOperation("mqtt基本信息及运行状态")
   @GetMapping("/nodes")
   public Result findBrokers() throws IOException {
@@ -111,14 +120,15 @@ public class MqttController {
    Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/T20SHEIRI001202009140001/device/command");
   }
   @ApiOperation("软硬件信息")
-  @GetMapping("/softHard/info")
-  public void querySoftAndHardInfo(){
+  @PostMapping("/softHard/info")
+  public Result querySoftAndHardInfo(@RequestBody DeviceCfgLog cfglog){
     MessageHeadREQ messageLog=new MessageHeadREQ();
     messageLog.setMid(17);
-    messageLog.setDeviceId("T20SHEIRI001202009140001");
+    messageLog.setDeviceId(cfglog.getDeviceId());
     messageLog.setTimestamp(new Date().toString());
     messageLog.setType("CMD_INFO_QUERY");
-    Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/T20SHEIRI001202009140001/device/command");
+    Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/"+cfglog.getDeviceId()+"/device/command");
+  return Result.ok();
   }
 
   @ApiOperation("设备升级状态查询")
@@ -137,20 +147,20 @@ public class MqttController {
   @ApiOperation("设备配置修改命令")
   @PostMapping("/configure/update")
   public Result   deviceConfigureUpdate(@RequestBody DeviceCfgLog cfglog){
-   log.info("参数是{}",cfglog.toString());
    JSONObject jsonObject=new JSONObject();
     jsonObject.put("temLow",cfglog.getTemLow());
     jsonObject.put("temHigh",cfglog.getTemHigh());
     cfglog.setTemperature(jsonObject);
     MessageHeadREQ messageLog=new MessageHeadREQ();
     messageLog.setMid(17);
-    messageLog.setDeviceId("T20SHEIRI001202009140001");
+    messageLog.setDeviceId(cfglog.getDeviceId());
     messageLog.setTimestamp(new Date().toString());
     messageLog.setType("CMD_SYS_SET_CONFIG");
     messageLog.setParam(cfglog);
     messageLog.setMsg(null);
+    LogService.save(cfglog);
     log.info("元素排序：{}",JSONObject.toJSONString(messageLog));
-    iMqttHttpPort.sendMsg(messageLog, "/v1/T20SHEIRI001202009140001/device/command");
+    iMqttHttpPort.sendMsg(messageLog, "/v1/"+cfglog.getDeviceId()+"/device/command");
     return Result.ok();
   }
   @ApiOperation("时间同步命令")
@@ -195,22 +205,31 @@ public class MqttController {
     return aBoolean.toString();
   }
 
-  @ApiOperation("设备控制")
-  @ApiImplicitParam(name = "action",value ="os-reboot：重启终端系统,edge-reboot：重启终端组件 ",required=true,dataType="String",paramType = "query")
+  @ApiOperation("设备控制重启")
   @PostMapping("/regulate")
-  public Result   deviceRegulate(@RequestBody String action,String deviceId){
-    log.info("参数是{}",action);
+  public Result   deviceRegulate(@RequestBody DeviceRestartLog restartLog){
     JSONObject object=new JSONObject();
-    object.put("action",action);
+    object.put("action",restartLog.getAction());
     MessageHeadREQ messageLog=new MessageHeadREQ();
     messageLog.setMid(17);
-    messageLog.setDeviceId(deviceId);
+    messageLog.setDeviceId(restartLog.getDeviceId());
     messageLog.setTimestamp(new Date().toString());
     messageLog.setType("CMD_CTRL");
     messageLog.setParam(object);
     messageLog.setMsg(null);
+    restartLog.setCreateTime(new Date());
+    restartLogService.saveLog(restartLog);
     log.info("元素排序：{}",JSONObject.toJSONString(messageLog));
-    iMqttHttpPort.sendMsg(messageLog, "/v1/"+deviceId+"/device/command");
+    try {
+      Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/" + restartLog.getDeviceId() + "/device/command");
+      if(!aBoolean){
+        return Result.error("发送命令失败,消息服务器异常");
+      }
+
+    }catch (Exception e){
+      log.error("连接失败,mqtt未启动{}",e.getMessage());
+      return Result.error("发送命令失败,消息服务器异常");
+    }
     return Result.ok();
   }
 

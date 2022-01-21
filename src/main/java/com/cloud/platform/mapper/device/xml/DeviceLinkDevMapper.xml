@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.platform.mapper.device.DeviceLinkDevMapper">
-
     <select id="selectOneByDeviceId" resultType="DeviceLinkDev">
         select *
         from t_device_link_dev
@@ -9,4 +8,5 @@
         and dld_device_id=#{deviceId}
         ORDER BY dld_createTime LIMIT 0,1
     </select>
+
 </mapper>

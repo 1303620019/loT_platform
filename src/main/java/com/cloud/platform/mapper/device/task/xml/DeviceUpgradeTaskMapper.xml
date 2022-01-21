@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.task.DeviceUpgradeTaskMapper">
+    <resultMap id="baseMap" type="DeviceUpgradeTask">
+        <id column="dut_id" property="id"/>
+        <result column="dut_name" property="name"/>
+        <result column="dut_num" property="num"/>
+        <result column="dut_type" property="type"/>
+        <result column="dut_exceState" property="exceState"/>
+        <result column="dut_execType" property="execType"/>
+        <result column="dut_execTime" property="execTime"/>
+        <result column="dut_creataTime" property="creataTime"/>
+        <result column="stat" property="stat"/>
+    </resultMap>
+
+    <select id="searche" resultMap="baseMap">
+        select dut.dut_id, dut.dut_name,dut.dut_num, dut.dut_type,dut.dut_exceState,dut.dut_execType,dut.dut_execTime,dut.dut_creataTime,
+        CONCAT(
+        IFNULL((select COUNT(1) from t_device_task where dt_taId=dut.dut_id and dt_state=3),0),
+        '/',
+        IFNULL((select COUNT(1) from t_device_task where dt_taId=dut.dut_id),0)
+        ) as 'stat'
+        from t_device_upgrade_task dut
+        LEFT join t_device_task dt on dut.dut_id = dt.dt_taId
+        where 1=1
+        <if test="req.name !=null and req.name !=''">
+           and dut.dut_name=#{req.name}
+        </if>
+        <if test="req.num !=null and req.num !=''">
+            and dut.dut_num=#{req.num}
+        </if>
+        <if test="req.type !=null and req.type !=''">
+            and dut.dut_type=#{req.type}
+        </if>
+        <if test="req.exceState !=null and req.exceState !=''">
+            and dut.dut_exceState=#{req.exceState}
+        </if>
+        <if test="req.execType !=null and req.execType !=''">
+            and dut.dut_execType=#{req.execType}
+        </if>
+        <if test="req.startTime !=null and req.startTime !=''">
+            and dut_creataTime BETWEEN #{req.startTime} and #{req.endTime}
+        </if>
+    </select>
+</mapper>

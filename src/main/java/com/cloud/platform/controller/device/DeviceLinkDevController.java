@@ -36,6 +36,7 @@ public class DeviceLinkDevController {
   @ApiOperation("获取列表")
   @PostMapping("/search")
   public ResultVo search(@RequestBody DeviceLinkDevREQ req){
+
     return devService.search(req);
   }
 

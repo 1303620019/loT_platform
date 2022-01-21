@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.DeviceArchivesMapper">
+  <resultMap id="archivesMap" type="DeviceArchives">
+         <id column="da_id" property="daId"/>
+         <result column="da_deviceId" property="deviceId"/>
+         <result column="da_device_address" property="deviceAddress"/>
+         <result column="da_device_version" property="deviceVersion"/>
+         <result column="da_cmt_address" property="cmtAddress"/>
+         <result column="da_state" property="state"/>
+         <result column="da_device_mfgInfo" property="deviceMfginfo"/>
+         <result column="da_createTime" property="createTime"/>
+         <result column="da_editTime" property="editTime"/>
+         <result column="da_sys_name" property="sysName"/>
+         <result column="da_sys_version" property="sysVersion"/>
+         <result column="da_sys_type" property="sysType"/>
+         <result column="da_editTime" property="editTime"/>
+         <result column="da_device_type" property="deviceType"/>
+         <result column="dld_devStatus_num" property="linkStatusNum"/>
+  </resultMap>
+
+    <select id="search" resultMap="archivesMap">
+        select
+        arc.da_id,arc.da_deviceId,arc.da_device_address,arc.da_device_version,arc.da_cmt_address,
+        arc.da_sys_name,arc.da_sys_type,arc.da_sys_version,
+        arc.da_state,arc.da_device_mfgInfo,arc.da_createTime,arc.da_editTime,arc.da_device_type,
+        dev.dld_devStatus_num
+        from  t_device_archives arc  JOIN   t_device_link_dev dev
+        on dev.dld_device_id=arc.da_deviceId
+        where 1=1
+        <if test="req.deviceId !=null and req.deviceId !='' ">
+            and arc.da_deviceId like "%"#{req.deviceId}"%"
+        </if>
+        <if test="req.deviceType !=null and req.deviceType !='' ">
+            and arc.da_device_type like "%"#{req.deviceType}"%"
+        </if>
+        <if test="req.deviceVersion !=null and req.deviceVersion !='' ">
+            and arc.da_device_version like "%"#{req.deviceVersion}"%"
+        </if>
+        <if test="req.deviceMfginfo !=null and req.deviceMfginfo !='' ">
+            and arc.da_device_mfgInfo like "%"#{req.deviceMfginfo}"%"
+        </if>
+        <if test="req.cmtAddress !=null and req.cmtAddress !='' ">
+            and arc.da_cmt_address like  "%"#{req.cmtAddress}"%"
+        </if>
+
+        <if test="req.linkStatusNum !=null and req.linkStatusNum !='' ">
+            and dev.dld_devStatus_num  =#{req.linkStatusNum}
+        </if>
+    </select>
+</mapper>

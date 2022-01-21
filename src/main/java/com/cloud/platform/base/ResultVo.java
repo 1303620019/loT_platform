@@ -20,9 +20,6 @@ import org.slf4j.LoggerFactory;
  * 用于封装接口统一响应结果
  */
 @Data
-@NoArgsConstructor // 无参构造方法
-@AllArgsConstructor // 有参构造方法
-
 public class ResultVo {
   private static final Logger logger = LoggerFactory.getLogger(Result.class);
 
@@ -45,10 +42,29 @@ public class ResultVo {
    */
   private String message;
 
+  public ResultVo(){}
+  public ResultVo(Integer code,Object data,long count){
+    this.code=code;
+    this.data=data;
+    this.count=count;
+  }
+  public ResultVo(Integer code,Object data,String message){
+    this.code=code;
+    this.data=data;
+    this.message=message;
+  }
+  public ResultVo(Integer code,Object data,long count,String message){
+    this.code=code;
+    this.data=data;
+    this.count=count;
+    this.message=message;
+  }
   public static ResultVo ok(Object data,long count) {
     return new ResultVo(0, data,count,"请求成功");
   }
-
+  public static ResultVo ok(Object data) {
+    return new ResultVo(0, data,"请求成功");
+  }
   public static ResultVo error(String message) {
     return new ResultVo(ResultEnum.ERROR.getCode(), null,0,message);
   }

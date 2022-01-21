@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -25,15 +26,18 @@ public class MqttDemoApplication {
 	public static void main(String[] args) throws UnknownHostException {
 		ConfigurableApplicationContext application =SpringApplication.run(MqttDemoApplication.class, args);
 		Environment env = application.getEnvironment();
-		String ip = InetAddress.getLocalHost().getHostAddress();
 		String port = env.getProperty("server.port");
 		String path = oConvertUtils.getString(env.getProperty("server.servlet.context-path"));
+		InetAddress addr = InetAddress.getLocalHost();
+		Date date = new Date();
+		String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+
 		log.info("\n----------------------------------------------------------\n\t" +
 						"Application Jeecg-Boot is running! Access URLs:\n\t" +
-						"Local: \t\thttp://localhost:" + port + path + "/\n\t" +
-						"External: \thttp://localhost:" + port + path + "/\n\t" +
-						"启动时间: \t" + new Date() + "\n\t" +
-						"Swagger文档: \thttp://localhost:" + port + path + "/doc.html\n" +
+						"Local: \t\thttp://"+addr.getHostAddress()+":" + port + path + "/\n\t" +
+						"启动时间: \t" + sdf.format(date) + "\n\t" +
+						"Swagger文档: \thttp://"+addr.getHostAddress()+":" + port + path + "/doc.html\n" +
 						"----------------------------------------------------------");
 	}
 }

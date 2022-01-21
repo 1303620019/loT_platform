@@ -261,10 +261,10 @@
     {{#  } }}
 </script>
 <script type="text/html" id="authStatus">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    建立连接
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    断开连接
+    {{#  if(d.dldauth =='0' ){ }}
+    认证成功
+    {{#  } else if(d.dldauth =='1' ) { }}
+    未知设备
     {{#  } }}
 </script>
 <script type="text/html" id="linkResult">
@@ -294,7 +294,7 @@
                  ,{field: 'dldDeviceId',width:'20%', title: '设备编号'}
                 ,{field: 'dldMfginfo', width:'20%',title: '设备厂商'}
                 ,{field: 'dldDevStatusNum', width:'10%',title: '连接类型',toolbar: '#linkStatus'}
-                ,{field: 'dldDevStatusNum', width:'10%',title: '认证结果',toolbar: '#authStatus'}
+                ,{field: 'dldauth', width:'10%',title: '认证结果',toolbar: '#authStatus'}
                 ,{field: 'dldCreatetime', width:'15%',title: '发生时间'}
                 ,{field: 'dldDevStatusNum',width:'10%',title: '连接结果',toolbar: '#linkResult'}
             ]]

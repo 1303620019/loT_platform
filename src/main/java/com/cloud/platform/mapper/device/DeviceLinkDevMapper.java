@@ -21,4 +21,6 @@ import org.apache.ibatis.annotations.Param;
 public interface DeviceLinkDevMapper extends BaseMapper<DeviceLinkDev> {
 
   DeviceLinkDev  selectOneByDeviceId(@Param("deviceId") String deviceId);
+
+  IPage<DeviceLinkDev>  search(@Param("req") DeviceLinkDevREQ req);
 }

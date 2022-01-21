@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.upgrade.DeviceUpgradeMapper">
+    <resultMap id="baseMap" type="DeviceUpgrade">
+      <id column="du_id" property="duId"/>
+      <result column="du_deviceId" property="deviceId"/>
+      <result column="du_jobId" property="jobId"/>
+      <result column="du_policy" property="policy"/>
+      <result column="du_version" property="version"/>
+      <result column="du_upgradeType" property="upgradeType"/>
+      <result column="du_state" property="state"/>
+      <result column="du_name" property="name"/>
+      <result column="du_createTime" property="createTime"/>
+      <result column="du_progress" property="progress"/>
+      <result column="dld_devStatus_num" property="linkState"/>
+    </resultMap>
+    
+
+    <select id="taskList" resultMap="baseMap">
+        select
+        du.du_id,du.du_deviceId,du.du_jobId,du.du_policy,du.du_version,du.du_upgradeType,du.du_name,
+        ifnull(du.du_state,0) as 'du_state',du.du_createTime,dev.dld_devStatus_num,du.du_progress
+        from t_device_upgrade du left join   t_device_link_dev dev on du.du_deviceId=dev.dld_device_id
+        where 1=1
+    </select>
+</mapper>

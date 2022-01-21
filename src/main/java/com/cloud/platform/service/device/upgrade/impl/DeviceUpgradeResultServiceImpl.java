@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,9 +29,9 @@ import java.util.Map;
 @Service
 public class DeviceUpgradeResultServiceImpl
         extends ServiceImpl<DeviceUpgradeResultMapper, DeviceUpgradeResult> implements IDeviceUpgradeResultService {
-  @Autowired
+  @Resource
   private IDeviceLinkOsService osService;
-  @Autowired
+  @Resource
   private IDeviceUpgradeService upgradeService;
   @Override
   public Boolean saveUpgradeResult(Map map) {
@@ -46,7 +47,8 @@ public class DeviceUpgradeResultServiceImpl
 
     if (!ObjectUtils.isEmpty(map.get("code"))  && "200".equals(map.get("code").toString())){
       DeviceUpgrade upgrade = upgradeService.selectByJobId(map.get("jobId").toString());
-     // osService.updateByDeviceId(map.get("deviceId").toString(),upgrade.getVersion());
+      upgrade.setState(5);
+      upgradeService.updateById(upgrade);
     }
 
     return true;

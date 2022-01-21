@@ -59,6 +59,11 @@ public class DeviceLinkFile implements Serializable {
     @JSONField(serialize=false)
     private String fsId;
 
+    @ApiModelProperty(value = "0-升级文件 1-检验文件")
+    @TableField("dlf_type")
+    @JSONField(serialize=false)
+    private Integer dlfType;
+
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @TableField("dlf_createTime")

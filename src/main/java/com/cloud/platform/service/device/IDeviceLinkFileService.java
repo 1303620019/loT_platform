@@ -18,7 +18,7 @@ public interface IDeviceLinkFileService extends IService<DeviceLinkFile> {
 
 
   DeviceLinkFile getFile(String dlfId);
-
+  DeviceLinkFile getFile(String dlfId,Integer dlfType);
   Boolean   saveFile(Map map);
 
 }

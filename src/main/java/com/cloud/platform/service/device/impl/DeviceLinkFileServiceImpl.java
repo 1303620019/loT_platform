@@ -1,6 +1,7 @@
 package com.cloud.platform.service.device.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.mapper.device.DeviceLinkFileMapper;
@@ -30,6 +31,17 @@ public class DeviceLinkFileServiceImpl extends ServiceImpl<DeviceLinkFileMapper,
   @Override
   public DeviceLinkFile getFile(String dlfId) {
     DeviceLinkFile deviceLinkFile = baseMapper.selectById(dlfId);
+    return deviceLinkFile;
+  }
+
+  @Override
+  public DeviceLinkFile getFile(String dlfId,Integer dlfType) {
+    QueryWrapper wrapper=new QueryWrapper();
+    wrapper.eq("dlf_type",dlfType);
+    wrapper.eq("dlf_id",dlfId);
+    wrapper.orderByDesc("dlf_createTime");
+    wrapper.last(" limit 1");
+    DeviceLinkFile deviceLinkFile = baseMapper.selectOne(wrapper);
     return deviceLinkFile;
   }
 

@@ -37,23 +37,5 @@ public class DeviceFunctionInfoController {
     return infoService.search(req);
   }
 
-  @ApiOperation("配置列表")
-  @PostMapping("/cfg/search")
-  public ResultVo cfgSearch(@RequestBody FunctionREQ  req){
-    log.info("设备配置接受的参数：{}",req.toString());
-    if (StringUtils.isEmpty(req.getDeviceId())){
-      return ResultVo.error("请求参数不能为空");
-    }
-    return infoService.cfgSearch(req);
-  }
 
-
-  @ApiOperation("配置管理保存")
-  @PostMapping("/cfg/event")
-  public Result cfgSaveLog(@RequestBody DeviceCfgLog cfgLog){
-    if (cfgLog.getType() == 0){
-      cfgLogService.save(cfgLog);
-    }
-    return Result.ok();
-  }
 }

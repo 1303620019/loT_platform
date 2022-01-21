@@ -24,6 +24,8 @@ import java.util.Date;
 @Accessors(chain = true)
 public class DeviceCfgLogREQ extends BaseRequest<DeviceCfgLog> {
 
+  @ApiModelProperty(value="记录id")
+  private String dcId;
 
   @ApiModelProperty(value="设备编号")
   private String deviceId;

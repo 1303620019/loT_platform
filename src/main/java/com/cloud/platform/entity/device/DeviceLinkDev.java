@@ -61,6 +61,9 @@ public class DeviceLinkDev implements Serializable {
     @TableField("dld_devStatus_num")
     private Integer dldDevStatusNum;
 
+    @ApiModelProperty(value = "认证状态 0-已认证成功 1-未认证成功")
+    @TableField("dld_auth")
+    private Integer dldauth;
     @ApiModelProperty(value = "终端硬件版本号")
     @TableField("dld_hardVersion")
     private String dldHardversion;
