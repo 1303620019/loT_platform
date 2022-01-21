@@ -19,6 +19,7 @@ public interface IDeviceRestartLogService extends IService<DeviceRestartLog> {
 
   Integer saveLog(DeviceRestartLog restartLog);
 
+
   Boolean editLog(String deviceId,String code);
   ResultVo search(DeviceRestartLogREQ req);
 }

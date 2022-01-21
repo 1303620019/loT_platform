@@ -17,5 +17,6 @@ import java.util.Map;
 public interface IDeviceFunctionAiappService extends IService<DeviceFunctionAiapp> {
 
 
+
   Boolean saveFunctionAiapp(Map map);
 }

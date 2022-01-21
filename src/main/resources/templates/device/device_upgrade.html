@@ -96,15 +96,15 @@
                                         </div>
                                     </div>
                                     <div class="layui-line">
-                                        <label class="layui-form-label">终端类型</label>
+                                        <label class="layui-form-label">设备类型</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="dldDevtype" id="dldDevtype" placeholder="请输入终端类型"autocomplete="off" class="layui-input">
+                                            <input type="text" name="deviceType" id="deviceType" placeholder="请输入终端类型"autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-line">
                                         <label class="layui-form-label">设备厂商</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="dldMfginfo" id="dldMfginfo" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
+                                            <input type="text" name="deviceMfginfo" id="deviceMfginfo" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
 
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@
                                             <div class="layui-line">
                                                 <label class="layui-form-label">系统名称</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="dloDistro" id="dloDistro" placeholder="请输入设备厂商信息"autocomplete="off" class="layui-input">
+                                                    <input type="text" name="sysName" id="sysName" placeholder="请输入系统名称"autocomplete="off" class="layui-input">
 
                                                 </div>
                                             </div>
@@ -120,7 +120,7 @@
                                                 <label class="layui-form-label">升级类型</label>
                                                 <div class="layui-input-inline">
                                                     <select name="upgradeType" id="upgradeType" lay-verify="">
-                                                        <option value="">请选择(未查)</option>
+                                                        <option value="">请选择</option>
                                                         <option value="0">补丁升级</option>
                                                         <option value="1">文件系统升级</option>
                                                         <option value="2">内核升级</option>
@@ -132,8 +132,8 @@
                                     <div class="layui-line">
                                         <label class="layui-form-label">是否升级</label>
                                         <div class="layui-input-inline">
-                                            <select name="LinkStatusNum" id="LinkStatusNum" lay-verify="">
-                                                <option value="">请选择(未查)</option>
+                                            <select name="linkStatusNum" id="linkStatusNum" lay-verify="">
+                                                <option value="">请选择</option>
                                                 <option value="0">已升级</option>
                                                 <option value="1">未升级</option>
                                             </select>
@@ -217,30 +217,28 @@
 </script>
 <script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
 <script type="text/html" id="linkStatus">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
+    {{#  if(d.linkStatusNum =='0' ){ }}
       建立连接
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
+    {{#  } else if(d.linkStatusNum =='1' ) { }}
       断开连接
     {{#  } }}
 </script>
-<script type="text/html" id="authStatus">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    建立连接
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    断开连接
-    {{#  } }}
-</script>
 <script type="text/html" id="linkResult">
-    {{#  if(d.dldDevStatusNum =='0' ){ }}
-    正常
-    {{#  } else if(d.dldDevStatusNum =='1' ) { }}
-    失败
+    {{#  if(d.linkStatusNum =='0' ){ }}
+    可升级
+    {{#  } else if(d.linkStatusNum =='1' ) { }}
+    不可升级
     {{#  } }}
 </script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-warm" lay-event="getCheckData">升级检验</button>
     </div>
+</script>
+<script type="text/html" id="barDemo">
+    {{#  if(d.linkStatusNum =='0' ){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="upgrade">升级</a>
+    {{#  } }}
 </script>
 <script>
     layui.use('table', function () {
@@ -251,23 +249,23 @@
 
         table.render({
             elem: '#audit_table'
-            , url: '/dev/upgrade/search'
+            , url: '/archives/upgrade/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
             ,page: true
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
-                ,{field: 'dloId',width:'5%',type:'checkbox'}
-                 ,{field: 'dloDeviceId',width:'20%', title: '设备编号'}
-                ,{field: 'dldMfginfo', width:'20%',title: '设备厂商'}
-                ,{field: 'dldDevtype', width:'10%',title: '设备类型'}
-                ,{field: 'dloDistro', width:'10%',title: '系统名称'}
-                ,{field: 'dloVersion', width:'10%',title: '系统版本'}
-                // ,{field: 'version', width:'15%',title: '升级后版本'}
-                ,{field: 'dldDevStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
-                ,{field: 'dldDevStatusNum',width:'10%',title: '可否升级',toolbar: '#linkResult'}
+                 {field:'daId',title: '序号',width:'5%',toolbar: '#indexTpl'}
+                // ,{field: 'dloId',width:'5%',type:'checkbox'}
+                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
+                ,{field: 'deviceMfginfo', width:'20%',title: '设备厂商'}
+                ,{field: 'deviceType', width:'10%',title: '设备类型'}
+                ,{field: 'sysName', width:'10%',title: '系统名称'}
+                ,{field: 'sysVersion', width:'10%',title: '系统版本'}
+                ,{field: 'linkStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+                ,{field: 'linkStatusNum',width:'10%',title: '可否升级',toolbar: '#linkResult'}
+                ,{fixed: 'right', width: '8%', title: '操作', align: 'center', toolbar: '#barDemo'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
@@ -275,20 +273,20 @@
         });
         $("#doSearch").click(function () {
             var deviceId = $("#deviceId").val();
-            var dldDevtype = $("#dldDevtype").val();
-            var dldMfginfo = $("#dldMfginfo").val();
-            var dloDistro = $("#dloDistro").val();
+            var sysName = $("#sysName").val();
+            var deviceMfginfo = $("#deviceMfginfo").val();
+            var deviceType = $("#deviceType").val();
             var upgradeType = $("#upgradeType").val();
-            var LinkStatusNum = $("#LinkStatusNum").val();
+            var linkStatusNum = $("#linkStatusNum").val();
             table.reload('testReload', {
-                url:  '/dev/upgrade/search'
+                url:  '/archives/upgrade/search'
                    , where: {
                     deviceId: deviceId,
-                    dldDevtype: dldDevtype,
-                    dldMfginfo: dldMfginfo,
-                    dloDistro: dloDistro,
+                    sysName: sysName,
+                    deviceMfginfo: deviceMfginfo,
+                    deviceType: deviceType,
                     upgradeType: upgradeType,
-                    LinkStatusNum: LinkStatusNum
+                    linkStatusNum: linkStatusNum
                 } //设定异步数据接口的额外参数
             });
         })
@@ -304,10 +302,17 @@
                     }else{
                         layer.msg('请先选中数据后再操作');
                     }
-
                     break;
             };
         });
+        //监听行工具事件
+        table.on('tool(upgradeFilter)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'upgrade') {
+                    layer.alert("设备可升级");
+            }
+        });
+
     })
 </script>
 </body>

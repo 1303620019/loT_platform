@@ -80,6 +80,16 @@ public class DeviceArchivesServiceImpl
   }
 
 
+  @Override
+  public ResultVo upgradeSearch(DeviceArchivesREQ req) {
+    IPage<DeviceArchives> page=new Page<DeviceArchives>();
+    IPage<DeviceArchives> page1 = req.getPage();
+    page.setPages(page1.getPages());
+    page.setSize(page1.getSize());
+    page.setTotal(page1.getTotal());
+    IPage<DeviceArchives> devREQIPage = archivesMapper.upgradeSearch(page,req);
+    return ResultVo.ok(devREQIPage.getRecords(),devREQIPage.getTotal());
+  }
 
   @Override
   public Result edit(DeviceArchives archives) {

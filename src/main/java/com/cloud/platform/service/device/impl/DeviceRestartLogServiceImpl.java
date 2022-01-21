@@ -32,6 +32,7 @@ public class DeviceRestartLogServiceImpl
   @Override
   public Integer saveLog(DeviceRestartLog restartLog) {
     int insert = baseMapper.insert(restartLog);
+
     return insert;
   }
 

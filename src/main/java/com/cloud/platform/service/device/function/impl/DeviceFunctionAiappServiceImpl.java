@@ -28,6 +28,7 @@ import java.util.Map;
 public class DeviceFunctionAiappServiceImpl
         extends ServiceImpl<DeviceFunctionAiappMapper, DeviceFunctionAiapp> implements IDeviceFunctionAiappService {
 
+
   @Override
   public Boolean saveFunctionAiapp(Map map) {
     if (!ObjectUtils.isEmpty(map.get("aiApp"))) {

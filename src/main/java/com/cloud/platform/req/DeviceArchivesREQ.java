@@ -29,6 +29,10 @@ public class DeviceArchivesREQ extends BaseRequest<DeviceArchives> {
   private String deviceId;
   @ApiModelProperty(value = "设备类型")
   private String deviceType;
+  @ApiModelProperty(value = "升级类型")
+  private String upgradeType;
+  @ApiModelProperty(value = "系统名称")
+  private String sysName;
   @ApiModelProperty(value = "设备型号")
   private String deviceVersion;
   @ApiModelProperty(value = "设备厂商")

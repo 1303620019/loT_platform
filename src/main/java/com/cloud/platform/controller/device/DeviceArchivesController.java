@@ -60,7 +60,11 @@ public class DeviceArchivesController {
   public ResultVo devicesearch(@RequestBody DeviceArchivesREQ req){
     return archivesService.search(req);
   }
-
+  @ApiOperation("设备升级获取列表")
+  @PostMapping("/upgrade/search")
+  public ResultVo upgradeSearch(@RequestBody DeviceArchivesREQ req){
+    return archivesService.upgradeSearch(req);
+  }
   @ApiOperation("删除档案信息")
   @ApiImplicitParam(name = "id",value ="档案id ",required=true,dataType="String",paramType = "query")
   @DeleteMapping("/{daId}")

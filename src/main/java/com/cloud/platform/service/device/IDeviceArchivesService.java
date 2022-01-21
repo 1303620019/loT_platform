@@ -23,5 +23,5 @@ public interface IDeviceArchivesService extends IService<DeviceArchives> {
   Result del(String id);
   DeviceArchives getArchivesByDeviceId(String deviceId,String mfgInfo);
   ResultVo search(DeviceArchivesREQ req);
-
+  ResultVo upgradeSearch(DeviceArchivesREQ req);
 }
