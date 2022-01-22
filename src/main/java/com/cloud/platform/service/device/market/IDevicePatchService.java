@@ -23,5 +23,6 @@ public interface IDevicePatchService extends IService<DevicePatch> {
   Result editPath(DevicePatch patch);
   Result savePath(DevicePatch patch);
   Result editState(DevicePatchREQ req);
+  Result getPatch(String paId);
   List<DevicePatch> getALl();
 }

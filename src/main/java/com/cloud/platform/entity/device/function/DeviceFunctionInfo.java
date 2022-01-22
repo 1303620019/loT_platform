@@ -41,7 +41,7 @@ public class DeviceFunctionInfo implements Serializable {
 
     @ApiModelProperty(value = "CPU 负载")
     @TableField("dfi_cpuRate")
-    private Integer cpuRate;
+    private String cpuRate;
 
     @ApiModelProperty(value = "t_device_function_mem表的id")
     @TableField("dfi_dfmId")
@@ -50,11 +50,11 @@ public class DeviceFunctionInfo implements Serializable {
 
     @ApiModelProperty(value = "磁盘占用率（例如 50.5 表示 50.5%）")
     @TableField("dfi_diskUsed")
-    private Integer diskUsed;
+    private String diskUsed;
 
     @ApiModelProperty(value = "主板（cpu）温度，单位：摄氏度℃")
     @TableField("dfi_tempValue")
-    private Integer tempValue;
+    private String tempValue;
 
     @ApiModelProperty(value = "设备当前时间")
     @TableField("dfi_devDateTime")
@@ -66,12 +66,12 @@ public class DeviceFunctionInfo implements Serializable {
 
     @ApiModelProperty(value = "设备运行时长，单位：秒")
     @TableField("dfi_devRunTime")
-    private Integer devRunTime;
+    private String devRunTime;
 
     @ApiModelProperty(value = "dfi_id")
     @TableField("dfi_linkState")
     @JSONField(serialize=false)
-    private Integer linkState;
+    private String linkState;
 
     @ApiModelProperty(value = "地理位置信息经度")
     @TableField("dfi_longitude")

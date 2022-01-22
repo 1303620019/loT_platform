@@ -41,7 +41,7 @@ public class DeviceUpgradeSchedule implements Serializable {
     private Integer progress;
 
     @ApiModelProperty(value = " 状态")
-    @TableField("dus_progress")
+    @TableField("dus_state")
     private Integer state;
 
     @ApiModelProperty(value = "创建时间  ")

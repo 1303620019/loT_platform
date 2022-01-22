@@ -55,9 +55,11 @@
             <div class="layui-input-inline">
                 <select name="paType" id="paType">
                     <option value="">请选择</option>
-                    <option value="0">主控单元补丁</option>
-                    <option value="1">AI模块补丁</option>
-                    <option value="2">操作系统补丁</option>
+                    <option value="0">补丁升级</option>
+                    <option value="1">文件系统升级</option>
+                    <option value="2">内核升级</option>
+                    <option value="3">表示全量升级</option>
+                    <option value="4">AI模块补丁</option>
                 </select>
             </div>
         </div>
@@ -158,6 +160,26 @@
             </div>
         </div>
     </div>
+    <div class="layui-form-item">
+        <div class="layui-line">
+            <label class="layui-form-label layui-required">数字签证文件</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="signFileId" id="signFileId" value=""  class="layui-input">
+                <input type="hidden" name="signName" id="signName" value="" class="layui-input">
+                <button type="button" class="layui-btn" id="upload3">
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                </button>
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-upload-list"> <p id="demoText3"></p></div>
+                <div style="width: 95px;">
+                    <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo3">
+                        <div class="layui-progress-bar" lay-percent=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">补丁包说明(可填写300字)</label>
         <div class="layui-input-block">
@@ -232,10 +254,15 @@
             $("input[name='patchFileId']").val(obj.patchFileId);
             $("input[name='examFileId']").val(obj.examFileId);
             $("input[name='examFileName']").val(obj.examFileName);
+            $("input[name='signFileId']").val(obj.signFileId);
+            $("input[name='signName']").val(obj.signName);
             $("#demoText2").html(obj.examFileName);
+            $("#demoText3").html(obj.signName);
             $("textarea[name='remark']").val(obj.remark);
             element.progress('demo1', '100%');
             element.progress('demo2', '100%');
+            element.progress('demo3', '100%');
+
             form.render();//更新表单
         }
 
@@ -302,6 +329,40 @@
             //进度条
             ,progress: function(n, elem, e){
                 element.progress('demo2', n + '%'); //可配合 layui 进度条元素使用
+                if(n == 100){
+                    layer.msg('上传完毕', {icon: 1});
+                }
+            }
+        });
+        var uploadsign = upload.render({
+            elem: '#upload3' //绑定元素
+            ,url: '/file/uploadFile' //上传接口
+            ,accept:'file'
+            ,data: { dlfType: 2}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demoText3').html(file.name)
+                });
+
+                element.progress('demo3', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+                if (res.code === 0){
+                    let data = res.data;
+                    if (data){
+                        $('#signFileId').val(data.fild);
+                        $('#signFileName').val(data.filename);
+                    }
+                }
+            }
+            ,error: function(){
+                layer.alert("上传文件失败,请重新上传",{icon:1})
+            }
+            //进度条
+            ,progress: function(n, elem, e){
+                element.progress('demo3', n + '%'); //可配合 layui 进度条元素使用
                 if(n == 100){
                     layer.msg('上传完毕', {icon: 1});
                 }

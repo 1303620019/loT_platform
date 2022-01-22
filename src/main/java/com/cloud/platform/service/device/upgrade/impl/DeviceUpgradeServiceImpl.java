@@ -19,6 +19,7 @@ import com.cloud.platform.entity.device.task.DeviceTask;
 import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 
+import com.cloud.platform.entity.device.upgrade.DeviceUpgradeSchedule;
 import com.cloud.platform.mapper.device.upgrade.DeviceUpgradeMapper;
 import com.cloud.platform.req.DeviceUpgradeREQ;
 import com.cloud.platform.req.MessageHeadREQ;
@@ -30,6 +31,7 @@ import com.cloud.platform.service.device.market.IDevicePatchService;
 import com.cloud.platform.service.device.task.IDeviceTaskService;
 import com.cloud.platform.service.device.task.IDeviceUpgradeTaskService;
 import com.cloud.platform.service.device.task.impl.DeviceTaskServiceImpl;
+import com.cloud.platform.service.device.upgrade.IDeviceUpgradeScheduleService;
 import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,8 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
   @Resource
   private IDevicePatchService patchService;
   @Resource
+  private IDeviceUpgradeScheduleService scheduleService;
+  @Resource
   private IDeviceTaskService deviceTaskService;
   @Resource
   private IDeviceUpgradeTaskService taskService;
@@ -77,9 +81,15 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
     wrapper.eq("du_jobId", ObjectUtils.isEmpty(map.get("jobId"))?null:Integer.parseInt(map.get("jobId").toString()));
     wrapper.last(" limit 1");
     DeviceUpgrade deviceUpgrade = baseMapper.selectOne(wrapper);
+    DeviceUpgradeSchedule upgradeSchedule=new DeviceUpgradeSchedule();
     if (ObjectUtils.isNotEmpty(deviceUpgrade)){
       deviceUpgrade.setProgress(ObjectUtils.isEmpty(map.get("progress"))?null:Integer.parseInt(map.get("progress").toString()));
       deviceUpgrade.setState(ObjectUtils.isEmpty(map.get("state"))?null:Integer.parseInt(map.get("state").toString()));
+      upgradeSchedule.setCreateTime(new Date());
+      upgradeSchedule.setJobId(deviceUpgrade.getJobId());
+      upgradeSchedule.setProgress(ObjectUtils.isEmpty(map.get("progress"))?null:Integer.parseInt(map.get("progress").toString()));
+      upgradeSchedule.setState(ObjectUtils.isEmpty(map.get("state"))?null:Integer.parseInt(map.get("state").toString()));
+      scheduleService.save(upgradeSchedule);
     }
     baseMapper.updateById(deviceUpgrade);
     return true;

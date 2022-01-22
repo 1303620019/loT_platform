@@ -6,6 +6,7 @@ import com.cloud.platform.base.Result;
 import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.entity.device.DeviceLinkFileSign;
 import com.cloud.platform.entity.device.DeviceRestartLog;
+import com.cloud.platform.entity.device.DeviceUpgradeTime;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 import com.cloud.platform.req.DeviceConfigureREQ;
@@ -15,10 +16,12 @@ import com.cloud.platform.service.IMqttHttpPort;
 import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
 import com.cloud.platform.service.device.IDeviceRestartLogService;
+import com.cloud.platform.service.device.IDeviceUpgradeTimeService;
 import com.cloud.platform.service.device.cfg.IDeviceCfgLogService;
 import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -56,6 +60,9 @@ public class MqttController {
 
   @Autowired
   private IDeviceCfgLogService LogService;
+
+  @Resource
+  private IDeviceUpgradeTimeService timeService;
 
   @ApiOperation("mqtt基本信息及运行状态")
   @GetMapping("/nodes")
@@ -165,21 +172,33 @@ public class MqttController {
   }
   @ApiOperation("时间同步命令")
   @ApiImplicitParam(name = "dateTime",value ="同步的时间",required=true,dataType="String" )
-  @PostMapping("/time/syn")
-  public String  deviceTimeSyn(@RequestBody  String dateTime){
-    log.info("参数是{}",dateTime);
+  @GetMapping("/time/syn")
+  public String  deviceTimeSyn(@Param("deviceId") String deviceId){
+    // log.info("参数是{}",dateTime);
     JSONObject object=new JSONObject();
-    object.put("dateTime",dateTime);
-    object.put("timeZone", TimeZone.getTimeZone("GMT+8"));
+//
+    Integer mid = timeService.getMid();
+    if (ObjectUtils.isEmpty(mid))mid=1;
+    else mid=mid+1;
+    DeviceUpgradeTime time=new DeviceUpgradeTime();
+    String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+    SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+    sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));  // 设置北京时区
+    time.setDutMid(mid);
+    time.setDateTime(sdf.format(new Date()));
+    time.setTimeZone("Asia/Shanghai");
+    timeService.save(time);
+    object.put("dateTime",sdf.format(new Date()));
+    object.put("timeZone", "Asia/Shanghai");
     MessageHeadREQ messageLog=new MessageHeadREQ();
-    messageLog.setMid(17);
-    messageLog.setDeviceId("T20SHEIRI001202009140001");
+    messageLog.setMid(mid);
+    messageLog.setDeviceId(deviceId);
     messageLog.setTimestamp(new Date().toString());
     messageLog.setType("CMD_DATETIME_SYN");
     messageLog.setParam(object);
     messageLog.setMsg(null);
     log.info("元素排序：{}",JSONObject.toJSONString(messageLog));
-    Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/T20SHEIRI001202009140001/device/command");
+    Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/"+deviceId+"/device/command");
     return aBoolean.toString();
   }
 

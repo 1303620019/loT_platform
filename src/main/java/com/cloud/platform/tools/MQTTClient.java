@@ -12,8 +12,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class MQTTClient {
 
 	private IMqttClient mqttClient;
-	private String brokerUrl="tcp://192.168.1.146:1883";
-	//private String brokerUrl="tcp://47.95.124.126:1883";
+	//private String brokerUrl="tcp://192.168.1.146:1883";
+	private String brokerUrl="tcp://47.95.124.126:1883";
 	private String clientId="mqtt-platform";
 
 	public MQTTClient() {

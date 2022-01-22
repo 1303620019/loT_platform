@@ -45,14 +45,14 @@ public class DeviceFunctionInfoServiceImpl extends ServiceImpl<DeviceFunctionInf
 
     public  DeviceFunctionInfo  crateFunctionInfo(Map map){
       DeviceFunctionInfo functionInfo = new DeviceFunctionInfo();
-      functionInfo.setCpuRate(ObjectUtils.isEmpty(map.get("cpuRate"))?null:Integer.parseInt(map.get("cpuRate").toString()));
+      functionInfo.setCpuRate(ObjectUtils.isEmpty(map.get("cpuRate"))?null:map.get("cpuRate").toString());
       functionInfo.setDfmId(ObjectUtils.isEmpty(map.get("memUsed"))?null:map.get("memUsed").toString());
       functionInfo.setDeviceId(ObjectUtils.isEmpty(map.get("deviceId"))?null:map.get("deviceId").toString());
-      functionInfo.setDiskUsed(ObjectUtils.isEmpty(map.get("diskUsed"))?null:Integer.parseInt(map.get("diskUsed").toString()));
-      functionInfo.setTempValue(ObjectUtils.isEmpty(map.get("tempValue"))?null:Integer.parseInt(map.get("tempValue").toString()));
+      functionInfo.setDiskUsed(ObjectUtils.isEmpty(map.get("diskUsed"))?null:map.get("diskUsed").toString());
+      functionInfo.setTempValue(ObjectUtils.isEmpty(map.get("tempValue"))?null:map.get("tempValue").toString());
       functionInfo.setDevDateTime(ObjectUtils.isEmpty(map.get("devDateTime"))?null:map.get("devDateTime").toString());
       functionInfo.setDevStDateTime(ObjectUtils.isEmpty(map.get("devStDateTime"))?null:map.get("devStDateTime").toString());
-      functionInfo.setDevRunTime(ObjectUtils.isEmpty(map.get("devRunTime"))?null:Integer.parseInt(map.get("devRunTime").toString()));
+      functionInfo.setDevRunTime(ObjectUtils.isEmpty(map.get("devRunTime"))?null:map.get("devRunTime").toString());
       functionInfo.setLatitude(ObjectUtils.isEmpty(map.get("longitude"))?null:map.get("longitude").toString());
       functionInfo.setLongitude(ObjectUtils.isEmpty(map.get("latitude"))?null:map.get("latitude").toString());
       functionInfo.setCreateTime(new Date());

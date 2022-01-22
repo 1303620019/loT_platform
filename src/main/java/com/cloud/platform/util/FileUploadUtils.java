@@ -1,6 +1,7 @@
 package com.cloud.platform.util;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
@@ -13,8 +14,7 @@ import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
 public class FileUploadUtils {
@@ -28,26 +28,29 @@ public class FileUploadUtils {
      * @Param: file:文件 rootDir：上传跟路径
      * @Return:
      */
-    public static String upLoadFileDao(MultipartFile file) {
-
+    public static Map upLoadFileDao(MultipartFile file) {
+        Map<String,String>map=new HashMap<>();
         if (Objects.isNull(file) || file.isEmpty()) {
             logger.info("文件为空");
-            return "文件为空，请重新上传";
+            return null;
         }
         try {
 
             // 获取文件的名称
             String originalFilename = file.getOriginalFilename();
             // 文件后缀 例如：.png
-            String fileSuffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileSuffix = originalFilename.substring(originalFilename.indexOf("."));
             // uuid 生成文件名
             String uuid = String.valueOf(UUID.randomUUID());
-           String basePath = ResourceUtils.getURL("classpath:").getPath() + "static/upload/";
-           basePath=basePath.substring(1);
+           // String basePath = ResourceUtils.getURL("classpath:").getPath() + "static/upload/";
+           String basePath =  "D:/dev/tomcat-zu/webapps/ROOT/uploadLot/";
+          // basePath=basePath.substring(1);
             //      String basePath="D:/fileUpload/";
             byte[] bytes = file.getBytes();
             String fileName=uuid+fileSuffix;
             Path path = Paths.get(basePath+fileName);
+            File file1=new File(basePath+fileName);
+
             //如果没有files文件夹，则创建
             if (!Files.isWritable(path)) {
                 Files.createDirectories(Paths.get(basePath));
@@ -55,10 +58,14 @@ public class FileUploadUtils {
             //文件写入指定路径
             Files.write(path, bytes);
             logger.debug("文件写入成功...");
-            return "http://" + InetAddress.getLocalHost().getHostAddress() + ":8991/static/upload/" + fileName;
+            String md5 = CalcMD5.calcMD5(file1);
+            map.put("MD5",md5);
+            map.put("url","http://8.142.34.45:80/uploadLot/" + fileName);
+           // return "http://" + InetAddress.getLocalHost().getHostAddress() + ":80/uploadLot" + fileName;
+           return map;
         } catch (IOException e) {
             e.printStackTrace();
-            return "后端异常...";
+            return null;
         }
     }
     /**

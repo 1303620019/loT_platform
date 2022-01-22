@@ -45,9 +45,14 @@ public class DeviceUpgradeResultServiceImpl
         baseMapper.insert(upgradeResult);
       }
 
-    if (!ObjectUtils.isEmpty(map.get("code"))  && "200".equals(map.get("code").toString())){
+    if (!ObjectUtils.isEmpty(map.get("code"))){
       DeviceUpgrade upgrade = upgradeService.selectByJobId(map.get("jobId").toString());
-      upgrade.setState(5);
+      if ( "200".equals(map.get("code").toString())){
+        upgrade.setState(5);
+        upgrade.setResultState(0);
+      }else{
+        upgrade.setResultState(1);
+      }
       upgradeService.updateById(upgrade);
     }
 

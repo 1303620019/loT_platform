@@ -119,7 +119,8 @@ public class DeviceController {
         //平台向终端下发升级回应
       } else if (stringObjectMap.get("type").equals("CMD_STATUS_QUERY")) {
         param = JSON.parseObject(stringObjectMap.get("param").toString(), Map.class);
-        String deviceId = param.get("deviceId").toString();
+
+        String deviceId = stringObjectMap.get("deviceId").toString();
         upgradeService.updateUpgrade(deviceId,param);
      //设备升级命令应答
      }else if(stringObjectMap.get("type").equals("CMD_SYS_UPGRADE")){

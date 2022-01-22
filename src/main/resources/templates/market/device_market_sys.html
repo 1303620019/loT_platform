@@ -114,9 +114,11 @@
                         <div class="layui-input-inline">
                         <select name="type"id="type">
                           <option value="">请选择</option>
-                          <option value="0">主控单元补丁</option>
-                          <option value="1">AI模块补丁</option>
-                          <option value="2">操作系统补丁</option>
+                          <option value="0">补丁升级</option>
+                          <option value="1">文件系统升级</option>
+                          <option value="2">内核升级</option>
+                          <option value="3">表示全量升级</option>
+                          <option value="4">AI模块补丁</option>
                         </select>
                         </div>
                       </div>
@@ -210,11 +212,15 @@
 <script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
 <script type="text/html" id="typeBar">
   {{#  if(d.paType =='0' ){ }}
-  主控单元补丁
+  补丁升级
   {{#  } else if(d.paType =='1' ) { }}
-  AI模块补丁
+  文件系统升级
   {{#  } else if(d.paType =='2' ) { }}
-  操作系统
+  内核升级
+  {{#  } else if(d.paType =='3' ) { }}
+  表示全量升级
+  {{#  } else if(d.paType =='4' ) { }}
+  AI模块补丁
   {{#  } }}
 </script>
 

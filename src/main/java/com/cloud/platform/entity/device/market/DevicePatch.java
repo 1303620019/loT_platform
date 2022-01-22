@@ -78,6 +78,13 @@ public class DevicePatch implements Serializable {
     @ApiModelProperty(value = "检测报告")
     @TableField("dp_examFileId")
     private String examFileId;
+    @ApiModelProperty(value = "验证文件id")
+    @TableField(exist = false)
+    private String signFileId;
+
+    @ApiModelProperty(value = "验证文件名称")
+    @TableField(exist = false)
+    private String signName;
 
     @ApiModelProperty(value = "检测单位")
     @TableField("dp_examUnit")

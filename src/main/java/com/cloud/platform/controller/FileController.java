@@ -6,10 +6,12 @@ import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.entity.device.DeviceLinkFileSign;
 import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
+import com.cloud.platform.util.CalcMD5;
 import com.cloud.platform.util.FileUploadUtils;
 import com.cloud.platform.util.Md5Util;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @description:
@@ -51,25 +54,47 @@ public class FileController {
   @PostMapping(value = "/uploadFile", consumes = "multipart/*", headers = "content-type=multipart/form-data")
  @ResponseBody
   public ResultVo uploadFile (MultipartFile file,Integer dlfType){
-    String md5 = Md5Util.creNumMd5();
-    String result = FileUploadUtils.upLoadFileDao(file);
-    DeviceLinkFile  file1=new DeviceLinkFile();
     long size = file.getSize();
-    String filename = file.getOriginalFilename();
-    String fileSuffix = filename.substring(filename.lastIndexOf("."));
-    file1.setSize(Integer.parseInt(size+""));
-    file1.setName(filename);
-    file1.setMd5(md5);
-    file1.setDlfType(dlfType);
-    file1.setFiletype(fileSuffix);
-    file1.setUrl(result);
-    String signId = createSign(md5);
-    file1.setFsId(signId);
-    fileService.save(file1);
-
     JSONObject jsonObject=new JSONObject();
-    jsonObject.put("filename",filename);
-    jsonObject.put("fild",file1.getDlfId());
+    String filename = file.getOriginalFilename();
+    String fileSuffix = filename.substring(filename.indexOf("."));
+    Map map = FileUploadUtils.upLoadFileDao(file);
+    String result="";
+    String md5 ="";
+    if (MapUtils.isNotEmpty(map)){
+      result=map.get("url").toString();
+      md5=map.get("MD5").toString();
+    }
+   if (dlfType == 0 || dlfType ==1){
+     DeviceLinkFile  file1=new DeviceLinkFile();
+     if (size>1024){
+       file1.setSize(Integer.parseInt(size/ 1024+""));
+     }else{
+       file1.setSize(Integer.parseInt(size+""));
+     }
+     file1.setName(filename);
+     file1.setMd5(md5);
+     file1.setDlfType(dlfType);
+     file1.setFiletype(fileSuffix);
+     file1.setUrl(result);
+     fileService.save(file1);
+     jsonObject.put("filename",filename);
+     jsonObject.put("fild",file1.getDlfId());
+   }else if (dlfType == 2){
+      DeviceLinkFileSign sign=new DeviceLinkFileSign();
+     sign.setMd5(md5);
+     sign.setUrl(result);
+     sign.setDlsCreatetime(new Date());
+     if (size>1024){
+       sign.setSize(Integer.parseInt(size/ 1024+""));
+     }else{
+       sign.setSize(Integer.parseInt(size+""));
+     }
+     sign.setName(filename);
+     signService.save(sign);
+     jsonObject.put("filename",filename);
+     jsonObject.put("fild",sign.getDlsId());
+   }
     log.info("文件上传结果：{}",result);
     return ResultVo.ok( jsonObject);
   }

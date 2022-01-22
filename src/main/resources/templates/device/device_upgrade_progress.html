@@ -60,6 +60,7 @@
 </script>
 <script type="text/html" id="toolbarDemo">
         <button class="layui-btn" lay-event="query">查询进度</button>
+        <button class="layui-btn" lay-event="refresh">刷新列表</button>
 </script>
 <script>
     layui.use('table', function () {
@@ -78,11 +79,11 @@
             ,where:{jobId:jobId}
             ,contentType:'application/json'
             , cols: [[
-                 {field:'id',title: '序号',width:'5%',toolbar: '#indexTpl'}
-                ,{field: 'jobId',width:'8%', title: '工作任务'}
-                ,{field: 'progress', width:'8%',title: '进度'}
-                ,{field: 'state', width:'15%',title: '状态',toolbar:'#stateDemo'}
-                ,{field: 'createTime', width:'15%',title: '召回时间'}
+                 {field:'id',title: '序号',width:'20%',toolbar: '#indexTpl'}
+                ,{field: 'jobId',width:'20%', title: '工作任务'}
+                ,{field: 'progress', width:'20%',title: '进度(单位%)'}
+                ,{field: 'state', width:'20%',title: '状态',toolbar:'#stateDemo'}
+                ,{field: 'createTime', width:'20%',title: '召回时间'}
               ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
@@ -100,13 +101,16 @@
                         data: {jobId:jobId, deviceId: deviceId},
                         success: function (data) {
                             if (data.code === 20000) {
-                                layer.alert("状态查询命令发送成功！",{icon:1})
+                                layer.alert("状态查询命令发送成功！",{icon:1});
                                 progressTable.reload('testReload');
                             }else{
                                 layer.alert("设备连接异常！",{icon:5})
                             }
                         }
                     });
+                    break;
+                case 'refresh':
+                    progressTable.reload('testReload');
                     break;
             }
         });

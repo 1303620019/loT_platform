@@ -1,6 +1,7 @@
 package com.cloud.platform.controller.market;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.cloud.platform.base.Result;
 import com.cloud.platform.base.ResultVo;
 import com.cloud.platform.entity.device.market.DevicePatch;
@@ -55,10 +56,9 @@ public class DevicePatchController {
     return patchService.savePath(patch);
   }
 
-  @ApiOperation("新增记录")
+  @ApiOperation("获取记录")
   @GetMapping("/{paId}")
   public Result getPatch(@PathVariable("paId") String paId){
-    DevicePatch Patch = patchService.getById(paId);
-    return Result.ok(Patch);
+    return patchService.getPatch(paId);
   }
 }
