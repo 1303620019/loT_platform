@@ -25,8 +25,9 @@
         arc.da_sys_name,arc.da_sys_type,arc.da_sys_version,
         arc.da_state,arc.da_device_mfgInfo,arc.da_createTime,arc.da_editTime,arc.da_device_type,
         dev.dld_devStatus_num
-        from  t_device_archives arc  JOIN   t_device_link_dev dev
-        on dev.dld_device_id=arc.da_deviceId
+        from  t_device_archives arc
+        left join  	(select * from t_device_link_dev  GROUP BY dld_device_id 	ORDER BY dld_createTime desc LIMIT 1)  as dev
+        on dev.dld_device_id =arc.da_deviceId
         where 1=1
         <if test="req.deviceId !=null and req.deviceId !='' ">
             and arc.da_deviceId like "%"#{req.deviceId}"%"
@@ -49,6 +50,33 @@
         </if>
     </select>
 
+    <select id="searchArc" resultMap="archivesMap">
+        select
+        arc.da_id,arc.da_deviceId,arc.da_device_address,arc.da_device_version,arc.da_cmt_address,
+        arc.da_sys_name,arc.da_sys_type,arc.da_sys_version,
+        arc.da_state,arc.da_device_mfgInfo,arc.da_createTime,arc.da_editTime,arc.da_device_type
+        from  t_device_archives arc
+        where 1=1
+        <if test="req.deviceId !=null and req.deviceId !='' ">
+            and arc.da_deviceId like "%"#{req.deviceId}"%"
+        </if>
+        <if test="req.deviceType !=null and req.deviceType !='' ">
+            and arc.da_device_type like "%"#{req.deviceType}"%"
+        </if>
+        <if test="req.deviceVersion !=null and req.deviceVersion !='' ">
+            and arc.da_device_version like "%"#{req.deviceVersion}"%"
+        </if>
+        <if test="req.deviceMfginfo !=null and req.deviceMfginfo !='' ">
+            and arc.da_device_mfgInfo like "%"#{req.deviceMfginfo}"%"
+        </if>
+        <if test="req.cmtAddress !=null and req.cmtAddress !='' ">
+            and arc.da_cmt_address like  "%"#{req.cmtAddress}"%"
+        </if>
+
+        <if test="req.linkStatusNum !=null and req.linkStatusNum !='' ">
+            and dev.dld_devStatus_num  =#{req.linkStatusNum}
+        </if>
+    </select>
 
     <select id="upgradeSearch" resultMap="archivesMap">
         select
@@ -60,7 +88,7 @@
         left join t_device_archives arc on arc.da_id=dta.dt_arcId
         left join t_device_upgrade_task uta on dta.dt_taId=uta.dut_id
         left join t_device_link_dev dev on arc.da_deviceId=dev.dld_device_id
-        where uta.dut_exceState=1
+        where uta.dut_exceState !=0
         <if test="req.deviceId !=null and req.deviceId !='' ">
             and arc.da_deviceId like "%"#{req.deviceId}"%"
         </if>
@@ -86,5 +114,6 @@
         <if test="req.upgradeType !=null and req.upgradeType !='' ">
             and uta.dut_type = #{req.upgradeType}
         </if>
+        group by arc.da_deviceId
     </select>
 </mapper>

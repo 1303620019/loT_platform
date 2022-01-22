@@ -3,6 +3,7 @@ package com.cloud.platform.mapper.device.task;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cloud.platform.entity.device.task.DeviceTask;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +15,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DeviceTaskMapper extends BaseMapper<DeviceTask> {
+
+
+   Integer editState(@Param("deviceId") String deviceId);
 
 }

@@ -53,8 +53,8 @@ public class DeviceArchivesServiceImpl
   @Override
   public DeviceArchives getArchivesByDeviceId(String deviceId,String mfgInfo) {
     QueryWrapper wrapper=new QueryWrapper();
-    wrapper.eq("dld_device_id",deviceId);
-    wrapper.eq("dld_mfgInfo",mfgInfo);
+    wrapper.eq("da_deviceId",deviceId);
+    wrapper.eq("da_device_mfgInfo",mfgInfo);
     wrapper.orderByDesc("da_createTime");
     DeviceArchives deviceArchives = baseMapper.selectOne(wrapper);
     return deviceArchives;
@@ -76,6 +76,16 @@ public class DeviceArchivesServiceImpl
     page.setSize(page1.getSize());
     page.setTotal(page1.getTotal());
     IPage<DeviceArchives> devREQIPage = archivesMapper.search(page,req);
+    return ResultVo.ok(devREQIPage.getRecords(),devREQIPage.getTotal());
+  }
+  @Override
+  public ResultVo searchArc(DeviceArchivesREQ req) {
+    IPage<DeviceArchives> page=new Page<DeviceArchives>();
+    IPage<DeviceArchives> page1 = req.getPage();
+    page.setPages(page1.getPages());
+    page.setSize(page1.getSize());
+    page.setTotal(page1.getTotal());
+    IPage<DeviceArchives> devREQIPage = archivesMapper.searchArc(page,req);
     return ResultVo.ok(devREQIPage.getRecords(),devREQIPage.getTotal());
   }
 

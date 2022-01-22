@@ -5,6 +5,7 @@ import com.cloud.platform.base.Result;
 import com.cloud.platform.base.ResultVo;
 import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
 import com.cloud.platform.req.DeviceUpgradeREQ;
+import com.cloud.platform.req.DeviceUpgradeScheduleREQ;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
 import com.sun.org.apache.regexp.internal.RE;
 
@@ -23,7 +24,9 @@ public interface IDeviceUpgradeTaskService extends IService<DeviceUpgradeTask> {
  Result getId();
  Result editExceState(String taskId);
 // Result saveTask(DeviceUpgradeTask task);
+
  Result saveTask(DeviceUpgradeTaskREQ req);
  Result editUpgradeTask(DeviceUpgradeTaskREQ req);
+ ResultVo patchSearch(DeviceUpgradeTaskREQ req);
  Result getUpgradeTask(String taskId);
 }

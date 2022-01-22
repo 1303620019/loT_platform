@@ -33,12 +33,15 @@ public class DeviceLinkMem implements Serializable {
     private String dlmId;
 
     @ApiModelProperty(value = "t_device_link_dev 表id")
+    @TableField("dlm_dli_id")
     private String dlmDliId;
 
     @ApiModelProperty(value = "物理内存，以 M 为单位")
+    @TableField("dlm_phy")
     private Integer dlmPhy;
 
     @ApiModelProperty(value = "虚拟内存，以 M 为单位")
+    @TableField("dlm_virt")
     private Integer dlmVirt;
 
     @ApiModelProperty(value = "内存监控阈值，例如 50 表示 50%")

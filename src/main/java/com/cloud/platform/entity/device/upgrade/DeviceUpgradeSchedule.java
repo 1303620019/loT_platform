@@ -1,4 +1,4 @@
-package com.cloud.platform.entity.device.task;
+package com.cloud.platform.entity.device.upgrade;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -15,39 +15,39 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 计划任务关系表
+ * 升级进度表
  * </p>
  *
  * @author byl
- * @since 2022-01-19
+ * @since 2022-01-21
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_device_task")
-@ApiModel(value="DeviceTask对象", description="计划任务关系表")
-public class DeviceTask implements Serializable {
+@TableName("t_device_upgrade_schedule")
+@ApiModel(value="DeviceUpgradeSchedule对象", description="升级进度表")
+public class DeviceUpgradeSchedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "dt_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "dus_id", type = IdType.ASSIGN_ID)
     private String id;
 
-    @ApiModelProperty(value = "t_device_archives表id")
-    @TableField("dt_arcId")
-    private String arcId;
+    @ApiModelProperty(value = "工作任务唯一id")
+    @TableField("dus_jobId")
+    private Integer jobId;
 
-    @ApiModelProperty(value = "t_device_archives表id")
-    @TableField("dt_taId")
-    private String taId;
+    @ApiModelProperty(value = " 进度 %")
+    @TableField("dus_progress")
+    private Integer progress;
 
-    @ApiModelProperty(value = "0-未执行 1-已执行")
-    @TableField("dt_state")
+    @ApiModelProperty(value = " 状态")
+    @TableField("dus_progress")
     private Integer state;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间  ")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @TableField("dt_creataTime")
-    private Date creataTime;
+    @TableField("dus_createTime")
+    private Date createTime;
 
 
 }

@@ -108,16 +108,16 @@ public class IMqttHttpPortImpl implements IMqttHttpPort {
       MQTTClient client = new MQTTClient();
       client.connect("admin", "tszh@tcm512.com");
       client.subscribe(topic,2);
-
-      //向主题发布消息
-      new Thread(() -> {
-        client.publish(topic,JSON.toJSONString(data), 2, false);
-        try {
-          TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }).start();
+      client.publish(topic,JSON.toJSONString(data), 2, false);
+//      //向主题发布消息
+//      new Thread(() -> {
+//
+//        try {
+//          TimeUnit.SECONDS.sleep(5);
+//        } catch (InterruptedException e) {
+//          e.printStackTrace();
+//        }
+//      }).start();
     } catch (Exception e) {
       log.error("平台发送消息报错:{} ", e.getMessage());
       return false;

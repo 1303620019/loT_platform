@@ -33,18 +33,23 @@ public class DeviceLinkCpu implements Serializable {
     private String dldId;
 
     @ApiModelProperty(value = "t_device_link_dev 表id")
+    @TableField("dld_dli_id")
     private String dldDliId;
 
     @ApiModelProperty(value = "CPU 核数")
+    @TableField("dlc_cpus")
     private Integer dlcCpus;
 
     @ApiModelProperty(value = "CPU 主频 GHz 为单位")
+    @TableField("dlc_frequency")
     private String dlcFrequency;
 
     @ApiModelProperty(value = "CPU 缓存以 MB/核为单位")
+    @TableField("dlc_cache")
     private Integer dlcCache;
 
     @ApiModelProperty(value = "CPU 架构")
+    @TableField("dlc_arch")
     private String dlcArch;
 
     @ApiModelProperty(value = "CPU 监控阈值")

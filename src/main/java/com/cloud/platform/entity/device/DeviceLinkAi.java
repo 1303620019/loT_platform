@@ -37,9 +37,11 @@ public class DeviceLinkAi implements Serializable {
     private String dldId;
 
     @ApiModelProperty(value = "AI模块型号")
+    @TableField("dla_model")
     private String model;
 
     @ApiModelProperty(value = "AI模块算力，单位为TOPS")
+    @TableField("dla_ops")
     private Integer ops;
 
     @ApiModelProperty(value = "设备id  ")

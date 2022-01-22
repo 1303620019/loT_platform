@@ -9,6 +9,7 @@ import com.cloud.platform.req.DeviceArchivesREQ;
 import com.cloud.platform.req.DeviceUpgradeREQ;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -22,5 +23,7 @@ import org.apache.ibatis.annotations.Param;
 public interface DeviceUpgradeMapper extends BaseMapper<DeviceUpgrade> {
 
   IPage<DeviceUpgrade> taskList(IPage<DeviceUpgrade> page, @Param("req") DeviceUpgradeREQ req);
-
+  IPage<DeviceUpgrade> upgradeLog(IPage<DeviceUpgrade> page, @Param("req") DeviceUpgradeREQ req);
+  @Update("update   t_device_upgrade  set du_result=NULL where du_id=#{id}")
+  void updateResultState(@Param("id") String id);
 }

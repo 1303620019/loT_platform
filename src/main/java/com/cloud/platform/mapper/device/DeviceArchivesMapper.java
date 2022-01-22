@@ -19,5 +19,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface DeviceArchivesMapper extends BaseMapper<DeviceArchives> {
  IPage<DeviceArchives> search(IPage<DeviceArchives> page,@Param("req") DeviceArchivesREQ req);
+ IPage<DeviceArchives> searchArc(IPage<DeviceArchives> page,@Param("req") DeviceArchivesREQ req);
  IPage<DeviceArchives> upgradeSearch(IPage<DeviceArchives> page,@Param("req") DeviceArchivesREQ req);
 }

@@ -12,10 +12,12 @@ import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 import com.cloud.platform.mapper.device.task.DeviceUpgradeTaskMapper;
 import com.cloud.platform.req.DeviceUpgradeREQ;
+import com.cloud.platform.req.DeviceUpgradeScheduleREQ;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
 import com.cloud.platform.service.device.market.IDevicePatchService;
 import com.cloud.platform.service.device.task.IDeviceTaskService;
 import com.cloud.platform.service.device.task.IDeviceUpgradeTaskService;
+import com.cloud.platform.service.device.upgrade.IDeviceUpgradeScheduleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -46,7 +48,12 @@ public class DeviceUpgradeTaskServiceImpl
     IPage<DeviceUpgradeTask> searche = taskMapper.searche(req.getPage(), req);
     return ResultVo.ok(searche.getRecords(),searche.getTotal());
   }
-
+  @Override
+  @Transactional
+  public ResultVo patchSearch(DeviceUpgradeTaskREQ req) {
+      IPage<DeviceUpgradeTask> upgradeTask = taskMapper.patchSearch(req.getPage(), req);
+      return ResultVo.ok(upgradeTask.getRecords(),upgradeTask.getTotal());
+  }
   @Override
   @Transactional
   public Result saveTask(DeviceUpgradeTaskREQ req) {

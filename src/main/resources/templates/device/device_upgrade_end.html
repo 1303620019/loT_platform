@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>设备升级</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label.layui-required:after{
+            content:"*";
+            color:red;
+            position: absolute;
+            top:5px;
+            left:15px;
+        }
+        .layui-form-pane .layui-form-label {
+            width: 140px;
+        }
+        legend{
+            display:flex;justify-content:space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lyear-layout-web">
+
+        <!--页面主要内容-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+
+<!--                        <fieldset class="layui-elem-field layui-field-title"-->
+<!--                                  style="margin-top: 20px">-->
+<!--                            <legend><span>设备管理 </span>-->
+<!--                                <input type="hidden" name="duFileId" id="duFileId">-->
+<!--                            </legend>-->
+<!--                            <form class="layui-form layui-form-pane" action="">-->
+<!--                                <div class="layui-form-item">-->
+<!--                                    <div class="layui-line">-->
+<!--                                        <label class="layui-form-label layui-required">升级名称</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <input type="text" name="name" autocomplete="off"-->
+<!--                                                   placeholder="请输入计划名称"  class="layui-input" lay-verify="required">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                     <div class="layui-line">-->
+<!--                                            <label class="layui-form-label layui-required">工作任务编号</label>-->
+<!--                                            <div class="layui-input-inline">-->
+<!--                                                <input type="text" name="jobId" id="jobId" style="background:#CCCCCC" readonly="true" class="layui-input" >-->
+<!--                                            </div>-->
+<!--                                      </div>-->
+<!--                                    <div class="layui-line">-->
+<!--                                        <label class="layui-form-label layui-required">升级时间间隔</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <input type="text" name="policy" id="policy" lay-verify="required"-->
+<!--                                                   autocomplete="off"placeholder="请输入升级时间间隔" class="layui-input">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-line">-->
+<!--                                        <label class="layui-form-label layui-required">升级后版本号</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <input type="text" name="version" id="version" lay-verify="required"-->
+<!--                                                   autocomplete="off"placeholder="请选择升级后版本号" class="layui-input">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+<!--                                <div class="layui-form-item">-->
+<!--                                    <div class="layui-line">-->
+<!--                                        <label class="layui-form-label layui-required">补丁名称</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <input name="paName" style="background:#CCCCCC" placeholder="查询补丁名称" class="layui-input" id="paName" autocomplete="off">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-line">-->
+<!--                                        <label class="layui-form-label layui-required">升级类型</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <select id="upgradeType" name="upgradeType" lay-verify="required">-->
+<!--                                                <option value="">请选择</option>-->
+<!--                                                <option value="0">补丁升级</option>-->
+<!--                                                <option value="1">文件系统升级</option>-->
+<!--                                                <option value="2">内核升级</option>-->
+<!--                                                <option value="3">全量升级</option>-->
+<!--                                            </select>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+
+<!--                            </form>-->
+<!--                        </fieldset>-->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>补丁列表</h4></div>
+                    <div class="card-body">
+                        <table id="patch_table" data-response-handler="responseHandler" lay-filter="patchFilter"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>升级记录</h4></div>
+                    <div class="card-body">
+                        <table id="log_table" data-response-handler="responseHandler" lay-filter="logFilter"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+        <!--End 页面主要内容-->
+</div>
+
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="barDemo">
+      <a class="layui-btn  layui-btn-xs" lay-event="upgrade">升级</a>
+</script>
+<script type="text/html" id="typeBar">
+    {{#  if(d.paType =='0' ){ }}
+    主控单元补丁
+    {{#  } else if(d.paType =='1' ) { }}
+    AI模块补丁
+    {{#  } else if(d.paType =='2' ) { }}
+    操作系统
+    {{#  } }}
+</script>
+<!--属性名称不一致，后续需要优化属性改为一个模板-->
+<script type="text/html" id="upgradeTypeBar">
+    {{#  if(d.upgradeType =='0' ){ }}
+    主控单元补丁
+    {{#  } else if(d.upgradeType =='1' ) { }}
+    AI模块补丁
+    {{#  } else if(d.upgradeType =='2' ) { }}
+    操作系统
+    {{#  } }}
+</script>
+<script type="text/html" id="logDemo">
+    {{#  if(d.resultState =='1' ){ }}
+      <a class="layui-btn  layui-btn-xs" lay-event="again">重新升级</a>
+    {{#  } }}
+    <a class="layui-btn  layui-btn-xs" lay-event="progress">查看进度</a>
+</script>
+<script type="text/html" id="resultDemo">
+    {{#  if(d.resultState =='1' ){ }}
+       <span class="layui-bg-red">升级失败</span>
+    {{#  } else if(d.resultState =='0' ) { }}
+       升级成功
+    {{#  } }}
+</script>
+<script>
+    layui.use('table', function () {
+        var    table = layui.table,
+          dropdown  = layui.dropdown,
+                   form= layui.form,
+            laydate = layui.laydate;
+        laydate.render({ elem: '#execTime', type: 'datetime'  });
+        let deviceId = getUrlParam("deviceId");
+        let daId = getUrlParam("daId");
+        $.get("/upgrade/getJobId",function (obj) {
+            if (obj.code === 20000){
+                let data = obj.data;
+                $("#jobId").val(data.num);
+                initDown(data.patchList);
+            }
+        })
+
+        form.on("select(execType)", function(data){
+            if (data.value === '0'){
+                $('#execTime').val("");
+                $('#execTime').attr("readonly","true");
+                $('#execTime').css("background","#CCCCCC");
+                $('#execTime').css("pointer-events","none");
+            }else{
+                $('#execTime').removeAttr("readonly");
+                $('#execTime').removeAttr("style");
+            }
+        });
+
+        function initDown(obj){         //初演示 - 绑定输入框
+            let down=new Array();
+            for (let i = 0; i <obj.length ; i++) {
+                let o=new Object();
+                o.title=obj[i].name;
+                o.id=obj[i].id;
+                o.versions=obj[i].versions;
+                down.push(o)
+            }
+            dropdown.render({
+                elem: '#paName'
+                ,data: down
+                ,click: function(obj){
+                    this.elem.val(obj.title);
+                    $('#versions').val(obj.versions);
+                    $('#duFileId').val(obj.id);
+                }
+                ,style: 'width: 235px;'
+            });
+
+        }
+       let patchTable= table.render({
+            elem: '#patch_table'
+            ,url: '/upgrade/task/patchSearch'
+            ,method:'post'
+            ,page:true
+            ,id: 'patchReload'
+            ,where:{arcId:daId}
+            ,contentType:'application/json'
+            , cols: [[
+                 {field:'id',title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'paName',width:'15%', title: '补丁名称'}
+                ,{field: 'paType', width:'8%',title: '补丁类型',toolbar:'#typeBar'}
+                ,{field: 'versions', width:'15%',title: '补丁版本'}
+                ,{field: 'exceState', width:'8%',title: '执行状态'}
+                ,{fixed: 'right', width: '8%', title: '操作', align: 'center', toolbar: '#barDemo'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+      let logTable= table.render({
+            elem: '#log_table'
+            ,url: '/upgrade/log'
+            ,method:'post'
+            ,page:true
+            ,id: 'logReload'
+            ,where:{deviceId:deviceId}
+            ,contentType:'application/json'
+            , cols: [[
+                { field: "duId",title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'jobId', title: '工作分区'}
+                ,{field: 'paName',width:'15%', title: '补丁名称'}
+                ,{field: 'upgradeType', width:'8%',title: '补丁类型',toolbar:'#upgradeTypeBar'}
+                ,{field: 'version', width:'8%',title: '补丁版本'}
+                ,{field: 'createTime', width:'8%',title: '执行时间'}
+                ,{field: 'state', width:'8%',title: '执行状态'}
+                ,{field: 'resultState', width:'8%',title: '升级状态', toolbar: '#resultDemo'}
+                ,{fixed: 'right', width: '15%', title: '操作', align: 'center', toolbar: '#logDemo'}
+            ]]
+            ,done: function (res, curr, count){
+              $(".layui-table-box").find("[data-field='jobId']").css("display","none");
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        table.on('tool(patchFilter)', function(obj) {
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'upgrade') {
+                let obj=new Object;
+                obj.deviceId=deviceId;
+                obj.daId=data.id;
+                $.ajax({
+                    method: "post",
+                    url: "/upgrade/exce",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify(obj),
+                    success: function (data) {
+                        if (data.code === 999){
+                            layer.alert("重新升级指令已发送失败!",{icon:5})
+                        }else if (data.code === 20000){
+                            layer.alert("重新升级指令发送成功!",{icon:1})
+                            //刷新操作
+                            patchTable.reload({elem: '#patch_table'});
+                            logTable.reload({elem: '#log_table'});
+                        }
+                    }
+                });
+            }
+        });
+
+        //触发事件
+        table.on('tool(logFilter)', function(obj) {
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'again') {
+                let duId=data.duId;
+                $.ajax({
+                    method: "post",
+                    url: "/upgrade/againExce",
+                    dataType: "json",
+                    data: {duId:duId},
+                    success: function (data) {
+                        if (data.code === 999){
+                            layer.alert("升级设备发送指令失败!",{icon:5})
+                        }else if (data.code === 20000){
+                            layer.alert("升级设备发送发送成功!",{icon:1})
+                            //刷新操作
+                            patchTable.reload({elem: '#patch_table'});
+                            logTable.reload({elem: '#log_table'});
+                        }
+                    }
+                });
+            }else{
+                openBox('device_upgrade_progress.html?jobId='+data.jobId+'&deviceId='+deviceId);
+            }
+        });
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
+
+        }
+    })
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+</html>

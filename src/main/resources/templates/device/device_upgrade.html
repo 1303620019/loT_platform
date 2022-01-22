@@ -237,7 +237,7 @@
 </script>
 <script type="text/html" id="barDemo">
     {{#  if(d.linkStatusNum =='0' ){ }}
-    <a class="layui-btn layui-btn-xs" lay-event="upgrade">升级</a>
+    <a class="layui-btn layui-btn-xs" lay-event="upgrade">升级详情</a>
     {{#  } }}
 </script>
 <script>
@@ -309,10 +309,25 @@
         table.on('tool(upgradeFilter)', function(obj) {
             var data = obj.data;
             if (obj.event === 'upgrade') {
-                    layer.alert("设备可升级");
+                openBox('device_upgrade_end.html?deviceId='+data.deviceId+"&daId="+data.daId);
             }
         });
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
 
+        }
     })
 </script>
 </body>

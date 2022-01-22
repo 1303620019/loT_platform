@@ -33,9 +33,11 @@ public class DeviceLinkDisk implements Serializable {
     private String dldId;
 
     @ApiModelProperty(value = "t_device_link_dev 表id")
+    @TableField("dld_dli_id")
     private String dldDliId;
 
     @ApiModelProperty(value = "磁盘空间，以 M 为单位")
+    @TableField("dld_disk")
     private Integer dldDisk;
 
     @ApiModelProperty(value = "磁盘监控阈值，例如 50 表示 50%")

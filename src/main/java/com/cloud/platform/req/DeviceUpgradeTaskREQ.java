@@ -42,18 +42,27 @@ public class DeviceUpgradeTaskREQ extends BaseRequest<DeviceUpgradeTask> {
 
   @ApiModelProperty(value = "0-保存 1-下发  2-执行   3-已执行")
   public Integer state;
+
   @ApiModelProperty(value = "0-设备 1-容器 2-系统")
   public Integer type;
+
   @ApiModelProperty(value = "执行状态")
   private String exceState;
 
   @ApiModelProperty(value = "计划编号")
   private String num;
 
+  @ApiModelProperty(value = "设备档案表的ID")
+  private String arcId;
+
   @ApiModelProperty(value = "计划名称")
   private String name;
+
   @ApiModelProperty(value = "计划内容")
   public DeviceUpgradeTask field;
+
   @ApiModelProperty(value = "设备集合")
   public List<String> daIds;
+  @ApiModelProperty(value = "设备档案id")
+  public String daId;
 }

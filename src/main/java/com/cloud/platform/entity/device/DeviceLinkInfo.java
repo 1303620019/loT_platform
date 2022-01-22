@@ -33,6 +33,7 @@ public class DeviceLinkInfo implements Serializable {
     private String dilId;
 
     @ApiModelProperty(value = "该值为应答所对应请求报文的请求 ID")
+    @TableField("dil_mid")
     private Integer dilMid;
 
     @ApiModelProperty(value = "边设备唯一标识")
@@ -40,15 +41,19 @@ public class DeviceLinkInfo implements Serializable {
     private String dilDeviceid;
 
     @ApiModelProperty(value = "消息发送的时间戳")
+    @TableField("dil_timestamp")
     private String dilTimestamp;
 
     @ApiModelProperty(value = "消息类型")
+    @TableField("dil_type")
     private String dilType;
 
     @ApiModelProperty(value = "请求状态码")
+    @TableField("dil_code")
     private String dilCode;
 
     @ApiModelProperty(value = "应答结果描述")
+    @TableField("dil_msg")
     private String dilMsg;
 
     @ApiModelProperty(value = "创建时间")

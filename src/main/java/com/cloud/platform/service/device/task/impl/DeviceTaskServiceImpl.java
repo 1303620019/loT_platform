@@ -8,6 +8,8 @@ import com.cloud.platform.mapper.device.task.DeviceTaskMapper;
 import com.cloud.platform.service.device.task.IDeviceTaskService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 计划任务关系表 服务实现类
@@ -19,11 +21,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeviceTaskServiceImpl
         extends ServiceImpl<DeviceTaskMapper, DeviceTask> implements IDeviceTaskService {
+  @Resource
+  private  DeviceTaskMapper taskMapper;
   @Override
   public void del(String taId) {
     QueryWrapper wrapper=new QueryWrapper();
     wrapper.eq("dt_taId",taId);
     baseMapper.delete(wrapper);
 
+  }
+
+  @Override
+  public void editState(String deviceId) {
+    taskMapper.editState(deviceId);
   }
 }

@@ -22,4 +22,5 @@ import org.apache.ibatis.annotations.Param;
 public interface DeviceUpgradeTaskMapper extends BaseMapper<DeviceUpgradeTask> {
 
   IPage<DeviceUpgradeTask> searche(IPage<DeviceUpgradeTask> page, @Param("req") DeviceUpgradeTaskREQ  req);
+  IPage<DeviceUpgradeTask> patchSearch(IPage<DeviceUpgradeTask> page, @Param("req") DeviceUpgradeTaskREQ  req);
 }

@@ -1,5 +1,6 @@
 package com.cloud.platform.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
@@ -31,18 +32,23 @@ public class EquipmentAuth implements Serializable {
     private String eaId;
 
     @ApiModelProperty(value = "登录名称")
+    @TableField("ea_username")
     private String eaUsername;
 
     @ApiModelProperty(value = "登录密码")
+    @TableField("ea_password")
     private String eaPassword;
 
     @ApiModelProperty(value = "客户端id")
+    @TableField("ea_client_id")
     private String eaClientId;
 
     @ApiModelProperty(value = "状态 0-正常 1-删除")
+    @TableField("ea_state")
     private Integer eaState;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField("ea_create_time")
     private String eaCreateTime;
 
 

@@ -41,6 +41,7 @@ public class DeviceFunctionAiapp implements Serializable {
     private String dfaDfiId;
 
     @ApiModelProperty(value = "Ai信息 例：app1, v1.0")
+    @TableField("dfa_dfiId")
     private String dfaInfo;
 
     @ApiModelProperty(value = "创建时间")

@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloud.platform.mapper.device.task.DeviceTaskMapper">
 
+    <update id="editState">
+        update t_device_task set  dt_state=1
+        where dt_arcId=( select da_id from t_device_archives where da_deviceId=#{deviceId})
+    </update>
+
+
+
 </mapper>

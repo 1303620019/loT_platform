@@ -4,6 +4,7 @@ package com.cloud.platform.controller.task;
 import com.cloud.platform.base.Result;
 import com.cloud.platform.base.ResultVo;
 import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
+import com.cloud.platform.req.DeviceUpgradeREQ;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
 import com.cloud.platform.service.device.task.IDeviceUpgradeTaskService;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,7 @@ public class DeviceUpgradeTaskController {
   private Result saveUpgradeTask(@RequestBody DeviceUpgradeTaskREQ req){
     return taskService.saveTask(req);
   }
-  @ApiOperation("保存计划")
+  @ApiOperation("修改计划")
   @PostMapping("/edit")
   private Result editUpgradeTask(@RequestBody DeviceUpgradeTaskREQ req){
     return taskService.editUpgradeTask(req);
@@ -65,4 +66,11 @@ public class DeviceUpgradeTaskController {
   private Result delTask(@Param("id") String id){
     return taskService.del(id);
   }
+
+  @ApiOperation("补丁列表")
+  @PostMapping("/patchSearch")
+  public ResultVo patchSearch(@RequestBody DeviceUpgradeTaskREQ req){
+    return taskService.patchSearch(req);
+  }
+
 }

@@ -6,6 +6,9 @@
         <result column="dut_name" property="name"/>
         <result column="dut_num" property="num"/>
         <result column="dut_type" property="type"/>
+        <result column="dut_paType" property="paType"/>
+        <result column="dut_paName" property="paName"/>
+        <result column="dut_versions" property="versions"/>
         <result column="dut_exceState" property="exceState"/>
         <result column="dut_execType" property="execType"/>
         <result column="dut_execTime" property="execTime"/>
@@ -16,12 +19,12 @@
     <select id="searche" resultMap="baseMap">
         select dut.dut_id, dut.dut_name,dut.dut_num, dut.dut_type,dut.dut_exceState,dut.dut_execType,dut.dut_execTime,dut.dut_creataTime,
         CONCAT(
-        IFNULL((select COUNT(1) from t_device_task where dt_taId=dut.dut_id and dt_state=3),0),
+        IFNULL((select COUNT(1) from t_device_task where dt_taId=dut.dut_id and dt_state=1),0),
         '/',
         IFNULL((select COUNT(1) from t_device_task where dt_taId=dut.dut_id),0)
         ) as 'stat'
         from t_device_upgrade_task dut
-        LEFT join t_device_task dt on dut.dut_id = dt.dt_taId
+--      LEFT join t_device_task dt on dut.dut_id = dt.dt_taId
         where 1=1
         <if test="req.name !=null and req.name !=''">
            and dut.dut_name=#{req.name}
@@ -43,5 +46,10 @@
         </if>
     </select>
 
-
+    <select id="patchSearch" resultMap="baseMap">
+        select uta.dut_id ,uta.dut_paName,uta.dut_name ,uta.dut_paType,uta.dut_versions,uta.dut_exceState
+        from t_device_upgrade_task uta
+        left join t_device_task ta on uta.dut_id =ta.dt_taId
+        where 1=1 and uta.dut_exceState=1 and ta.dt_arcId=#{req.arcId}
+    </select>
 </mapper>

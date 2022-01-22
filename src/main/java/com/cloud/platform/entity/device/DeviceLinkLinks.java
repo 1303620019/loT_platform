@@ -33,18 +33,23 @@ public class DeviceLinkLinks implements Serializable {
     private String dllId;
 
     @ApiModelProperty(value = "t_device_link_dev 表id")
+    @TableField("dll_dli_id")
     private String dllDliId;
 
     @ApiModelProperty(value = "接口的类型，如以太网口、4G、“Ethernet”、”4G“")
+    @TableField("dll_type")
     private String dllType;
 
     @ApiModelProperty(value = "接口的 ID，主要用于 HPLC 和 4G 等外部模块")
+    @TableField("dllin_id")
     private String dllinId;
 
     @ApiModelProperty(value = "接口的名称如为以太网口、4G，则形如“eth1”、”ppp-0”")
+    @TableField("dll_name")
     private String dllName;
 
     @ApiModelProperty(value = "如接口为以太网、4G，则添加 mac 地址，形如“B8-85-74-15-A5-3E”")
+    @TableField("dll_mac")
     private String dllMac;
 
     @ApiModelProperty(value = "创建时间")

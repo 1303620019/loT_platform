@@ -35,17 +35,21 @@ public class DeviceLinkOs implements Serializable {
     private String dloId;
 
     @ApiModelProperty(value = "t_device_link_dev 表id")
+    @TableField("dlo_dle_id")
     private String dloDlDId;
     @ApiModelProperty(value = "dlo_deviceId")
     @TableField("dlo_deviceId")
     private String dloDeviceId;
     @ApiModelProperty(value = "操作系统名称，如“Ubunut”“Redhat”")
+    @TableField("dlo_distro")
     private String dloDistro;
 
     @ApiModelProperty(value = "操作系统版本，如“18.10”")
+    @TableField("dlo_version")
     private String dloVersion;
 
     @ApiModelProperty(value = "操作系统内核，如“3.10-17”")
+    @TableField("dlo_kernel")
     private String dloKernel;
 
     @ApiModelProperty(value = "平台软件组件版本，如“V01.024”")

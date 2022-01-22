@@ -14,7 +14,16 @@
       <result column="du_progress" property="progress"/>
       <result column="dld_devStatus_num" property="linkState"/>
     </resultMap>
-    
+    <resultMap id="baseMap2" type="DeviceUpgrade">
+        <id column="du_id" property="duId"/>
+        <id column="du_jobId" property="jobId"/>
+        <result column="dut_paName" property="paName"/>
+        <result column="du_upgradeType" property="upgradeType"/>
+        <result column="dut_versions" property="version"/>
+        <result column="du_createTime" property="createTime"/>
+        <result column="du_state" property="state"/>
+        <result column="du_result" property="resultState"/>
+    </resultMap>
 
     <select id="taskList" resultMap="baseMap">
         select
@@ -22,5 +31,17 @@
         ifnull(du.du_state,0) as 'du_state',du.du_createTime,dev.dld_devStatus_num,du.du_progress
         from t_device_upgrade du left join   t_device_link_dev dev on du.du_deviceId=dev.dld_device_id
         where 1=1
+    </select>
+
+
+    <select id="upgradeLog" resultMap="baseMap2">
+        select up.du_id,up.du_jobId, task.dut_paName, up.du_upgradeType,task.dut_versions,
+        up.du_createTime,up.du_state,up.du_result
+        from t_device_upgrade up
+        left join  t_device_upgrade_task task on   up.du_taId=task.dut_id
+        where 1=1 and up.du_exceState=2
+        <if test="req.deviceId!=null and req.deviceId!=''">
+            and up.du_deviceId= #{req.deviceId}
+        </if>
     </select>
 </mapper>

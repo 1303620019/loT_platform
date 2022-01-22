@@ -34,11 +34,14 @@ public class DeviceLinkDev implements Serializable {
     private String dldId;
 
     @ApiModelProperty(value = "t_device_link_info表id")
+    @TableField("dld_dli_id")
     private String dldDliId;
 
     @ApiModelProperty(value = "设备编号")
+    @TableField("dld_device_id")
     private String dldDeviceId;
     @ApiModelProperty(value = "断开原因")
+    @TableField("dld_break_reason")
     private String  dldBreakReason;
 
     @ApiModelProperty(value = "终端类型")

@@ -88,7 +88,7 @@
             ,id: 'testReload'
             ,contentType:'application/json'
             , cols: [[
-                {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                {field: 'daId',title: '序号',width:'5%',toolbar: '#indexTpl'}
                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
                 ,{field: 'jobId', width:'8%',title: '工作任务'}
                 ,{field: 'policy', width:'8%',title: '间隔/秒'}
@@ -133,6 +133,22 @@
                     break;
             }
         });
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
+
+        }
     });
 
 

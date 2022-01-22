@@ -34,30 +34,39 @@ public class DeviceMessageLog implements Serializable {
     private String dmlId;
 
     @ApiModelProperty(value = "登录用户名")
+    @TableField("dml_username")
     private String dmlUsername;
 
     @ApiModelProperty(value = "主题名称")
+    @TableField("dml_topic")
     private String dmlTopic;
 
     @ApiModelProperty(value = "消息体")
+    @TableField("dml_payload")
     private String dmlPayload;
 
     @ApiModelProperty(value = "事件触发时间")
+    @TableField("dml_timestamp")
     private String dmlTimestamp;
 
     @ApiModelProperty(value = "消息到达 Broker 的时间")
+    @TableField("dml_publish_received_at")
     private String dmlPublishReceivedAt;
 
     @ApiModelProperty(value = "消息等级")
+    @TableField("dml_qos")
     private String dmlQos;
 
     @ApiModelProperty(value = "客户端的 IPAddress")
+    @TableField("dml_peerhost")
     private String dmlPeerhost;
 
     @ApiModelProperty(value = "事件触发所在节点")
+    @TableField("dml_node")
     private String dmlNode;
 
     @ApiModelProperty(value = "客户端id")
+    @TableField("dml_clientid")
     private String dmlClientid;
 
     @ApiModelProperty(value = "创建时间")

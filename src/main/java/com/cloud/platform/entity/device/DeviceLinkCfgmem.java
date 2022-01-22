@@ -33,9 +33,11 @@ public class DeviceLinkCfgmem implements Serializable {
     private String dlcmId;
 
     @ApiModelProperty(value = "t_device_link_info表id")
+    @TableField("dlcm_dli_id")
     private String dlcmDliId;
 
     @ApiModelProperty(value = "内存限值,单位：M Byte")
+    @TableField("dlcm_memory")
     private Integer dlcmMemory;
 
     @ApiModelProperty(value = "内存监控阈值，百分数")

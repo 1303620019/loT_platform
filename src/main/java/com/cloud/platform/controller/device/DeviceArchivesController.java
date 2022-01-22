@@ -54,6 +54,11 @@ public class DeviceArchivesController {
   public ResultVo search(@RequestBody DeviceArchivesREQ req){
    return archivesService.search(req);
   }
+  @ApiOperation("获取列表Arc")
+  @PostMapping("/searchArc")
+  public ResultVo searchArc(@RequestBody DeviceArchivesREQ req){
+    return archivesService.searchArc(req);
+  }
 
   @ApiOperation("获取列表")
   @PostMapping("/device/search")

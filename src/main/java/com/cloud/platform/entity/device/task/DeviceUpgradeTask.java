@@ -41,7 +41,7 @@ public class DeviceUpgradeTask implements Serializable {
     @TableField("dut_num")
     private String num;
 
-    @ApiModelProperty(value = "0-未执行 1-已执行")
+    @ApiModelProperty(value = "0-未执行 1-待升级 2-已升级")
     @TableField("dut_exceState")
     private Integer exceState;
 
@@ -75,6 +75,10 @@ public class DeviceUpgradeTask implements Serializable {
     @ApiModelProperty(value = "补丁类型")
     @TableField("dut_paType")
     private Integer paType;
+
+    @ApiModelProperty(value = "升级类型")
+    @TableField("dut_upgradeType")
+    private Integer upgradeType;
 
     @ApiModelProperty(value = "补丁版本")
     @TableField("dut_versions")

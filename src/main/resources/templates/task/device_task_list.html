@@ -255,7 +255,9 @@
     {{#  if(d.exceState =='0' ){ }}
     未执行
     {{#  } else if(d.exceState =='1' ) { }}
-    已执行
+    待升级
+    {{#  } else if(d.exceState =='2' ) { }}
+    已升级
     {{#  } }}
 </script>
 <script type="text/html" id="moreDemo">
@@ -381,7 +383,7 @@
                         } else if(menudata.id === 'exce'){
                             $.get("/upgrade/task/state/"+data.id,function (obj) {
                                 if (obj.code === 20000){
-                                    layer.alert("已修改为已执行",{icon:1});
+                                    layer.alert("已修改为待升级",{icon:1});
                                     taskTable.reload({elem: '#task_table'})
                                 }
                             })

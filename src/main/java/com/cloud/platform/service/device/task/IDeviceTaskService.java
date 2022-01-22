@@ -15,5 +15,6 @@ public interface IDeviceTaskService extends IService<DeviceTask> {
 
 
   void del(String taId);
+  void  editState(String deviceId);
 
 }

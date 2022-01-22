@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>更新进度</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .layui-form-label.layui-required:after{
+            content:"*";
+            color:red;
+            position: absolute;
+            top:5px;
+            left:15px;
+        }
+        .layui-form-pane .layui-form-label {
+            width: 140px;
+        }
+        legend{
+            display:flex;justify-content:space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lyear-layout-web">
+
+        <!--页面主要内容-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>进度列表</h4></div>
+                    <div class="card-body">
+                        <table id="progress_table" data-response-handler="responseHandler" lay-filter="progressFilter"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <!--End 页面主要内容-->
+</div>
+
+
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="stateDemo">
+    {{#  if(d.state =='1' ){ }} 待下载
+    {{#  } else if(d.state =='2' ) { }}下载中
+    {{#  } else if(d.state =='3' ) { }}待安装
+    {{#  } else if(d.state =='4' ) { }} 安装中
+    {{#  } else if(d.state =='5' ) { }}安装完毕
+    {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+        <button class="layui-btn" lay-event="query">查询进度</button>
+</script>
+<script>
+    layui.use('table', function () {
+        var    table = layui.table,
+            laydate = layui.laydate;
+        laydate.render({ elem: '#execTime', type: 'datetime'  });
+        let jobId = getUrlParam("jobId");
+        let deviceId = getUrlParam("deviceId");
+       let progressTable= table.render({
+            elem: '#progress_table'
+            ,url: '/upgrade/progress'
+            ,method:'post'
+            ,page:true
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,id: 'patchReload'
+            ,where:{jobId:jobId}
+            ,contentType:'application/json'
+            , cols: [[
+                 {field:'id',title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'jobId',width:'8%', title: '工作任务'}
+                ,{field: 'progress', width:'8%',title: '进度'}
+                ,{field: 'state', width:'15%',title: '状态',toolbar:'#stateDemo'}
+                ,{field: 'createTime', width:'15%',title: '召回时间'}
+              ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        //头工具栏事件
+        table.on('toolbar(progressFilter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'query':
+                    $.ajax({
+                        method: "post",
+                        url: "/upgrade/status/query",
+                        dataType: "json",
+                        data: {jobId:jobId, deviceId: deviceId},
+                        success: function (data) {
+                            if (data.code === 20000) {
+                                layer.alert("状态查询命令发送成功！",{icon:1})
+                                progressTable.reload('testReload');
+                            }else{
+                                layer.alert("设备连接异常！",{icon:5})
+                            }
+                        }
+                    });
+                    break;
+            }
+        });
+    })
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+</html>

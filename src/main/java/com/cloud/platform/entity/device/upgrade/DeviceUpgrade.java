@@ -39,6 +39,10 @@ public class DeviceUpgrade implements Serializable {
     @TableField("du_jobId")
     private Integer jobId;
 
+    @ApiModelProperty(value = "补丁名称")
+    @TableField(exist = false)
+    private String paName;
+
     @ApiModelProperty(value = "升级间隔开始时间 null||0-立即升级  单位：秒")
     @TableField("du_policy")
     private Integer policy;
@@ -61,10 +65,24 @@ public class DeviceUpgrade implements Serializable {
     @JSONField(serialize=false)
     private String deviceId;
 
+    @ApiModelProperty(value = "t_device_upgrade_task表id")
+    @TableField("du_taId")
+    @JSONField(serialize=false)
+    private String taId;
+
+    @ApiModelProperty(value = "0-未执行 1-已执行")
+    @TableField("du_exceState")
+    @JSONField(serialize=false)
+    private Integer exceState;
+
     @ApiModelProperty(value = "设备升级进度")
     @TableField("du_progress")
     @JSONField(serialize=false)
     private Integer progress;
+    @ApiModelProperty(value = "升级结果")
+    @TableField("du_result")
+    @JSONField(serialize=false)
+    private Integer resultState;
 
     @ApiModelProperty(value = "在线状态")
     @TableField(exist = false)

@@ -25,7 +25,10 @@ public interface IDeviceUpgradeService extends IService<DeviceUpgrade> {
    Boolean updateUpgrade(String deviceId,Map map);
    DeviceUpgrade  selectByJobId(String jobId);
    Result  getJObid();
-   ResultVo taskList(DeviceUpgradeREQ req);
+   ResultVo upgradeLog(DeviceUpgradeREQ req);
+   Result againExce(String duId);
    Result exceUpgrade(DeviceUpgradeREQ req);
    Result statusQuery(Integer jobId,String deviceId);
+   Result progress(Integer jobId);
+
 }

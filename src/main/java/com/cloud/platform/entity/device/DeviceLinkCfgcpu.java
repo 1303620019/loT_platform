@@ -33,9 +33,11 @@ public class DeviceLinkCfgcpu implements Serializable {
     private String dlcpuId;
 
     @ApiModelProperty(value = "t_device_link_info表id")
+    @TableField("dlo_kernel")
     private String dlcpuDliId;
 
     @ApiModelProperty(value = "CPU 核数(例如值为 2，3，4)")
+    @TableField("dlcpu_cpus")
     private Integer dlcpuCpus;
 
     @ApiModelProperty(value = "CPU 监控阈值")

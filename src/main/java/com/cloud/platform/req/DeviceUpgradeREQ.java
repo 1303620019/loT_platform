@@ -29,5 +29,9 @@ public class DeviceUpgradeREQ extends BaseRequest<DeviceUpgrade>{
   public DeviceUpgrade field;
   @ApiModelProperty(value = "升级设备集合")
   public List<String> deviceIds;
-
+  @ApiModelProperty(value = "设备id")
+  public String deviceId;
+  @ApiModelProperty(value = "设备档案id")
+  //此变量名视为 taId 由于多出使用 暂不修改
+  public String daId;
 }

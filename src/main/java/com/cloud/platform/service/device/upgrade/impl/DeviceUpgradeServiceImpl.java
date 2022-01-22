@@ -15,6 +15,8 @@ import com.cloud.platform.entity.device.DeviceLinkFileSign;
 import com.cloud.platform.entity.device.DeviceLinkInfo;
 import com.cloud.platform.entity.device.function.DeviceFunctionInfo;
 import com.cloud.platform.entity.device.market.DevicePatch;
+import com.cloud.platform.entity.device.task.DeviceTask;
+import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 
 import com.cloud.platform.mapper.device.upgrade.DeviceUpgradeMapper;
@@ -25,10 +27,14 @@ import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
 import com.cloud.platform.service.device.IDeviceLinkInfoService;
 import com.cloud.platform.service.device.market.IDevicePatchService;
+import com.cloud.platform.service.device.task.IDeviceTaskService;
+import com.cloud.platform.service.device.task.IDeviceUpgradeTaskService;
+import com.cloud.platform.service.device.task.impl.DeviceTaskServiceImpl;
 import com.cloud.platform.service.device.upgrade.IDeviceUpgradeService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
@@ -52,7 +58,9 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
   @Resource
   private IDevicePatchService patchService;
   @Resource
-  private IDeviceLinkInfoService infoService;
+  private IDeviceTaskService deviceTaskService;
+  @Resource
+  private IDeviceUpgradeTaskService taskService;
   @Resource
   private IMqttHttpPort iMqttHttpPort;
   @Autowired
@@ -104,34 +112,48 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
   }
 
   @Override
+  @Transactional
   public Result exceUpgrade(DeviceUpgradeREQ req) {
     if (ObjectUtils.isEmpty(req)){
       return Result.error("数据不能为空");
     }
-    List<String> deviceIds = req.getDeviceIds();
-    DeviceUpgrade deviceUpgrade = req.getField();
-    if (ListUtils.isEmpty(deviceIds)){
-      return Result.error("请选择设备后在进行操作！");
-    }
-    for (int i = 0; i < deviceIds.size(); i++) {
-      deviceUpgrade.setDuId(null);
-      Boolean sendmessage = sendmessage(deviceIds.get(i),i, deviceUpgrade);
-      deviceUpgrade.setDeviceId(deviceIds.get(i));
-      baseMapper.insert(deviceUpgrade);
-      if (!sendmessage){
-        return Result.error("发送失败");
-      }
-    }
+    //获取新的工作分区id
+    Integer jobId = getJobId();
+    //升级任务记录类
+    DeviceUpgrade upgrade=new DeviceUpgrade();
+    //获取任务计划的补丁
+    DeviceUpgradeTask upgradeTask = taskService.getById(req.getDaId());
+    if (ObjectUtils.isNotEmpty(upgradeTask)){
+       upgrade.setJobId(jobId);
+       upgrade.setTaId(req.getDaId());
+       //默认按立即执行
+       upgrade.setPolicy(0);
+       upgrade.setVersion(upgradeTask.getVersions());
+       //需求待明确
+       upgrade.setUpgradeType(upgradeTask.getPaType());
+       upgrade.setDuFileId(upgradeTask.getPaId());
+       upgrade.setDeviceId(req.getDeviceId());
+       upgrade.setCreateTime(new Date());
+       Boolean sendmesage = sendmessage(upgrade);
+       if (sendmesage){
+         deviceTaskService.editState(req.getDeviceId());
+         upgradeTask.setExceState(2);
+         upgrade.setExceState(2);
+         //保存升级记录
+         baseMapper.insert(upgrade);
+         taskService.updateById(upgradeTask);
+       } else{
+         return Result.error("发送失败");
+       }
+     }
     return Result.ok();
   }
-
-  public Boolean sendmessage(String n,int i, DeviceUpgrade deviceUpgrade) {
+//   public Boolean sendmessage(String n,int i, DeviceUpgrade deviceUpgrade) {  用于版本1
+  public Boolean sendmessage(DeviceUpgrade deviceUpgrade) {
     MessageHeadREQ messageLog = new MessageHeadREQ();
     try {
-      int jobIdNum = deviceUpgrade.getJobId() + i;
-      deviceUpgrade.setJobId(jobIdNum);
-      messageLog.setMid(jobIdNum);
-      messageLog.setDeviceId(n);
+      messageLog.setMid(deviceUpgrade.getJobId());
+      messageLog.setDeviceId(deviceUpgrade.getDeviceId());
       String strDateFormat = "yyyy-MM-dd HH:mm:ss";
       SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
       messageLog.setTimestamp(sdf.format(new Date()));
@@ -139,14 +161,17 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
       DevicePatch patch = patchService.getById(deviceUpgrade.getDuFileId());
       if (ObjectUtils.isNotEmpty(patch)) {
         DeviceLinkFile file = fileService.getFile(patch.getPatchFileId(),0);
-        DeviceLinkFileSign fileSign = fileSignService.getFileSign(file.getFsId());
-        if (!org.springframework.util.ObjectUtils.isEmpty(fileSign)) {
-          file.setSign(fileSign);
-        }
+           //添加验证签名
+          if (ObjectUtils.isNotEmpty(file)){
+            DeviceLinkFileSign fileSign = fileSignService.getFileSign(file.getFsId());
+            if (ObjectUtils.isNotEmpty(fileSign)) {
+              file.setSign(fileSign);
+            }
+          }
         messageLog.setMsg(null);
         deviceUpgrade.setFile(file);
         messageLog.setParam(deviceUpgrade);
-        Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/" + n + "/device/command");
+        Boolean aBoolean = iMqttHttpPort.sendMsg(messageLog, "/v1/" + deviceUpgrade.getDeviceId() + "/device/command");
         return aBoolean;
       }
       return false;
@@ -159,16 +184,38 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
   }
 
   @Override
-  public ResultVo taskList(DeviceUpgradeREQ req) {
+  public ResultVo upgradeLog(DeviceUpgradeREQ req) {
     IPage<DeviceUpgrade> page=new Page<DeviceUpgrade>();
     IPage<DeviceUpgrade> page1 = req.getPage();
     page.setPages(page1.getPages());
     page.setSize(page1.getSize());
     page.setTotal(page1.getTotal());
-    IPage<DeviceUpgrade> taskListResult = upgradeMapper.taskList(page,req);
-    return ResultVo.ok(taskListResult.getRecords(),taskListResult.getTotal());
+    IPage<DeviceUpgrade> taskLogResult = upgradeMapper.upgradeLog(page,req);
+    return ResultVo.ok(taskLogResult.getRecords(),taskLogResult.getTotal());
   }
 
+  @Override
+  public Result againExce(String duId) {
+
+    DeviceUpgrade upgrade = baseMapper.selectById(duId);
+    Boolean sendmessage = sendmessage(upgrade);
+    if (sendmessage){
+      upgradeMapper.updateResultState(upgrade.getDuId());
+    }
+    return Result.ok();
+  }
+
+  public Integer getJobId(){
+    int n=1;
+    QueryWrapper wrapper=new QueryWrapper();
+    wrapper.orderByDesc("du_createTime");
+    wrapper.last(" limit 1");
+    DeviceUpgrade upgradeJob = baseMapper.selectOne(wrapper);
+    if (ObjectUtils.isNotEmpty(upgradeJob)){
+      n= upgradeJob.getJobId()+1;
+    }
+    return n;
+  }
   @Override
   public Result statusQuery(Integer jobId, String deviceId) {
     JSONObject jsonObject=new JSONObject();
@@ -186,5 +233,13 @@ public class DeviceUpgradeServiceImpl extends ServiceImpl<DeviceUpgradeMapper, D
        return Result.ok();
     }
     return Result.error("发送命令失败");
+  }
+
+  @Override
+  public Result progress(Integer jobId) {
+    QueryWrapper wrapper =new QueryWrapper();
+//    wrapper.eq("",)
+
+    return null;
   }
 }
