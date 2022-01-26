@@ -1,17 +1,13 @@
 package com.cloud.platform.controller.user;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.cloud.platform.base.Result;
+import com.cloud.platform.comm.Result;
 import com.cloud.platform.entity.user.SysUser;
 import com.cloud.platform.service.user.ISysUserService;
-import com.cloud.platform.service.user.impl.SysUserServiceImpl;
-import com.cloud.platform.util.BASE64;
 import com.cloud.platform.util.Md5Util;
 import com.cloud.platform.util.RedisUtils;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 /**

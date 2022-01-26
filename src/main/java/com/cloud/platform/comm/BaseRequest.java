@@ -1,4 +1,4 @@
-package com.cloud.platform.base;
+package com.cloud.platform.comm;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

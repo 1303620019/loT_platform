@@ -67,25 +67,25 @@ public class DeviceLinkOs implements Serializable {
 
 
     @ApiModelProperty(value = "终端连接状态")
-    @TableField("dld_devStatus_num")
+    @TableField(exist = false)
     private Integer dldDevStatusNum;
 
 
     @ApiModelProperty(value = "终端硬件版本号")
-    @TableField("dld_hardVersion")
+    @TableField(exist = false)
     private String dldHardversion;
 
 
     @ApiModelProperty(value = "终端厂商信息")
-    @TableField("dld_mfgInfo")
+    @TableField(exist = false)
     private String dldMfginfo;
 
     @ApiModelProperty(value = "终端名称")
-    @TableField("dld_devName")
+    @TableField(exist = false)
     private String dldDevname;
 
     @ApiModelProperty(value = "终端类型")
-    @TableField("dld_devType")
+    @TableField(exist = false)
     private String dldDevtype;
 
 }

@@ -2,17 +2,17 @@ package com.cloud.platform.controller.mqtt;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cloud.platform.base.Result;
+import com.cloud.platform.comm.Result;
 import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.entity.device.DeviceLinkFileSign;
 import com.cloud.platform.entity.device.DeviceRestartLog;
 import com.cloud.platform.entity.device.DeviceUpgradeTime;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
-import com.cloud.platform.req.DeviceConfigureREQ;
 import com.cloud.platform.req.MessageHeadREQ;
 import com.cloud.platform.req.PageREQ;
 import com.cloud.platform.service.IMqttHttpPort;
+import com.cloud.platform.service.TmidService;
 import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
 import com.cloud.platform.service.device.IDeviceRestartLogService;
@@ -63,6 +63,8 @@ public class MqttController {
 
   @Resource
   private IDeviceUpgradeTimeService timeService;
+  @Resource
+  private TmidService tmidService;
 
   @ApiOperation("mqtt基本信息及运行状态")
   @GetMapping("/nodes")
@@ -177,9 +179,8 @@ public class MqttController {
     // log.info("参数是{}",dateTime);
     JSONObject object=new JSONObject();
 //
-    Integer mid = timeService.getMid();
-    if (ObjectUtils.isEmpty(mid))mid=1;
-    else mid=mid+1;
+    // Integer mid = timeService.getMid();
+    Integer mid = tmidService.getMid();
     DeviceUpgradeTime time=new DeviceUpgradeTime();
     String strDateFormat = "yyyy-MM-dd HH:mm:ss";
     SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);

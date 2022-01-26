@@ -1,11 +1,9 @@
 package com.cloud.platform.controller.market;
 
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.market.DevicePatch;
-import com.cloud.platform.req.DeviceArchivesREQ;
 import com.cloud.platform.req.DevicePatchREQ;
 import com.cloud.platform.service.device.market.IDevicePatchService;
 import io.swagger.annotations.ApiOperation;

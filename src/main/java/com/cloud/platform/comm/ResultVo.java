@@ -1,4 +1,4 @@
-package com.cloud.platform.base;
+package com.cloud.platform.comm;
 
 /**
  * @description:
@@ -10,9 +10,7 @@ package com.cloud.platform.base;
  */
 
 import com.cloud.platform.enums.ResultEnum;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

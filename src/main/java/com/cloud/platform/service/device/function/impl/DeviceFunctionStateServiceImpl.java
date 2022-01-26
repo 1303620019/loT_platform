@@ -1,13 +1,18 @@
 package com.cloud.platform.service.device.function.impl;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.entity.device.function.DeviceFunctionMem;
+import com.cloud.platform.comm.ResultVo;
+import com.cloud.platform.entity.device.DeviceLinkDev;
+import com.cloud.platform.entity.device.DeviceLinkLinks;
 import com.cloud.platform.entity.device.function.DeviceFunctionState;
 import com.cloud.platform.mapper.device.function.DeviceFunctionStateMapper;
+import com.cloud.platform.req.DeviceLinkDevREQ;
 import com.cloud.platform.service.device.function.IDeviceFunctionStateService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -26,8 +31,12 @@ import java.util.Map;
  * @since 2022-01-13
  */
 @Service
-public class DeviceFunctionStateServiceImpl extends ServiceImpl<DeviceFunctionStateMapper, DeviceFunctionState>
+public class DeviceFunctionStateServiceImpl
+        extends ServiceImpl<DeviceFunctionStateMapper, DeviceFunctionState>
         implements IDeviceFunctionStateService {
+
+
+
   @Override
   public Boolean saveFunctionState(Map map) {
     if (!ObjectUtils.isEmpty(map.get("linkState"))) {
@@ -52,6 +61,19 @@ public class DeviceFunctionStateServiceImpl extends ServiceImpl<DeviceFunctionSt
       list.add(deviceFunctionState);
     }
     return list;
+  }
 
+  @Override
+  public ResultVo getStateList(DeviceLinkDevREQ req) {
+    QueryWrapper wrapper=new QueryWrapper();
+    wrapper.eq("dfs_dfiId",req.getDfiId());
+    wrapper.orderByDesc("dfs_createTime");
+    IPage<DeviceFunctionState> page=new Page<DeviceFunctionState>();
+    IPage<DeviceLinkDev> page1 = req.getPage();
+    page.setCurrent(page1.getCurrent());
+    page.setSize(page1.getSize());
+    page.setTotal(page1.getTotal());
+    IPage<DeviceLinkLinks> linksIPage = baseMapper.selectPage(page, wrapper);
+    return ResultVo.ok(linksIPage.getRecords(),linksIPage.getTotal());
   }
 }

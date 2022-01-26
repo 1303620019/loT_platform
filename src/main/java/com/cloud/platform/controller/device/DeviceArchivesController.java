@@ -1,19 +1,16 @@
 package com.cloud.platform.controller.device;
 
 
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceArchives;
 import com.cloud.platform.req.DeviceArchivesREQ;
-import com.cloud.platform.req.DeviceLinkDevREQ;
 import com.cloud.platform.service.device.IDeviceArchivesService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * <p>

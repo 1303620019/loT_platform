@@ -1,10 +1,9 @@
 package com.cloud.platform.req;
 
-import com.cloud.platform.base.BaseRequest;
+import com.cloud.platform.comm.BaseRequest;
 import com.cloud.platform.entity.device.DeviceLinkDev;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,34 +22,46 @@ public class DeviceLinkDevREQ extends BaseRequest<DeviceLinkDev> {
 
 
   @ApiModelProperty(value="设备编号")
-  private String deviceId;
+  public String deviceId;
+
+  @ApiModelProperty(value="请求集合mid")
+  public String  mids;
+
+  @ApiModelProperty(value="请求类型集合")
+  public String types;
 
   @ApiModelProperty(value="连接类型")
-  private Integer devStatusNum;
+  public Integer devStatusNum;
 
   @ApiModelProperty(value="认证结果")
-  private Integer authNum;
+  public Integer authNum;
 
   @ApiModelProperty(value="发生时间起")
-  private String startTime;
+  public String startTime;
 
   @ApiModelProperty(value="终止时间")
-  private String endTime;
+  public String endTime;
 
 
   @ApiModelProperty(value="连接结果")
-  private Integer LinkStatusNum;
+  public Integer LinkStatusNum;
 
   @ApiModelProperty(value="终端类型")
-  private String dldDevtype;
+  public String dldDevtype;
 
 
   @ApiModelProperty(value="设备厂商")
-  private String dldMfginfo;
+  public String dldMfginfo;
 
   @ApiModelProperty(value="系统名称")
-  private String dloDistro;
+  public String dloDistro;
+
+  @ApiModelProperty(value="t_device_link_dev表id")
+  public String devId;
+
+  @ApiModelProperty(value="t_device_function_info表id")
+  public String dfiId;
 
   @ApiModelProperty(value="升级类型")
-  private Integer upgradeType;
+  public Integer upgradeType;
 }

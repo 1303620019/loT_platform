@@ -19,5 +19,5 @@ import java.util.List;
  */
 @Mapper
 public interface DeviceFunctionAiappMapper extends BaseMapper<DeviceFunctionAiapp> {
-  void insertArrayAiapp(@Param("aiapp") List<DeviceFunctionAiapp> aiapp);
+  void insertArrayAiapp(@Param("aiApp") List<DeviceFunctionAiapp> aiapp);
 }

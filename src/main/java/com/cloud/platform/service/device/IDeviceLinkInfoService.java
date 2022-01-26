@@ -3,6 +3,8 @@ package com.cloud.platform.service.device;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloud.platform.entity.device.DeviceLinkInfo;
+import com.cloud.platform.req.DeviceLinkDevREQ;
+import com.cloud.platform.req.FunctionREQ;
 
 import java.util.Map;
 
@@ -16,4 +18,5 @@ import java.util.Map;
  */
 public interface IDeviceLinkInfoService extends IService<DeviceLinkInfo> {
   String saveLinkInfo(Map map);
+  DeviceLinkInfo getLinkInfo(DeviceLinkDevREQ req);
 }

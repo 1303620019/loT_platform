@@ -39,7 +39,7 @@ function initMenu() {
     menuList.push('<li class="nav-item nav-item-has-subnav" id="4">\n' +
         '              <a href="javascript:void(0)"><i class="mdi mdi-comment-text"></i>运行管理 </a>   ' +
         '              <ul class="nav nav-subnav">\n' +
-        '                <li> <a href="/running/device_fun_patrol.html">设备巡测</a> </li>' +
+        '                <li> <a href="/running/device_run_batch.html">设备巡测</a> </li>' +
         '                <li> <a>设备监测</a> </li>' +
         '               </ul>' +
         '            </li>');

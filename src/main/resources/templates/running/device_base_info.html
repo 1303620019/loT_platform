@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>基础信息</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .lyear-layout-content{padding-top:unset; padding-left:unset;}
+        .layui-input{ width:268px;}
+        .layui-form-label{  width: 174px;}
+        .layui_num{width: 235px}
+    </style>
+</head>
+<body>
+<main class="lyear-layout-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="table_links" data-response-handler="responseHandler"lay-filter="links_filter"></table>
+
+            </div>
+
+            <div class="col-lg-12">
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">设备编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldDeviceId" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">设备名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldDevname" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">设备类型</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldDevtype" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">厂商信息</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldMfginfo" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">设备状态</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldDevstatus" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">硬件版本号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldHardversion" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">物理内存/M</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dlmPhy" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">虚拟内存/M</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dlmVirt" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <div class="layui-line">
+                    <label class="layui-form-label">内存阈值/%</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dlmMemlmt" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+                <div class="layui-line">
+                    <label class="layui-form-label">CPU核数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dlcCpus" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+                <div class="layui-line">
+                    <label class="layui-form-label">CPU主频/GHz</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dlcFrequency" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+                <div class="layui-line">
+                    <label class="layui-form-label">CPU缓存/MB</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dlcCache" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+            </div>
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">CPU架构</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dlcArch" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">CPU监控阈值</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dlcCpulmt" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">操作系统名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dloDistro" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">操作系统版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dloVersion" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">操作系统内核</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dloKernel" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">软件组件版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dloSoftversion" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">组件补丁版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dloPatchversion" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">AI模块型号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="model" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">AI模块算力(TOPS)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="ops" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var table = layui.table;
+        let deviceId = getUrlParam("deviceId");
+        let mids = getUrlParam("mids");
+        let types = getUrlParam("types");
+      let obj=new Object();
+      obj.deviceId=deviceId;
+      obj.mids=mids;
+      obj.types=types;
+        $.ajax({
+            method: "post",
+            url: "/dev/base/info",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(obj),
+            success: function (data) {
+                if (data.code === 20000) {
+                    let data1 = data.data;
+                    if (data1){
+                        initData(data1);
+                    }else{
+                        initTabel(0)
+                    }
+
+                }
+            }
+        });
+
+
+
+        function initData(obj) {
+            let dev = obj.dev;
+            initTabel(dev.dldId)
+            let men = obj.men;
+            let cpu = obj.cpu;
+            let os = obj.os;
+            let ai = obj.ai;
+            $("input[name='dldDeviceId']").val(dev.dldDeviceId);
+            $("input[name='dldDevname']").val(dev.dldDevname);
+            $("input[name='dldDevtype']").val(dev.dldDevtype);
+            $("input[name='dldMfginfo']").val(dev.dldMfginfo);
+            $("input[name='dldDevstatus']").val(dev.dldDevstatus);
+            $("input[name='dldHardversion']").val(dev.dldHardversion);
+
+            $("input[name='dlmPhy']").val(men.dlmPhy);
+            $("input[name='dlmVirt']").val(men.dlmVirt);
+            $("input[name='dlmMemlmt']").val(men.dlmMemlmt);
+
+            $("input[name='dlcCpus']").val(cpu.dlcCpus);
+            $("input[name='dlcFrequency']").val(cpu.dlcFrequency);
+            $("input[name='dlcCache']").val(cpu.dlcCache);
+            $("input[name='dlcArch']").val(cpu.dlcArch);
+            $("input[name='dlcCpulmt']").val(cpu.dlcCpulmt);
+
+            $("input[name='dloDistro']").val(os.dloDistro);
+            $("input[name='dloVersion']").val(os.dloVersion);
+            $("input[name='dloKernel']").val(os.dloKernel);
+            $("input[name='dloSoftversion']").val(os.dloSoftversion);
+            $("input[name='dloPatchversion']").val(os.dloPatchversion);
+
+            $("input[name='model']").val(ai.model);
+            $("input[name='ops']").val(ai.ops);
+        }
+        
+        function initTabel(dldId) {
+            table.render({
+                elem: '#table_links'
+                , url: '/dev/getLinks'
+                ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                ,method:'post'
+                ,where:{devId:dldId}
+                ,page: true
+                ,limits: [3,5,10]
+                ,limit: 5 //每页默认显示的数量
+                ,id: 'testReload'
+                ,contentType:'application/json'
+                ,cols: [[
+                     {title: '序号',width:'10%',toolbar: '#indexTpl'}
+                    ,{field: 'dllType',width:'25%', title: '接口类型'}
+                    ,{field: 'dllName', width:'35%',title: '接口名称'}
+                    ,{field: 'dllMac', width:'25%',title: '接口地址'}
+                ]]
+                ,done: function (res, curr, count){
+                    $("table").css("width", "100%");//这里设置表格的宽度为100%
+                },
+            });
+        }
+    });
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+</script>
+</body>
+</html>

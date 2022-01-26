@@ -1,4 +1,4 @@
-package com.cloud.platform.entity.device.task;
+package com.cloud.platform.entity.device.run;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -15,39 +15,37 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 计划任务关系表
+ * 设备批次信息
  * </p>
  *
  * @author byl
- * @since 2022-01-19
+ * @since 2022-01-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_device_task")
-@ApiModel(value="DeviceTask对象", description="计划任务关系表")
-public class DeviceTask implements Serializable {
+@TableName("t_device_function_batchInfo")
+@ApiModel(value="DeviceBatchInfo对象", description="设备批次信息")
+public class DeviceBatchInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "dt_id", type = IdType.ASSIGN_ID)
-    private String id;
+    @TableId(value = "dbi_id", type = IdType.ASSIGN_ID)
+    private String dbiId;
 
-    @ApiModelProperty(value = "t_device_archives表id")
-    @TableField("dt_arcId")
-    private String arcId;
+    @ApiModelProperty(value = "批次名称 ")
+    private String dbiName;
 
-    @ApiModelProperty(value = "t_device_archives表id")
-    @TableField("dt_taId")
-    private String taId;
+    @ApiModelProperty(value = "设备数量")
+    private Integer dbiNum;
 
-    @ApiModelProperty(value = "0-未执行 1-已执行")
-    @TableField("dt_state")
-    private Integer state;
+    @ApiModelProperty(value = "召回的类型列表")
+    @TableField("dbi_recallType")
+    private String dbiRecalltype;
 
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @TableField("dt_creataTime")
-    private Date creataTime;
+    @TableField("dbi_createTime")
+    private Date dbiCreatetime;
 
 
 }

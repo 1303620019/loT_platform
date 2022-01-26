@@ -1,13 +1,11 @@
 package com.cloud.platform.service.device.task;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
-import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
-import com.cloud.platform.req.DeviceUpgradeREQ;
-import com.cloud.platform.req.DeviceUpgradeScheduleREQ;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
+import com.cloud.platform.entity.device.plan.DeviceUpgradeTask;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
-import com.sun.org.apache.regexp.internal.RE;
+
 
 /**
  * <p>

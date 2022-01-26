@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cloud.platform.system1.mapper.DeviceFunctionAiappMapper">
+<mapper namespace="com.cloud.platform.mapper.device.function.DeviceFunctionAiappMapper">
 
     <insert id="insertArrayAiapp">
-        insert into t_device_function_aiapp (dfa_id,dfa_deviceId,dfa_dfsId,dfa_info,dfa_createTime)
+        insert into t_device_function_aiapp (dfa_id,dfa_deviceId,dfa_dfiId,dfa_name,dfa_versions,dfa_createTime)
         VALUES
-        <foreach collection="aiapp" item="item" index="index" separator=",">
-            ('${@com.baomidou.mybatisplus.core.toolkit.IdWorker@getId()}',#{item.dfaDeviceid},#{item.dfaDfsid},
-            #{item.dfaInfo},now() )
+        <foreach collection="aiApp" item="item" index="index" separator=",">
+            ('${@com.baomidou.mybatisplus.core.toolkit.IdWorker@getId()}',#{item.dfaDeviceid},#{item.dfaDfiId},
+            #{item.aiName},#{item.dfaVersions},now() )
         </foreach>
     </insert>
 </mapper>

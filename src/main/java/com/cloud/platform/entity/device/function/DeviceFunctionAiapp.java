@@ -40,9 +40,13 @@ public class DeviceFunctionAiapp implements Serializable {
     @TableField("dfa_dfiId")
     private String dfaDfiId;
 
-    @ApiModelProperty(value = "Ai信息 例：app1, v1.0")
-    @TableField("dfa_dfiId")
-    private String dfaInfo;
+    @ApiModelProperty(value = "app名称")
+    @TableField("dfa_name")
+    private String aiName;
+
+    @ApiModelProperty(value = "app版本")
+    @TableField("dfa_versions")
+    private String dfaVersions;
 
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

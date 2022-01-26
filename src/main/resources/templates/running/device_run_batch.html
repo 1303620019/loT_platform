@@ -10,7 +10,7 @@
     <link href="/static/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/static/css/style.min.css" rel="stylesheet">
     <style>
-        .layui-form-label { width: 195px;    }
+        .layui-form-label { width: 120px;    }
     </style>
 </head>
 
@@ -90,16 +90,27 @@
                             <form class="layui-form">
                                 <div class="layui-form-item" style="margin-left: 8%;">
                                     <div class="layui-line">
-                                        <label class="layui-form-label">在线状态</label>
+                                        <label class="layui-form-label">巡测批次</label>
                                         <div class="layui-input-inline">
-                                            <select name="LinkStatusNum" id="LinkStatusNum" lay-verify="">
-                                                <option value="">请选择</option>
-                                                <option value="0">连接正常</option>
-                                                <option value="1">连接失败</option>
-                                            </select>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="dbiName" id="dbiName" placeholder="请输入巡测批次"autocomplete="off" class="layui-input">
+                                            </div>
                                         </div>
                                     </div>
-
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">巡测时间起</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" autocomplete="off" name="startTime" id="startTime" class="layui-input"
+                                                   placeholder="发生开始时间">
+                                        </div>
+                                    </div>
+                                    <div class="layui-line">
+                                        <label class="layui-form-label">巡测时间止</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" autocomplete="off" name="endTime" id="endTime" class="layui-input"
+                                                   placeholder="发生结束时间">
+                                        </div>
+                                    </div>
                                     <div class="layui-line">
                                         <div class="layui-input-inline" style="width:230px;">
                                             <button type="button" class="layui-btn layui-btn-normal layui-btn-lg layui-icon layui-icon-search"
@@ -121,7 +132,7 @@
                 <div class="card">
                     <div class="card-header"><h4>巡测列表</h4></div>
                     <div class="card-body">
-                        <table id="table_patrol" data-response-handler="responseHandler"lay-filter="patrol_filter"></table>
+                        <table id="table_batch" data-response-handler="responseHandler"lay-filter="batch_filter"></table>
                     </div>
                 </div>
             </div>
@@ -178,15 +189,23 @@
    })
 </script>
 <script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
-<script type="text/html" id="linkStatus">
-    {{#  if(d.linkState =='0' ){ }}
-      连接正常
-    {{#  } else if(d.linkState =='1' ) { }}
-      断开连接
-    {{#  } }}
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="runList">设备巡视</button>
+    </div>
 </script>
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="more"><i class="layui-icon layui-icon-down"></i></a>
+<script type="text/html" id="btnDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="details">巡测详情</a>
+</script>
+<script type="text/html" id="typeBar">
+    {{#  if(d.dbiRecalltype.indexOf('2') > 0  && d.dbiRecalltype.indexOf('1') > 0){ }}
+      设备基础信息,设备状态信息
+    {{#  } else if(d.dbiRecalltype.indexOf('2') > 0) { }}
+      设备状态信息
+    {{#  } else if(d.dbiRecalltype.indexOf('1') > 0) { }}
+      设备基础信息
+    {{#  } }}
 </script>
 <script>
     layui.use('table', function () {
@@ -196,80 +215,86 @@
         laydate.render({ elem: '#startTime', type: 'datetime'  })
         laydate.render({ elem: '#endTime', type: 'datetime'  })
 
-      let cfgTable= table.render({
-            elem: '#table_patrol'
-            , url: '/function/search'
+      let batchTable= table.render({
+            elem: '#table_batch'
+            , url: '/batch/search'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,method:'post'
             ,page: true
             ,id: 'testReload'
-            ,contentType:'application/json'
+           ,contentType:'application/json;charset=UTF-8'
             , cols: [[
-              {field: 'dfiId',width:'5%',type:'checkbox'}
-              , {title: '序号',width:'5%',toolbar: '#indexTpl'}
-                 ,{field: 'deviceId',width:'20%', title: '设备编号'}
-                ,{field: 'longitude', width:'20%',title: '经度'}
-                ,{field: 'latitude', width:'10%',title: '纬度'}
-                ,{field: 'devType', width:'10%',title: '设备型号'}
-                ,{field: 'linkState', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
-               , {fixed: 'right', width: 150, title: '操作', align: 'center', toolbar: '#barDemo'}
+                 {title: '序号',width:'5%',toolbar: '#indexTpl'}
+                 ,{field: 'dbiName',width:'20%', title: '巡测批次'}
+                ,{field: 'dbiNum', width:'20%',title: '设备数'}
+                ,{field: 'dbiRecalltype', width:'25%',title: '召回项',toolbar:'#typeBar'}
+                ,{field: 'dbiCreatetime', width:'20%',title: '巡测时间'}
+               , {fixed: 'right', width: '10%', title: '操作', align: 'center', toolbar: '#btnDemo'}
             ]]
             ,done: function (res, curr, count){
                 $("table").css("width", "100%");//这里设置表格的宽度为100%
             },
         });
+
+        //头工具栏事件
+        table.on('toolbar(batch_filter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'runList':
+                    openBox("/running/device_run_list.html");
+                    break;
+            }
+        });
+        //监听行工具事件
+        table.on('tool(batch_filter)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'details') {
+                let dbiName = data.dbiName;
+                if(!dbiName){
+                    layer.alert("未查到此批次,请稍后重试！",{icon:5})
+                    return false;
+                }
+               window.location.href='device_run_details.html?dbiName='+dbiName;
+            }
+        });
         $("#doSearch").click(function () {
-            var LinkStatusNum = $("#LinkStatusNum").val();
-            table.reload('testReload', {
-                url:  '/function/search'
+            var dbiName = $("#dbiName").val();
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            if (startTime && !endTime){
+                layer.msg("请选择结束时间",{icon:5});
+                return false
+            }
+            if (!startTime && endTime){
+                layer.msg("请选择开始时间",{icon:5});
+                return false
+            }
+            batchTable.reload('testReload', {
+                url:  '/batch/search'
                    , where: {
-                    onLineState: LinkStatusNum
+                    dbiName: dbiName
+                    ,startTime:startTime
+                    ,endTime:endTime
                 } //设定异步数据接口的额外参数
             });
         })
-        //监听行 "工具箱" 事件
-        table.on('tool(patrol_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-            , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'more') {
-                //下拉菜单
-                dropdown.render({
-                    elem: this //触发事件的 DOM 对象
-                    , show: true //外部事件触发即显示
-                    , data: [{title: '设备基础信息', id: 'devBase'}
-                            , {title: '设备配置信息', id: 'devCfg'}
-                            , {title: '设备状态信息', id: 'devState'}
-                            , {title: '容器配置信息', id: 'ctainerCfg'}
-                            , {title: '容器状态信息', id: 'ctainerState'}
-                            , {title: '应用状态信息', id: 'appState'}
-                            ]
-                    , click: function (menudata) {
-                        if (menudata.id === 'devBase') {
+        
+        function openBox(url) {
+            layui.layer.open({
+                skin:'',
+                type : 2,
+                maxmin: true,
+                // title:'添加设备',
+                area: ['95%', '95%'],//弹出区域大小
+                content :url ,//跳转url
+                success : function(layero, index){//
+                },
+                end:function(){//关闭或者结束弹框回调
+                    //通常刷新列表
+                }
+            });
 
-                        } else if (menudata.id === 'devCfg') {
-                            let num = localStorage.setItem("nav-item","2");
-                            let subnav_li = localStorage.setItem("nav-subnav-li","0");
-                            if (data.deviceId){
-                                window.location.href='/device/device_config.html?deviceId='+data.deviceId;
-                            }else{
-                                layer.msg("此设备没有设备id,无法配置")
-                            }
-                        } else if (menudata.id === 'devState') {
-
-                        } else if (menudata.id === 'ctainerCfg') {
-                            layer.msg("正在开发容器配置信息模块")
-                        }else if (menudata.id === 'ctainerState') {
-                            layer.msg("正在开发容器状态信息模块")
-                        }else if (menudata.id === 'appState') {
-                            layer.msg("正在开发应用状态信息模块")
-                        }
-                    }
-                    , align: 'right' //右对齐弹出（v2.6.8 新增）
-                    , style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
-                })
-            }
-        });
-
+        }
     })
 </script>
 </body>

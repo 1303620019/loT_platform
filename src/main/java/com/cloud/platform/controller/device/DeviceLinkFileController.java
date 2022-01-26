@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-01-10
  */
 @RestController
-@RequestMapping("//device-link-file")
+@RequestMapping("/device-link-file")
 public class DeviceLinkFileController {
 
 }

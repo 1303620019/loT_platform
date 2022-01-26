@@ -1,9 +1,8 @@
 package com.cloud.platform.service.device.upgrade;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgradeSchedule;
-import com.cloud.platform.req.DeviceArchivesREQ;
 import com.cloud.platform.req.DeviceUpgradeScheduleREQ;
 
 /**

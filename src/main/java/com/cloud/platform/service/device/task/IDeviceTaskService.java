@@ -1,7 +1,7 @@
 package com.cloud.platform.service.device.task;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.entity.device.task.DeviceTask;
+import com.cloud.platform.entity.device.plan.DeviceTask;
 
 /**
  * <p>

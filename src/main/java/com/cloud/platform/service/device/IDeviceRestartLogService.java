@@ -2,10 +2,9 @@ package com.cloud.platform.service.device;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceRestartLog;
 import com.cloud.platform.req.DeviceRestartLogREQ;
-import io.swagger.models.auth.In;
 
 /**
  * <p>

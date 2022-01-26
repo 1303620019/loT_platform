@@ -1,7 +1,9 @@
 package com.cloud.platform.service.device.function;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.function.DeviceFunctionState;
+import com.cloud.platform.req.DeviceLinkDevREQ;
 
 import java.util.Map;
 
@@ -15,4 +17,6 @@ import java.util.Map;
  */
 public interface IDeviceFunctionStateService extends IService<DeviceFunctionState> {
    Boolean saveFunctionState(Map map);
+   ResultVo getStateList(DeviceLinkDevREQ req);
+
 }

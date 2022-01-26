@@ -4,7 +4,7 @@ package com.cloud.platform.service.device.upgrade.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgradeSchedule;
 import com.cloud.platform.mapper.device.upgrade.DeviceUpgradeScheduleMapper;
 import com.cloud.platform.req.DeviceUpgradeScheduleREQ;

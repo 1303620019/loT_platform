@@ -15,5 +15,5 @@ import com.cloud.platform.entity.device.DeviceUpgradeTime;
 public interface IDeviceUpgradeTimeService extends IService<DeviceUpgradeTime> {
 
 
-  Integer getMid();
+ //  Integer getMid();
 }

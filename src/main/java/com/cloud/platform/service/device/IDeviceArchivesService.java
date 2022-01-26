@@ -1,11 +1,10 @@
 package com.cloud.platform.service.device;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceArchives;
 import com.cloud.platform.req.DeviceArchivesREQ;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>

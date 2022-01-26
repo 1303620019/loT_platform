@@ -1,8 +1,7 @@
 package com.cloud.platform.req;
 
 
-import com.cloud.platform.base.BaseRequest;
-import com.cloud.platform.entity.device.DeviceArchives;
+import com.cloud.platform.comm.BaseRequest;
 import com.cloud.platform.entity.device.DeviceRestartLog;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

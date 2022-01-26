@@ -1,6 +1,6 @@
 package com.cloud.platform.req;
 
-import com.cloud.platform.base.BaseRequest;
+import com.cloud.platform.comm.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

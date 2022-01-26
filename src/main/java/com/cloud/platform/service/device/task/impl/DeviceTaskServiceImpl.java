@@ -3,7 +3,7 @@ package com.cloud.platform.service.device.task.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.entity.device.task.DeviceTask;
+import com.cloud.platform.entity.device.plan.DeviceTask;
 import com.cloud.platform.mapper.device.task.DeviceTaskMapper;
 import com.cloud.platform.service.device.task.IDeviceTaskService;
 import org.springframework.stereotype.Service;

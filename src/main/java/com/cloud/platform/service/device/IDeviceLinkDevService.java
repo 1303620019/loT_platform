@@ -2,8 +2,8 @@ package com.cloud.platform.service.device;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceLinkDev;
 import com.cloud.platform.req.DeviceLinkDevREQ;
 
@@ -24,7 +24,7 @@ public interface IDeviceLinkDevService extends IService<DeviceLinkDev> {
   Boolean upateDevStatus(Map map);
 
   ResultVo search(DeviceLinkDevREQ req);
-
+  Result baseInfo(DeviceLinkDevREQ req);
 
 
 

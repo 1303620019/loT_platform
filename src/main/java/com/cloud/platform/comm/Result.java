@@ -1,4 +1,4 @@
-package com.cloud.platform.base;
+package com.cloud.platform.comm;
 
 
 import com.cloud.platform.enums.ResultEnum;

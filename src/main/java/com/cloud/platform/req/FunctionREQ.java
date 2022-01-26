@@ -1,9 +1,7 @@
 package com.cloud.platform.req;
 
-import com.cloud.platform.base.BaseRequest;
-import com.cloud.platform.entity.device.DeviceLinkDev;
+import com.cloud.platform.comm.BaseRequest;
 import com.cloud.platform.entity.device.function.DeviceFunctionInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,4 +25,10 @@ public class FunctionREQ extends BaseRequest<DeviceFunctionInfo> {
 
   @ApiModelProperty(value="运行状态")
   private String onLineState;
+
+  @ApiModelProperty(value="请求集合mid")
+  public String  mids;
+
+  @ApiModelProperty(value="请求类型集合")
+  public String types;
 }

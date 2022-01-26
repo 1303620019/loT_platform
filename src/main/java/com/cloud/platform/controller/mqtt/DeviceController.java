@@ -3,8 +3,7 @@ package com.cloud.platform.controller.mqtt;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.entity.device.upgrade.DeviceUpgradeResult;
+import com.cloud.platform.comm.Result;
 import com.cloud.platform.service.*;
 import com.cloud.platform.service.device.*;
 import com.cloud.platform.service.device.function.*;
@@ -131,9 +130,11 @@ public class DeviceController {
       //设备状态查询命令进行应答 不回应
     }else if (stringObjectMap.get("type").equals("REP_SYS_STATUS")){
         String menId = functionMemService.saveFunctionMen(param);
+        linkInfoId = linkInfoService.saveLinkInfo(stringObjectMap);
         if (!StringUtils.isBlank(menId)){
           param.put("memUsed",menId);
         }
+        param.put("linkInfoId",linkInfoId);
         String infoId = functionInfoService.saveFunctionInfo(param);
         if (!StringUtils.isBlank(infoId)){
           param.put("infoId",infoId);

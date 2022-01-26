@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceLinkDev;
 import com.cloud.platform.entity.device.DeviceLinkOs;
 import com.cloud.platform.mapper.device.DeviceLinkOsMapper;

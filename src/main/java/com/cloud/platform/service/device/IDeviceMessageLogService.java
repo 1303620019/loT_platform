@@ -2,7 +2,7 @@ package com.cloud.platform.service.device;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
+import com.cloud.platform.comm.Result;
 import com.cloud.platform.entity.device.DeviceMessageLog;
 
 import java.util.Map;

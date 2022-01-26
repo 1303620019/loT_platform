@@ -2,17 +2,14 @@ package com.cloud.platform.service.device.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceRestartLog;
 import com.cloud.platform.mapper.device.DeviceRestartLogMapper;
-import com.cloud.platform.req.DeviceArchivesREQ;
 import com.cloud.platform.req.DeviceRestartLogREQ;
 import com.cloud.platform.service.device.IDeviceRestartLogService;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

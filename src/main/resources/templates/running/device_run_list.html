@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>设备列表</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+
+        .layui-form-label {
+           width: 194px;
+        }
+        .lyear-layout-content{
+            padding-top:unset;
+            padding-left:unset;
+        }
+    </style>
+</head>
+<body>
+<!--页面主要内容-->
+<main class="lyear-layout-content">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <fieldset class="layui-elem-field layui-field-title"
+                          style="margin-top: 20px">
+                    <legend>查询条件</legend>
+                    <form class="layui-form">
+                        <div class="layui-form-item" style="margin-left: 8%;">
+                            <div class="layui-line">
+                                <label class="layui-form-label">设备编号</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="deviceId" id="deviceId" placeholder="请输入设备编号"autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-line">
+                                <label class="layui-form-label">设备类型</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="deviceType" id="deviceType" placeholder="请输入终端类型"autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-line">
+                                <label class="layui-form-label">设备型号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="deviceVersion" id="deviceVersion"
+                                           placeholder="请输入设备型号"autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="margin-left: 8%;">
+                            <div class="layui-line">
+                                <label class="layui-form-label">在线状态</label>
+                                <div class="layui-input-inline">
+                                    <select name="linkStatusNum" id="linkStatusNum" lay-verify="">
+                                        <option value="">请选择</option>
+                                        <option value="0">在线</option>
+                                        <option value="1">离线</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="margin-left: 44%;text-align: center">
+                            <div class="layui-line">
+                                <div class="layui-input-inline" style="width:230px;">
+                                    <button type="button" class="layui-btn layui-btn-normal layui-btn-lg layui-icon layui-icon-search"
+                                            id="doSearch">查询</button>
+                                    <button type="reset" class="layui-btn layui-btn-warm  layui-btn-lg layui-icon layui-icon-refresh "
+                                    >重置</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><h4>设备列表</h4></div>
+            <div class="card-body">
+                <table id="recall_table" data-response-handler="responseHandler" lay-filter="recall_filter"></table>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="recallProd" class="layui-form" hidden="hidden">
+        <div class="layui-form-item" id="recallBox" pane="" style="font-size:16px;margin-top: 32px">
+
+        </div>
+</div>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script type="text/html" id="linkStatus">
+    {{#  if(d.linkStatusNum == 0){ }}
+    正常
+    {{#  } else if(d.linkStatusNum == 1) { }}
+    离线
+    {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn" lay-event="recall">设备巡测</button>
+    </div>
+</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var table  = layui.table
+            , laydate = layui.laydate;
+      let recallTabel= table.render({
+            elem: '#recall_table'
+            , url: '/archives/search'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,method:'post'
+            ,page: true
+            ,id: 'testReload'
+            ,contentType:'application/json'
+            ,cols: [[
+                 {field: 'daId',width:'5%',type:'checkbox'}
+                ,{title: '序号',width:'5%',toolbar: '#indexTpl'}
+                ,{field: 'deviceId',width:'30%', title: '设备编号'}
+                ,{field: 'deviceAddress', width:'30%',title: '所在地区'}
+                ,{field: 'deviceType', width:'10%',title: '设备类型'}
+                ,{field: 'deviceVersion', width:'10%',title: '设备型号'}
+                ,{field: 'linkStatusNum', width:'10%',title: '在线状态',toolbar: '#linkStatus'}
+            ]]
+            ,done: function (res, curr, count){
+                $("table").css("width", "100%");//这里设置表格的宽度为100%
+            },
+        });
+        $("#doSearch").click(function () {
+            var deviceId = $("#deviceId").val();
+            var deviceType = $("#deviceType").val();
+            var deviceVersion = $("#deviceVersion").val();
+            var linkStatusNum = $("#linkStatusNum").val();
+            table.reload('testReload', {
+                url:  '/archives/search'
+                , where: {
+                    deviceId: deviceId
+                    ,deviceType:deviceType
+                    ,deviceVersion:deviceVersion
+                    ,linkStatusNum:linkStatusNum
+                } //设定异步数据接口的额外参数
+            });
+        })
+      $.get('/batch/recall',function (obj) {
+             if (obj.code === 20000){
+                 let data = obj.data;
+                 let recallAry=new Array();
+                 for (let i = 0; i <data.length ; i++) {
+                     let html='      <div class="layui-input-block">\n' +
+                         '                <input type="checkbox" name="recall" lay-skin="primary" value="'+data[i].drId+'" title="'+data[i].dfName+'"  style="display:unset;"> <span>'+data[i].dfName+'</span>\n' +
+                         '            </div>';
+                     recallAry.push(html);
+                 }
+              $('#recallBox').html(recallAry.join(''));
+             }
+      })
+
+
+        //头工具栏事件
+        table.on('toolbar(recall_filter)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            let data = checkStatus.data;
+            var daIds =[];
+            if (data.length <=0){
+                layer.alert("请勾选设备后再进行操作",{icon:5});
+                return  false;
+            }
+            for (let i = 0; i <data.length ; i++) {
+                daIds.push(data[i].daId);
+            }
+            switch (obj.event) {
+                case 'recall':
+                    layer.open({
+                        type: 1,
+                        title:"请选择召回项",
+                        btn: ['确定', '取消'],
+                        content: $("#recallProd"),
+                        area: ['388px', '300px'],
+                        yes: function (index, layero) {
+                        var recalls =[];
+                        $('input[name="recall"]:checked').each(function(){
+                            recalls.push($(this).val());
+                        });
+                        if (recalls.length>0){
+                            layer.close(index);
+                            save(daIds,recalls)
+                        }else{
+                            layer.alert("请选择召回的类型",{icon:5})
+                        }
+                        }
+                    });
+                    break;
+            }
+        });
+
+      function save(daIds,recalls) {
+          let obj=new Object();
+          obj.daIds=daIds;
+          obj.recalls=recalls;
+          $.ajax({
+              url:"/batch",
+              type:"put",
+              contentType:"application/json",
+              dataType:"json",
+              beforeSend: function () {
+                  i=showLoad();
+              },
+              data:JSON.stringify(obj),
+              success:function(msg){
+                  closeLoad(i);
+                  if (msg.code === 20000) {
+                      layer.open({ content: '召回指令已下发',
+                          yes: function(index, layero){
+                              var index =parent.layer.getFrameIndex(window.name);
+                              parent.layer.close(index);
+                              parent.layui.table.reload('testReload');
+
+                          }
+                      });
+                  }else{
+                      layer.alert("召回指令下发失败",{icon:5})
+                  }
+              }
+          });
+      }
+        function showLoad() {
+
+            return layer.msg('拼命执行中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:100000});
+
+        }
+
+        function closeLoad(index) {
+            layer.close(index);
+
+        }
+
+    });
+
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+</script>
+</body>
+</html>

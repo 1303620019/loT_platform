@@ -3,10 +3,8 @@ package com.cloud.platform.mapper.device.task;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.cloud.platform.entity.device.function.DeviceFunctionInfo;
-import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
+import com.cloud.platform.entity.device.plan.DeviceUpgradeTask;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
-import com.cloud.platform.req.FunctionREQ;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

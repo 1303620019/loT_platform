@@ -26,7 +26,7 @@
         arc.da_state,arc.da_device_mfgInfo,arc.da_createTime,arc.da_editTime,arc.da_device_type,
         dev.dld_devStatus_num
         from  t_device_archives arc
-        left join  	(select * from t_device_link_dev  GROUP BY dld_device_id 	ORDER BY dld_createTime desc LIMIT 1)  as dev
+        left join  	(select * from (select * from t_device_link_dev ORDER BY dld_createTime desc LIMIT 99999999) as dev GROUP BY dld_device_id)  as dev
         on dev.dld_device_id =arc.da_deviceId
         where 1=1
         <if test="req.deviceId !=null and req.deviceId !='' ">

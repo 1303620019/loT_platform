@@ -1,15 +1,11 @@
 package com.cloud.platform.req;
 
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.cloud.platform.base.BaseRequest;
-import com.cloud.platform.entity.device.DeviceArchives;
-import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
-import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
+import com.cloud.platform.comm.BaseRequest;
+import com.cloud.platform.entity.device.plan.DeviceUpgradeTask;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

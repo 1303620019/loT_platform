@@ -1,15 +1,9 @@
 package com.cloud.platform.api;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.entity.EquipmentAuth;
 import com.cloud.platform.req.AuthenticationREQ;
 import com.cloud.platform.service.IEquipmentAuthService;
-import com.cloud.platform.service.IMqttHttpPort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author zlk

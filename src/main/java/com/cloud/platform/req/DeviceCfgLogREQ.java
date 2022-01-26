@@ -2,7 +2,7 @@ package com.cloud.platform.req;
 
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.cloud.platform.base.BaseRequest;
+import com.cloud.platform.comm.BaseRequest;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

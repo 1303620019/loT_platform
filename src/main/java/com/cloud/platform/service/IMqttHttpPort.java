@@ -1,7 +1,6 @@
 package com.cloud.platform.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cloud.platform.base.Result;
+import com.cloud.platform.comm.Result;
 
 import java.io.IOException;
 

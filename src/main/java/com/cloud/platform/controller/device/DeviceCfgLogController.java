@@ -1,10 +1,9 @@
 package com.cloud.platform.controller.device;
 
 
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.cfg.DeviceCfgLog;
-import com.cloud.platform.req.DeviceArchivesREQ;
 import com.cloud.platform.req.DeviceCfgLogREQ;
 import com.cloud.platform.service.device.cfg.IDeviceCfgLogService;
 import io.swagger.annotations.ApiImplicitParam;

@@ -1,8 +1,8 @@
 package com.cloud.platform.service.device.market;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.market.DevicePatch;
 import com.cloud.platform.req.DevicePatchREQ;
 

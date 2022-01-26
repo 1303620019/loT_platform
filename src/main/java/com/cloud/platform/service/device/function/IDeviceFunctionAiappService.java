@@ -2,7 +2,9 @@ package com.cloud.platform.service.device.function;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.function.DeviceFunctionAiapp;
+import com.cloud.platform.req.DeviceLinkDevREQ;
 
 import java.util.Map;
 
@@ -19,4 +21,6 @@ public interface IDeviceFunctionAiappService extends IService<DeviceFunctionAiap
 
 
   Boolean saveFunctionAiapp(Map map);
+
+  ResultVo getAppList(DeviceLinkDevREQ req);
 }

@@ -1,7 +1,7 @@
 package com.cloud.platform.mapper.device.task;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cloud.platform.entity.device.task.DeviceTask;
+import com.cloud.platform.entity.device.plan.DeviceTask;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

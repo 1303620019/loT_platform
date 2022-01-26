@@ -34,6 +34,11 @@ public class DeviceFunctionInfo implements Serializable {
     @JSONField(serialize=false)
     private String dfiId;
 
+    @ApiModelProperty(value = "t_device_link_info表id")
+    @TableField(value = "dfi_dliId")
+    @JSONField(serialize=false)
+    private String dfiDliId;
+
     @ApiModelProperty(value = "设备id")
     @TableField("dfi_deviceId")
     @JSONField(serialize=false)

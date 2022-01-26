@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.platform.mapper.device.run.DeviceBatchMapper">
+    <resultMap id="baseMap" type="DeviceBatch">
+        <id column="db_batchId" property="dbBatchid"/>
+        <result column="mid" property="mids"/>
+        <result column="bd_type" property="types"/>
+        <result column="db_createTime" property="dbCreatetime"/>
+        <result column="da_deviceId" property="deviceId"/>
+        <result column="da_device_type" property="deviceType"/>
+    </resultMap>
+
+    <select id="getBatchInfoByBatchId" resultMap="baseMap">
+        select
+        vi.db_batchId,vi.mid,vi.bd_type,vi.db_createTime,arc.da_deviceId ,arc.da_device_type
+        from  t_batch_view vi
+        left join t_device_archives arc on  vi.db_arcId = arc.da_id
+        where vi.db_batchId='ZH20220125115437'
+    </select>
+</mapper>

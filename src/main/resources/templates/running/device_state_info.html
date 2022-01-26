@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>状态信息</title>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <style>
+        .lyear-layout-content{padding-top:unset; padding-left:unset;}
+        .layui-input{ width:268px;}
+        .layui-form-label{  width: 174px;}
+        .layui_num{width: 235px}
+    </style>
+</head>
+<body>
+<main class="lyear-layout-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="table_links" data-response-handler="responseHandler"lay-filter="links_filter"></table>
+            </div>
+            <div class="col-lg-12">
+                <table id="table_App" data-response-handler="responseHandler"lay-filter="App_filter"></table>
+            </div>
+            <div class="col-lg-12">
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">设备编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dldDeviceId" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">当前时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="devDateTime" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">启动时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="devStDateTime" autocomplete="off" class="layui-input " style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">运行时长(秒)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="devRunTime" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-line">
+                        <label class="layui-form-label">系统cpu占用(%)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cpuRate" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC;" readonly="true" >
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">系统物理内存占用(%)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="phy" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">系统虚拟内存占用(%)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="virt" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                    <div class="layui-line">
+                        <label class="layui-form-label">内存储存占用(%)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="diskUsed" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <div class="layui-line">
+                    <label class="layui-form-label">主板温度(℃)</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tempValue" autocomplete="off" class="layui-input layui_num" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+                <div class="layui-line">
+                    <label class="layui-form-label">经度</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="longitude" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+                <div class="layui-line">
+                    <label class="layui-form-label">纬度</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="latitude" autocomplete="off" class="layui-input" style="background:#CCCCCC" readonly="true">
+                    </div>
+                </div>
+
+            </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="/static/js/jquery-1.10.2.js"></script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="indexTpl">{{d.LAY_INDEX}}</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var table = layui.table;
+        let deviceId = getUrlParam("deviceId");
+        let mids = getUrlParam("mids");
+        let types = getUrlParam("types");
+      let obj=new Object();
+      obj.deviceId=deviceId;
+      obj.mids=mids;
+      obj.types=types;
+        $.ajax({
+            method: "post",
+            url: "/function/stateInfo",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(obj),
+            success: function (data) {
+                if (data.code === 20000) {
+                    let data1 = data.data;
+                    if (data1){
+                        initData(data1);
+                    }else{
+                        initTabel(0)
+                    }
+
+                }
+            }
+        });
+
+
+
+        function initData(obj) {
+            let funInfo = obj.funInfo;
+            initTabel(funInfo.dfiId);
+            let men = obj.mem;
+            $("input[name='dldDeviceId']").val(funInfo.deviceId);
+            $("input[name='devDateTime']").val(funInfo.devDateTime);
+            $("input[name='devStDateTime']").val(funInfo.devStDateTime);
+            $("input[name='devRunTime']").val(funInfo.devRunTime);
+            $("input[name='cpuRate']").val(funInfo.cpuRate);
+            $("input[name='diskUsed']").val(funInfo.diskUsed);
+            $("input[name='tempValue']").val(funInfo.tempValue);
+            $("input[name='longitude']").val(funInfo.longitude);
+            $("input[name='latitude']").val(funInfo.latitude);
+            $("input[name='phy']").val(men.phy);
+            $("input[name='virt']").val(men.virt);
+       }
+        function initTabel(dfiId) {
+            table.render({
+                elem: '#table_links'
+                , url: '/function/state/list'
+                ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                ,method:'post'
+                ,where:{dfiId:dfiId}
+                ,page: true
+                ,limits: [3,5,10]
+                ,limit: 5 //每页默认显示的数量
+                ,id: 'testReload'
+                ,contentType:'application/json'
+                ,cols: [[
+                     {title: '序号',width:'10%',toolbar: '#indexTpl'}
+                    ,{field: 'name',width:'45%', title: '其他接口名称'}
+                    ,{field: 'status', width:'45%',title: '其他接口状态'}
+                ]]
+                ,done: function (res, curr, count){
+                    $("table").css("width", "100%");//这里设置表格的宽度为100%
+                },
+            });
+
+            table.render({
+                elem: '#table_App'
+                ,url: '/function/app'
+                ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                ,method:'post'
+                ,where:{dfiId:dfiId}
+                ,page: true
+                ,limits: [3,5,10]
+                ,limit: 5 //每页默认显示的数量
+                ,id: 'testReload'
+                ,contentType:'application/json'
+                ,cols: [[
+                    {title: '序号',width:'10%',toolbar: '#indexTpl'}
+                    ,{field: 'aiName',width:'45%', title: 'app名称'}
+                    ,{field: 'dfaVersions', width:'45%',title: 'app版本'}
+                ]]
+                ,done: function (res, curr, count){
+                    $("table").css("width", "100%");//这里设置表格的宽度为100%
+                },
+            });
+        }
+    });
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+</script>
+</body>
+</html>

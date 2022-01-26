@@ -1,10 +1,8 @@
 package com.cloud.platform.controller.task;
 
 
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
-import com.cloud.platform.entity.device.task.DeviceUpgradeTask;
-import com.cloud.platform.req.DeviceUpgradeREQ;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.req.DeviceUpgradeTaskREQ;
 import com.cloud.platform.service.device.task.IDeviceUpgradeTaskService;
 import io.swagger.annotations.ApiOperation;

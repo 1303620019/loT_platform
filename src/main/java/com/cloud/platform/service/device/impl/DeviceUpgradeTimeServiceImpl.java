@@ -21,15 +21,15 @@ import org.springframework.util.ObjectUtils;
 public class DeviceUpgradeTimeServiceImpl
         extends ServiceImpl<DeviceUpgradeTimeMapper, DeviceUpgradeTime> implements IDeviceUpgradeTimeService {
 
-  @Override
-  public Integer getMid() {
-    QueryWrapper wrapper=new QueryWrapper();
-    wrapper.orderByDesc("dut_dusCreateTime");
-    wrapper.last(" limit 1");
-    DeviceUpgradeTime time = baseMapper.selectOne(wrapper);
-    if (!ObjectUtils.isEmpty(time)){
-      return time.getDutMid();
-    }
-    return 1;
-  }
+//  @Override
+//  public Integer getMid() {
+//    QueryWrapper wrapper=new QueryWrapper();
+//    wrapper.orderByDesc("dut_dusCreateTime");
+//    wrapper.last(" limit 1");
+//    DeviceUpgradeTime time = baseMapper.selectOne(wrapper);
+//    if (!ObjectUtils.isEmpty(time)){
+//      return time.getDutMid();
+//    }
+//    return 1;
+//  }
 }

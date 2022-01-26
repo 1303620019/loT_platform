@@ -1,7 +1,7 @@
 package com.cloud.platform.controller.device;
 
 
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.req.DeviceRestartLogREQ;
 import com.cloud.platform.service.device.IDeviceRestartLogService;
 import io.swagger.annotations.ApiOperation;

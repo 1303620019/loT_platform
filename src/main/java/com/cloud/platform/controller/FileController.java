@@ -1,22 +1,18 @@
 package com.cloud.platform.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.DeviceLinkFile;
 import com.cloud.platform.entity.device.DeviceLinkFileSign;
 import com.cloud.platform.service.device.IDeviceLinkFileService;
 import com.cloud.platform.service.device.IDeviceLinkFileSignService;
-import com.cloud.platform.util.CalcMD5;
 import com.cloud.platform.util.FileUploadUtils;
-import com.cloud.platform.util.Md5Util;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

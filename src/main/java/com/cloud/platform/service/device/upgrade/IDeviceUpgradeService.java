@@ -2,13 +2,11 @@ package com.cloud.platform.service.device.upgrade;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.platform.base.Result;
-import com.cloud.platform.base.ResultVo;
+import com.cloud.platform.comm.Result;
+import com.cloud.platform.comm.ResultVo;
 import com.cloud.platform.entity.device.upgrade.DeviceUpgrade;
 import com.cloud.platform.req.DeviceUpgradeREQ;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.awt.geom.RectangularShape;
 import java.util.Map;
 
 /**
